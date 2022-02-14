@@ -25,15 +25,14 @@ namespace Zeusz.Lekerdezesek
 
         private void Megjelenites()
         {
-            List<Konyveles.KonyvelesiTetel> tetelek = AdatbazisMuveletek.Lekerdezesek.OsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            List<Lekerdezesek.KoltsegEgyenleg> egyenlegek = AdatbazisMuveletek.Lekerdezesek.OsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
 
-            BindingList<Lekerdezesek.KoltsegEgyenleg> egyenlegek = new BindingList<KoltsegEgyenleg>();
-
-            foreach (var tetel in tetelek)
-            {
-                egyenlegek.Add(new KoltsegEgyenleg(tetel.TSzamla, tetel.TOsszeg - tetel.KOsszeg));
-            }
-            
+            osszesKtsgChrt.DataSource = egyenlegek;
+            osszesKtsgChrt.Series["OsszesKtsg"].XValueMember = "FokonyviSzam";
+            osszesKtsgChrt.Series["OsszesKtsg"].XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            osszesKtsgChrt.Series["OsszesKtsg"].YValueMembers = "Egyenleg";
+            osszesKtsgChrt.Series["OsszesKtsg"].YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            osszesKtsgChrt.Series["OsszesKtsg"].IsValueShownAsLabel = true;
         }   
     }
 }

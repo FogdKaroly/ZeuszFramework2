@@ -191,6 +191,12 @@
       <DependentUpon>FokonyviKivonatFrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Lekerdezesek\KoltsegEgyenleg.cs" />
+    <Compile Include="Lekerdezesek\MutatoszamokFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lekerdezesek\MutatoszamokFrm.Designer.cs">
+      <DependentUpon>MutatoszamokFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lekerdezesek\NyitottSzallitoFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Lekerdezesek\FokonyviKivonatFrm.resx">
       <DependentUpon>FokonyviKivonatFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekerdezesek\MutatoszamokFrm.resx">
+      <DependentUpon>MutatoszamokFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Lekerdezesek\NyitottSzallitoFrm.resx">
       <DependentUpon>NyitottSzallitoFrm.cs</DependentUpon>

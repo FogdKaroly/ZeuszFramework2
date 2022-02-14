@@ -1005,24 +1005,330 @@ namespace Zeusz.AdatbazisMuveletek
             return tetelek;
         }
 
-        public static List<Konyveles.KonyvelesiTetel> OsszesKoltsegLekerese(string schema)
+        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> OsszesKoltsegLekerese(string schema)
         {
-            List<Konyveles.KonyvelesiTetel> tetelek = AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4) + 1), schema, 0, 12, "51");
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-            tetelek.AddRange(AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4)+1), schema, 0, 12, "52"));
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-            tetelek.AddRange(AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4)+1), schema, 0, 12, "53"));
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-            tetelek.AddRange(AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4)+1), schema, 0, 12, "54"));
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-            tetelek.AddRange(AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4)+1), schema, 0, 12, "55"));
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-            tetelek.AddRange(AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4)+1), schema, 0, 12, "56"));
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-            tetelek.AddRange(AdatbazisMuveletek.Lekerdezesek.KivonatLekeres(Convert.ToInt32(schema.Substring(schema.Length - 4, 4)+1), schema, 0, 12, "57"));
-            AdatbazisMuveletek.Lekerdezesek.KivonatTorles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
 
-            return tetelek;
+            string lekeres51 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '51%'";
+            string lekeres52 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '52%'";
+            string lekeres53 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '53%'";
+            string lekeres54 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '54%'";
+            string lekeres55 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '55%'";
+            string lekeres56 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '56%'";
+            string lekeres57 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '57%'";
+
+            connection = AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(lekeres51, connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Anyagköltség", Convert.ToDouble(reader["tartozik"])));
+                    }
+                }
+                reader.Close();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres52;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Igénybe vett szolgáltatások", Convert.ToDouble(reader["tartozik"])));
+                    }
+                    
+                }
+                reader.Close();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres53;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Egyéb szolgáltatások", Convert.ToDouble(reader["tartozik"])));
+                    }
+                    
+                }
+                reader.Close();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres54;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérköltség", Convert.ToDouble(reader["tartozik"])));
+                    }
+                    
+                }
+                reader.Close();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres55;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Szem. jellegű e. kifiz.", Convert.ToDouble(reader["tartozik"])));
+                    }
+                    
+                }
+                reader.Close();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres56;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérjárulékok", Convert.ToDouble(reader["tartozik"])));
+                    }
+                    
+                }
+                reader.Close();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres57;
+                reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if ((double)reader["tartozik"] != 0)
+                    {
+                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("ÉCS", Convert.ToDouble(reader["tartozik"])));
+                    }
+                    
+                }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az egyenlegek lekérdezésénél! -> " + ex.Message);
+            }
+
+            connection.Close();
+
+            return egyenlegek;
+        }
+
+        //
+        //Mutatószámok / pénzügyi helyzet
+        //
+        public static double AdossagallomanyAranyaLekerdezes(string schema)
+        {
+            double arany = 0;
+            double adossagallomany = AdatbazisMuveletek.Merleg.MFI() + AdatbazisMuveletek.Merleg.MFII();
+            double sajatToke = AdatbazisMuveletek.Merleg.MD();
+
+            arany = adossagallomany / (adossagallomany + sajatToke) * 100;
+
+            return arany;
+        }
+
+        public static double LikviditasiMutatoLekeres(string schema)
+        {
+            double arany = 0;
+            double forgoeszkoz = AdatbazisMuveletek.Merleg.MB();
+            double rlk = AdatbazisMuveletek.Merleg.MFIII();
+
+            arany = (forgoeszkoz / rlk);
+
+            return arany;
+        }
+
+        public static double LikviditasiGyorsrataLekerdezes(string schema)
+        {
+            double arany = 0;
+            double penzeszkErtekpapKoveteles = AdatbazisMuveletek.Merleg.MBII() + AdatbazisMuveletek.Merleg.MBIII() + AdatbazisMuveletek.Merleg.MBIV();
+            double rlk = AdatbazisMuveletek.Merleg.MFIII();
+            /*
+            connection = AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            //31,32,34,36,37,38
+            string lekeres31T = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '31%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres31K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '31%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres32T = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '32%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres32K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '32%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres34T = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '34%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres34K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '34%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres36T = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '36%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres36K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '36%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres37T = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '37%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres37K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '37%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres38T = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '38%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres38K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '38%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres45K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '45%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres45T = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '45%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres46K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '46%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres46T = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '46%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            string lekeres47K = $"SELECT ISNULL(SUM(Kosszeg), 0) AS 'kovetel' FROM {schema}.fokonyv WHERE Kszamla LIKE '47%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+            string lekeres47T = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '47%' AND YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4))} AND lezarva = 0";
+
+            try
+            {
+                //31,32,34,36,37,38
+                SqlCommand cmd = new SqlCommand(lekeres31T, connection);
+                szamlalo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres31K;
+                szamlalo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres32T;
+                szamlalo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres32K;
+                szamlalo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres34T;
+                szamlalo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres34K;
+                szamlalo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres36T;
+                szamlalo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres36K;
+                szamlalo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres37T;
+                szamlalo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres37K;
+                szamlalo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres38T;
+                szamlalo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres38K;
+                szamlalo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres45K;
+                nevezo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres45T;
+                nevezo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres46K;
+                nevezo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres46T;
+                nevezo -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres47K;
+                nevezo += Convert.ToDouble(cmd.ExecuteScalar());
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = lekeres47T;
+                nevezo -= Convert.ToDouble(cmd.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az likviditási gyorsráta lekérdezésénél! -> " + ex.Message);
+            }
+
+            connection.Close();
+            */
+            arany = (penzeszkErtekpapKoveteles / rlk);
+
+            return arany;
+        }
+
+        public static double NettoMukodoTokeLekerdezes(string schema)
+        {
+            double forgoeszkozok = AdatbazisMuveletek.Merleg.MB();
+            double rlk = AdatbazisMuveletek.Merleg.MFIII();
+
+            return forgoeszkozok - rlk;
+        }
+
+        //
+        //Mutatószámok / vagyoni helyzet
+        //
+        public static double TokeszerkezetiMutatoLekerdezes(string schema)
+        {
+            double arany = 0;
+            double sajatToke = AdatbazisMuveletek.Merleg.MD();
+            double kotelezettsegek = AdatbazisMuveletek.Merleg.MF();
+
+            arany = (sajatToke / kotelezettsegek) * 100;
+
+            return arany;
+        }
+
+        public static double BefektetettEszkozFedezetettsegLekerdezes(string schema)
+        {
+            double arany = 0;
+            double sajatToke = AdatbazisMuveletek.Merleg.MD();
+            double befEszk = AdatbazisMuveletek.Merleg.MA();
+
+            arany = (sajatToke / befEszk) * 100;
+
+            return arany;
+        }
+
+        public static double VagyonszerkezetLekeres(string schema)
+        {
+            double arany = 0;
+            double befEszk = AdatbazisMuveletek.Merleg.MA();
+            double forgoeszk = AdatbazisMuveletek.Merleg.MB();
+
+            arany = (befEszk / forgoeszk) * 100;
+
+            return arany;
+        }
+
+        public static double BefektetettEszkozokAranyaLekerdezes(string schema)
+        {
+            double arany = 0;
+            double befEszk = AdatbazisMuveletek.Merleg.MA();
+            double osszesEszk = AdatbazisMuveletek.Merleg.MA() + AdatbazisMuveletek.Merleg.MB() + AdatbazisMuveletek.Merleg.MC();
+
+            arany = (befEszk / osszesEszk) * 100;
+
+            return arany;
         }
     }
 }

@@ -936,7 +936,9 @@ namespace Zeusz.AdatbazisMuveletek
             }
 
             string attoltes = $"INSERT INTO {ujEvSchema}.fokonyv SELECT * FROM {schema}.fokonyv WHERE YEAR('teljesites') = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};" +
-                $"DELETE FROM {schema}.fokonyv WHERE YEAR('teljesites') = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};";
+                $"DELETE FROM {schema}.fokonyv WHERE YEAR('teljesites') = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};" +
+                $"INSERT INTO {ujEvSchema}.afa(fokonyv_id, Tszamla, Kszamla, Tosszeg, Kosszeg, afakulcs) SELECT {schema}.fokonyv.id AS 'fokonyv_id', {schema}.afa.Tszamla, {schema}.afa.Kszamla, {schema}.fokonyv.Tosszeg, {schema}.afa.Kosszeg, {schema}.afa.afakulcs FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1} AND {schema}.afa.afakulcs IS NOT NULL;" +
+                $"DELETE FROM {schema}.afa INNER JOIN {schema}.fokonyv ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};";
 
             try
             {

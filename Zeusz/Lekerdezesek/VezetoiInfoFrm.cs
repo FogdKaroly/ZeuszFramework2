@@ -17,15 +17,21 @@ namespace Zeusz.Lekerdezesek
             InitializeComponent();
         }
 
+        private void kilepesBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void osszesKtsgBtn_Click(object sender, EventArgs e)
         {
             OsszesKtsgFrm osszesKtsgFrm = new OsszesKtsgFrm();
             osszesKtsgFrm.ShowDialog();
         }
 
-        private void kilepesBtn_Click(object sender, EventArgs e)
+        private void mutatoszamokBtn_Click(object sender, EventArgs e)
         {
-            this.Close();
+            MutatoszamokFrm mutatoszamokFrm = new MutatoszamokFrm();
+            mutatoszamokFrm.ShowDialog();
         }
     }
 }

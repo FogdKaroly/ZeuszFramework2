@@ -31,13 +31,14 @@
             this.kilepesBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.osszesKtsgBtn = new System.Windows.Forms.Button();
+            this.mutatoszamokBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // kilepesBtn
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -50,7 +51,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(57, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(167, 20);
@@ -67,16 +68,27 @@
             this.osszesKtsgBtn.UseVisualStyleBackColor = true;
             this.osszesKtsgBtn.Click += new System.EventHandler(this.osszesKtsgBtn_Click);
             // 
+            // mutatoszamokBtn
+            // 
+            this.mutatoszamokBtn.Location = new System.Drawing.Point(12, 129);
+            this.mutatoszamokBtn.Name = "mutatoszamokBtn";
+            this.mutatoszamokBtn.Size = new System.Drawing.Size(810, 46);
+            this.mutatoszamokBtn.TabIndex = 10;
+            this.mutatoszamokBtn.Text = "Mutatószámok";
+            this.mutatoszamokBtn.UseVisualStyleBackColor = true;
+            this.mutatoszamokBtn.Click += new System.EventHandler(this.mutatoszamokBtn_Click);
+            // 
             // VezetoiInfoFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.mutatoszamokBtn);
             this.Controls.Add(this.osszesKtsgBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "VezetoiInfoFrm";
             this.Text = "VezetoiInfoFrm";
@@ -90,5 +102,6 @@
         private System.Windows.Forms.Button kilepesBtn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button osszesKtsgBtn;
+        private System.Windows.Forms.Button mutatoszamokBtn;
     }
 }
