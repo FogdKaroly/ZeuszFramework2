@@ -91,7 +91,7 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -104,7 +104,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(43, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 20);
@@ -114,7 +114,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label2.Location = new System.Drawing.Point(298, 14);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(165, 20);
@@ -136,6 +136,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 72);
             this.label3.Name = "label3";
@@ -145,6 +146,7 @@
             // 
             // cegnevTxb
             // 
+            this.cegnevTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.cegnevTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.cegnevTxb.Location = new System.Drawing.Point(81, 69);
             this.cegnevTxb.Name = "cegnevTxb";
@@ -153,6 +155,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.groupBox1.Controls.Add(this.szamlazasiAjtoTxb);
             this.groupBox1.Controls.Add(this.szamlazasiLepcsohazTxb);
             this.groupBox1.Controls.Add(this.szamlazasiHazszamTxb);
@@ -170,6 +173,7 @@
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(12, 121);
+            this.groupBox1.MaximumSize = new System.Drawing.Size(400, 279);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(400, 279);
             this.groupBox1.TabIndex = 43;
@@ -319,6 +323,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.groupBox2.Controls.Add(this.szamlazasiAdatMasolBtn);
             this.groupBox2.Controls.Add(this.label25);
             this.groupBox2.Controls.Add(this.szallitasiAjtoTxb);
@@ -336,6 +341,7 @@
             this.groupBox2.Controls.Add(this.label18);
             this.groupBox2.Controls.Add(this.label19);
             this.groupBox2.Location = new System.Drawing.Point(422, 121);
+            this.groupBox2.MaximumSize = new System.Drawing.Size(400, 279);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(400, 279);
             this.groupBox2.TabIndex = 44;
@@ -498,6 +504,7 @@
             // 
             // label17
             // 
+            this.label17.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(21, 435);
             this.label17.Name = "label17";
@@ -507,6 +514,7 @@
             // 
             // label20
             // 
+            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label20.AutoSize = true;
             this.label20.Location = new System.Drawing.Point(266, 435);
             this.label20.Name = "label20";
@@ -516,6 +524,7 @@
             // 
             // label21
             // 
+            this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label21.AutoSize = true;
             this.label21.Location = new System.Drawing.Point(527, 435);
             this.label21.Name = "label21";
@@ -525,6 +534,7 @@
             // 
             // label22
             // 
+            this.label22.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(21, 498);
             this.label22.Name = "label22";
@@ -534,6 +544,7 @@
             // 
             // label23
             // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(21, 557);
             this.label23.Name = "label23";
@@ -543,6 +554,7 @@
             // 
             // label24
             // 
+            this.label24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label24.AutoSize = true;
             this.label24.Location = new System.Drawing.Point(21, 614);
             this.label24.Name = "label24";
@@ -552,6 +564,7 @@
             // 
             // adoszamTxb
             // 
+            this.adoszamTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.adoszamTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.adoszamTxb.Location = new System.Drawing.Point(103, 432);
             this.adoszamTxb.Name = "adoszamTxb";
@@ -560,6 +573,7 @@
             // 
             // euAdoszamTxb
             // 
+            this.euAdoszamTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.euAdoszamTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.euAdoszamTxb.Location = new System.Drawing.Point(373, 432);
             this.euAdoszamTxb.Name = "euAdoszamTxb";
@@ -568,6 +582,7 @@
             // 
             // cegjegyzekszamTxb
             // 
+            this.cegjegyzekszamTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.cegjegyzekszamTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.cegjegyzekszamTxb.Location = new System.Drawing.Point(662, 432);
             this.cegjegyzekszamTxb.Name = "cegjegyzekszamTxb";
@@ -576,6 +591,7 @@
             // 
             // bankszamlaszamTxb
             // 
+            this.bankszamlaszamTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.bankszamlaszamTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.bankszamlaszamTxb.Location = new System.Drawing.Point(185, 495);
             this.bankszamlaszamTxb.Name = "bankszamlaszamTxb";
@@ -584,6 +600,7 @@
             // 
             // emailTxb
             // 
+            this.emailTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.emailTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.emailTxb.Location = new System.Drawing.Point(185, 554);
             this.emailTxb.Name = "emailTxb";
@@ -592,6 +609,7 @@
             // 
             // telefonTxb
             // 
+            this.telefonTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.telefonTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.telefonTxb.Location = new System.Drawing.Point(185, 611);
             this.telefonTxb.Name = "telefonTxb";
@@ -600,9 +618,11 @@
             // 
             // rogzitesUjkentBtn
             // 
+            this.rogzitesUjkentBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rogzitesUjkentBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.rogzitesUjkentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rogzitesUjkentBtn.Location = new System.Drawing.Point(431, 571);
+            this.rogzitesUjkentBtn.MaximumSize = new System.Drawing.Size(175, 66);
             this.rogzitesUjkentBtn.Name = "rogzitesUjkentBtn";
             this.rogzitesUjkentBtn.Size = new System.Drawing.Size(175, 66);
             this.rogzitesUjkentBtn.TabIndex = 58;
@@ -612,9 +632,11 @@
             // 
             // rogzitesBtn
             // 
+            this.rogzitesBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rogzitesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.rogzitesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rogzitesBtn.Location = new System.Drawing.Point(641, 571);
+            this.rogzitesBtn.MaximumSize = new System.Drawing.Size(175, 66);
             this.rogzitesBtn.Name = "rogzitesBtn";
             this.rogzitesBtn.Size = new System.Drawing.Size(175, 66);
             this.rogzitesBtn.TabIndex = 59;
@@ -651,7 +673,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "PartenrtorzsFrm";
             this.Text = "PartenrtorzsFrm";

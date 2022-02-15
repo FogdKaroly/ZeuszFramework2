@@ -49,7 +49,7 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -62,7 +62,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(52, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 20);
@@ -71,8 +71,10 @@
             // 
             // merlegPanel
             // 
+            this.merlegPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.merlegPanel.Controls.Add(this.merlegDgv);
             this.merlegPanel.Location = new System.Drawing.Point(12, 52);
+            this.merlegPanel.MaximumSize = new System.Drawing.Size(1500, 1500);
             this.merlegPanel.Name = "merlegPanel";
             this.merlegPanel.Size = new System.Drawing.Size(810, 533);
             this.merlegPanel.TabIndex = 9;
@@ -129,6 +131,7 @@
             // 
             // lekerDatumLbl
             // 
+            this.lekerDatumLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lekerDatumLbl.AutoSize = true;
             this.lekerDatumLbl.Location = new System.Drawing.Point(522, 610);
             this.lekerDatumLbl.Name = "lekerDatumLbl";
@@ -138,6 +141,7 @@
             // 
             // excelExportBtn
             // 
+            this.excelExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.excelExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.excelExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.excelExportBtn.Location = new System.Drawing.Point(12, 591);
@@ -150,6 +154,7 @@
             // 
             // csvExportBtn
             // 
+            this.csvExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.csvExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.csvExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.csvExportBtn.Location = new System.Drawing.Point(187, 591);
@@ -162,6 +167,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(362, 610);
             this.label6.Name = "label6";
@@ -182,7 +188,7 @@
             this.Controls.Add(this.merlegPanel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MerlegFrm";
             this.Text = "MerlegFrm";

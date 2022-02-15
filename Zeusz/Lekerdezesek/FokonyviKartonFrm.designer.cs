@@ -40,11 +40,6 @@
             this.fokonyviSzamIgTxb = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.kartonDgv = new System.Windows.Forms.DataGridView();
-            this.lekerdezesBtn = new System.Windows.Forms.Button();
-            this.excelExportBtn = new System.Windows.Forms.Button();
-            this.lekerDatumLbl = new System.Windows.Forms.Label();
-            this.csvExportBtn = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.honap = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.teljesites = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.szamlaszam = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,6 +47,11 @@
             this.tErtek = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kErtek = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gazdasagiEsemeny = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lekerdezesBtn = new System.Windows.Forms.Button();
+            this.excelExportBtn = new System.Windows.Forms.Button();
+            this.lekerDatumLbl = new System.Windows.Forms.Label();
+            this.csvExportBtn = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kartonDgv)).BeginInit();
             this.SuspendLayout();
@@ -60,7 +60,7 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -73,7 +73,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(56, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(237, 20);
@@ -82,6 +82,7 @@
             // 
             // igTxb
             // 
+            this.igTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.igTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.igTxb.Location = new System.Drawing.Point(272, 57);
             this.igTxb.Name = "igTxb";
@@ -91,6 +92,7 @@
             // 
             // tolTxb
             // 
+            this.tolTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.tolTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.tolTxb.Location = new System.Drawing.Point(146, 57);
             this.tolTxb.Name = "tolTxb";
@@ -100,6 +102,7 @@
             // 
             // fokonyviSzamTolTxb
             // 
+            this.fokonyviSzamTolTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.fokonyviSzamTolTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.fokonyviSzamTolTxb.Location = new System.Drawing.Point(557, 57);
             this.fokonyviSzamTolTxb.Name = "fokonyviSzamTolTxb";
@@ -109,6 +112,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(434, 60);
             this.label4.Name = "label4";
@@ -118,6 +122,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(252, 60);
             this.label3.Name = "label3";
@@ -127,6 +132,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 60);
             this.label2.Name = "label2";
@@ -136,6 +142,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(652, 60);
             this.label5.Name = "label5";
@@ -145,6 +152,7 @@
             // 
             // fokonyviSzamIgTxb
             // 
+            this.fokonyviSzamIgTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.fokonyviSzamIgTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.fokonyviSzamIgTxb.Location = new System.Drawing.Point(672, 57);
             this.fokonyviSzamIgTxb.Name = "fokonyviSzamIgTxb";
@@ -154,6 +162,7 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panel1.Controls.Add(this.kartonDgv);
             this.panel1.Location = new System.Drawing.Point(12, 99);
             this.panel1.Name = "panel1";
@@ -181,63 +190,6 @@
             this.kartonDgv.RowTemplate.Height = 25;
             this.kartonDgv.Size = new System.Drawing.Size(810, 486);
             this.kartonDgv.TabIndex = 0;
-            // 
-            // lekerdezesBtn
-            // 
-            this.lekerdezesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.lekerdezesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lekerdezesBtn.Location = new System.Drawing.Point(682, 591);
-            this.lekerdezesBtn.Name = "lekerdezesBtn";
-            this.lekerdezesBtn.Size = new System.Drawing.Size(140, 58);
-            this.lekerdezesBtn.TabIndex = 30;
-            this.lekerdezesBtn.Text = "Lekérdezés";
-            this.lekerdezesBtn.UseVisualStyleBackColor = false;
-            this.lekerdezesBtn.Click += new System.EventHandler(this.lekerdezesBtn_Click);
-            // 
-            // excelExportBtn
-            // 
-            this.excelExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.excelExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.excelExportBtn.Location = new System.Drawing.Point(12, 591);
-            this.excelExportBtn.Name = "excelExportBtn";
-            this.excelExportBtn.Size = new System.Drawing.Size(169, 58);
-            this.excelExportBtn.TabIndex = 31;
-            this.excelExportBtn.Text = "Exportálás Excelbe";
-            this.excelExportBtn.UseVisualStyleBackColor = false;
-            this.excelExportBtn.Visible = false;
-            this.excelExportBtn.Click += new System.EventHandler(this.excelExportBtn_Click);
-            // 
-            // lekerDatumLbl
-            // 
-            this.lekerDatumLbl.AutoSize = true;
-            this.lekerDatumLbl.Location = new System.Drawing.Point(522, 610);
-            this.lekerDatumLbl.Name = "lekerDatumLbl";
-            this.lekerDatumLbl.Size = new System.Drawing.Size(54, 20);
-            this.lekerDatumLbl.TabIndex = 21;
-            this.lekerDatumLbl.Text = "dátum";
-            this.lekerDatumLbl.Visible = false;
-            // 
-            // csvExportBtn
-            // 
-            this.csvExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.csvExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.csvExportBtn.Location = new System.Drawing.Point(187, 591);
-            this.csvExportBtn.Name = "csvExportBtn";
-            this.csvExportBtn.Size = new System.Drawing.Size(169, 58);
-            this.csvExportBtn.TabIndex = 19;
-            this.csvExportBtn.Text = "Exportálás CSV-be";
-            this.csvExportBtn.UseVisualStyleBackColor = false;
-            this.csvExportBtn.Visible = false;
-            this.csvExportBtn.Click += new System.EventHandler(this.csvExportBtn_Click);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(362, 610);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(154, 20);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Lekérdezés dátuma:";
             // 
             // honap
             // 
@@ -281,6 +233,71 @@
             this.gazdasagiEsemeny.Name = "gazdasagiEsemeny";
             this.gazdasagiEsemeny.ReadOnly = true;
             // 
+            // lekerdezesBtn
+            // 
+            this.lekerdezesBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lekerdezesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.lekerdezesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lekerdezesBtn.Location = new System.Drawing.Point(682, 591);
+            this.lekerdezesBtn.MaximumSize = new System.Drawing.Size(140, 58);
+            this.lekerdezesBtn.Name = "lekerdezesBtn";
+            this.lekerdezesBtn.Size = new System.Drawing.Size(140, 58);
+            this.lekerdezesBtn.TabIndex = 30;
+            this.lekerdezesBtn.Text = "Lekérdezés";
+            this.lekerdezesBtn.UseVisualStyleBackColor = false;
+            this.lekerdezesBtn.Click += new System.EventHandler(this.lekerdezesBtn_Click);
+            // 
+            // excelExportBtn
+            // 
+            this.excelExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.excelExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.excelExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.excelExportBtn.Location = new System.Drawing.Point(12, 591);
+            this.excelExportBtn.MaximumSize = new System.Drawing.Size(169, 58);
+            this.excelExportBtn.Name = "excelExportBtn";
+            this.excelExportBtn.Size = new System.Drawing.Size(169, 58);
+            this.excelExportBtn.TabIndex = 31;
+            this.excelExportBtn.Text = "Exportálás Excelbe";
+            this.excelExportBtn.UseVisualStyleBackColor = false;
+            this.excelExportBtn.Visible = false;
+            this.excelExportBtn.Click += new System.EventHandler(this.excelExportBtn_Click);
+            // 
+            // lekerDatumLbl
+            // 
+            this.lekerDatumLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lekerDatumLbl.AutoSize = true;
+            this.lekerDatumLbl.Location = new System.Drawing.Point(522, 610);
+            this.lekerDatumLbl.Name = "lekerDatumLbl";
+            this.lekerDatumLbl.Size = new System.Drawing.Size(54, 20);
+            this.lekerDatumLbl.TabIndex = 21;
+            this.lekerDatumLbl.Text = "dátum";
+            this.lekerDatumLbl.Visible = false;
+            // 
+            // csvExportBtn
+            // 
+            this.csvExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.csvExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.csvExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.csvExportBtn.Location = new System.Drawing.Point(187, 591);
+            this.csvExportBtn.MaximumSize = new System.Drawing.Size(169, 58);
+            this.csvExportBtn.Name = "csvExportBtn";
+            this.csvExportBtn.Size = new System.Drawing.Size(169, 58);
+            this.csvExportBtn.TabIndex = 19;
+            this.csvExportBtn.Text = "Exportálás CSV-be";
+            this.csvExportBtn.UseVisualStyleBackColor = false;
+            this.csvExportBtn.Visible = false;
+            this.csvExportBtn.Click += new System.EventHandler(this.csvExportBtn_Click);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(362, 610);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(154, 20);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Lekérdezés dátuma:";
+            // 
             // FokonyviKartonFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -303,7 +320,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FokonyviKartonFrm";
             this.Text = "FokonyviKartonFrm";

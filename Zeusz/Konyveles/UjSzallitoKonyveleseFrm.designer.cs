@@ -70,6 +70,7 @@
             // 
             // label15
             // 
+            this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label15.AutoSize = true;
             this.label15.Location = new System.Drawing.Point(726, 444);
             this.label15.Name = "label15";
@@ -79,6 +80,7 @@
             // 
             // label13
             // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(571, 443);
             this.label13.Name = "label13";
@@ -91,7 +93,7 @@
             this.kSzamlaCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kSzamlaCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.kSzamlaCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kSzamlaCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.kSzamlaCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.kSzamlaCbx.FormattingEnabled = true;
             this.kSzamlaCbx.Location = new System.Drawing.Point(6, 84);
             this.kSzamlaCbx.Name = "kSzamlaCbx";
@@ -120,11 +122,13 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.groupBox3.Controls.Add(this.afaTeljesitesDtp);
             this.groupBox3.Controls.Add(this.teljesitesDtp);
             this.groupBox3.Controls.Add(this.label14);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Location = new System.Drawing.Point(430, 59);
+            this.groupBox3.MaximumSize = new System.Drawing.Size(386, 100);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(386, 100);
             this.groupBox3.TabIndex = 43;
@@ -167,9 +171,11 @@
             // 
             // rogzitesBtn
             // 
+            this.rogzitesBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rogzitesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.rogzitesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rogzitesBtn.Location = new System.Drawing.Point(635, 534);
+            this.rogzitesBtn.MaximumSize = new System.Drawing.Size(181, 70);
             this.rogzitesBtn.Name = "rogzitesBtn";
             this.rogzitesBtn.Size = new System.Drawing.Size(181, 70);
             this.rogzitesBtn.TabIndex = 42;
@@ -179,6 +185,7 @@
             // 
             // fizetesiModCbx
             // 
+            this.fizetesiModCbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.fizetesiModCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.fizetesiModCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.fizetesiModCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -190,6 +197,7 @@
             // 
             // label12
             // 
+            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(12, 502);
             this.label12.Name = "label12";
@@ -209,6 +217,7 @@
             // 
             // esedekessegDtp
             // 
+            this.esedekessegDtp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.esedekessegDtp.CalendarForeColor = System.Drawing.Color.Coral;
             this.esedekessegDtp.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.esedekessegDtp.CalendarTitleBackColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -222,6 +231,7 @@
             // 
             // label11
             // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(300, 443);
             this.label11.Name = "label11";
@@ -231,6 +241,7 @@
             // 
             // label10
             // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(12, 443);
             this.label10.Name = "label10";
@@ -240,6 +251,7 @@
             // 
             // szamlaKelteDtp
             // 
+            this.szamlaKelteDtp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.szamlaKelteDtp.CalendarForeColor = System.Drawing.Color.Coral;
             this.szamlaKelteDtp.CalendarMonthBackground = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.szamlaKelteDtp.CalendarTitleBackColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -253,6 +265,7 @@
             // 
             // gazdasagiEsemenyTxb
             // 
+            this.gazdasagiEsemenyTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.gazdasagiEsemenyTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.gazdasagiEsemenyTxb.Location = new System.Drawing.Point(172, 380);
             this.gazdasagiEsemenyTxb.Name = "gazdasagiEsemenyTxb";
@@ -270,6 +283,7 @@
             // 
             // afakulcsCbx
             // 
+            this.afakulcsCbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.afakulcsCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.afakulcsCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.afakulcsCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -286,12 +300,14 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.groupBox2.Controls.Add(this.kOsszegTxb);
             this.groupBox2.Controls.Add(this.kSzamlaCbx);
             this.groupBox2.Controls.Add(this.kSzamlaTxb);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Location = new System.Drawing.Point(430, 180);
+            this.groupBox2.MaximumSize = new System.Drawing.Size(392, 178);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(392, 178);
             this.groupBox2.TabIndex = 33;
@@ -313,7 +329,7 @@
             this.tSzamlaCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.tSzamlaCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tSzamlaCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.tSzamlaCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.tSzamlaCbx.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.tSzamlaCbx.FormattingEnabled = true;
             this.tSzamlaCbx.Location = new System.Drawing.Point(6, 84);
             this.tSzamlaCbx.Name = "tSzamlaCbx";
@@ -351,6 +367,7 @@
             // 
             // label8
             // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(12, 383);
             this.label8.Name = "label8";
@@ -360,12 +377,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.groupBox1.Controls.Add(this.tOsszegTxb);
             this.groupBox1.Controls.Add(this.tSzamlaCbx);
             this.groupBox1.Controls.Add(this.tSzamlaTxb);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Location = new System.Drawing.Point(12, 180);
+            this.groupBox1.MaximumSize = new System.Drawing.Size(392, 178);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(392, 178);
             this.groupBox1.TabIndex = 32;
@@ -374,6 +393,7 @@
             // 
             // szamlaszamTxb
             // 
+            this.szamlaszamTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.szamlaszamTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.szamlaszamTxb.Location = new System.Drawing.Point(133, 117);
             this.szamlaszamTxb.Name = "szamlaszamTxb";
@@ -382,6 +402,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(12, 120);
             this.label3.Name = "label3";
@@ -391,6 +412,7 @@
             // 
             // partnerCbx
             // 
+            this.partnerCbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.partnerCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.partnerCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.partnerCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -402,6 +424,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 62);
             this.label2.Name = "label2";
@@ -412,7 +435,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(54, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(221, 20);
@@ -423,7 +446,7 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -460,7 +483,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "UjSzallitoKonyveleseFrm";
             this.Text = "UjSzallitoKonyveleseFrm";

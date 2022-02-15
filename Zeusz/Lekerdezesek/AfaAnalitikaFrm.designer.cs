@@ -57,7 +57,7 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -70,7 +70,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(63, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(197, 20);
@@ -115,6 +115,7 @@
             // 
             // panel1
             // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.panel1.Controls.Add(this.afaAnalitikaDgv);
             this.panel1.Location = new System.Drawing.Point(12, 54);
             this.panel1.Name = "panel1";
@@ -194,6 +195,7 @@
             // 
             // lekerDatumLbl
             // 
+            this.lekerDatumLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lekerDatumLbl.AutoSize = true;
             this.lekerDatumLbl.Location = new System.Drawing.Point(522, 610);
             this.lekerDatumLbl.Name = "lekerDatumLbl";
@@ -204,9 +206,11 @@
             // 
             // excelExportBtn
             // 
+            this.excelExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.excelExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.excelExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.excelExportBtn.Location = new System.Drawing.Point(12, 591);
+            this.excelExportBtn.MaximumSize = new System.Drawing.Size(169, 58);
             this.excelExportBtn.Name = "excelExportBtn";
             this.excelExportBtn.Size = new System.Drawing.Size(169, 58);
             this.excelExportBtn.TabIndex = 36;
@@ -217,9 +221,11 @@
             // 
             // csvExportBtn
             // 
+            this.csvExportBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.csvExportBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.csvExportBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.csvExportBtn.Location = new System.Drawing.Point(187, 591);
+            this.csvExportBtn.MaximumSize = new System.Drawing.Size(169, 58);
             this.csvExportBtn.Name = "csvExportBtn";
             this.csvExportBtn.Size = new System.Drawing.Size(169, 58);
             this.csvExportBtn.TabIndex = 32;
@@ -230,6 +236,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(362, 610);
             this.label6.Name = "label6";
@@ -239,9 +246,11 @@
             // 
             // lekerdezesBtn
             // 
+            this.lekerdezesBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lekerdezesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.lekerdezesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lekerdezesBtn.Location = new System.Drawing.Point(682, 591);
+            this.lekerdezesBtn.MaximumSize = new System.Drawing.Size(140, 58);
             this.lekerdezesBtn.Name = "lekerdezesBtn";
             this.lekerdezesBtn.Size = new System.Drawing.Size(140, 58);
             this.lekerdezesBtn.TabIndex = 35;
@@ -267,7 +276,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AfaAnalitikaFrm";
             this.Text = "AfaAnalitikaFrm";

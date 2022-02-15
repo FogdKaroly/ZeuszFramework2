@@ -49,7 +49,7 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.Name = "kilepesBtn";
             this.kilepesBtn.Size = new System.Drawing.Size(25, 25);
@@ -61,7 +61,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(67, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(226, 20);
@@ -70,8 +70,9 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label2.Location = new System.Drawing.Point(32, 63);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(171, 20);
@@ -80,6 +81,7 @@
             // 
             // szamlaKivalasztasCbx
             // 
+            this.szamlaKivalasztasCbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.szamlaKivalasztasCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.szamlaKivalasztasCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.szamlaKivalasztasCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -92,6 +94,7 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(133, 144);
             this.label3.Name = "label3";
@@ -101,6 +104,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(133, 203);
             this.label4.Name = "label4";
@@ -110,6 +114,7 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(133, 387);
             this.label5.Name = "label5";
@@ -119,6 +124,7 @@
             // 
             // konyvelhetoEChbx
             // 
+            this.konyvelhetoEChbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.konyvelhetoEChbx.AutoSize = true;
             this.konyvelhetoEChbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.konyvelhetoEChbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -131,6 +137,7 @@
             // 
             // szamlaszamTxb
             // 
+            this.szamlaszamTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.szamlaszamTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.szamlaszamTxb.Location = new System.Drawing.Point(314, 141);
             this.szamlaszamTxb.Name = "szamlaszamTxb";
@@ -140,6 +147,7 @@
             // 
             // szamlaNevTxb
             // 
+            this.szamlaNevTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.szamlaNevTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.szamlaNevTxb.Location = new System.Drawing.Point(314, 200);
             this.szamlaNevTxb.Name = "szamlaNevTxb";
@@ -148,9 +156,11 @@
             // 
             // rogzitesUjkentBtn
             // 
+            this.rogzitesUjkentBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rogzitesUjkentBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.rogzitesUjkentBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rogzitesUjkentBtn.Location = new System.Drawing.Point(314, 457);
+            this.rogzitesUjkentBtn.MaximumSize = new System.Drawing.Size(172, 62);
             this.rogzitesUjkentBtn.Name = "rogzitesUjkentBtn";
             this.rogzitesUjkentBtn.Size = new System.Drawing.Size(172, 62);
             this.rogzitesUjkentBtn.TabIndex = 14;
@@ -160,9 +170,11 @@
             // 
             // rogzitesBtn
             // 
+            this.rogzitesBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.rogzitesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.rogzitesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rogzitesBtn.Location = new System.Drawing.Point(524, 457);
+            this.rogzitesBtn.MaximumSize = new System.Drawing.Size(172, 62);
             this.rogzitesBtn.Name = "rogzitesBtn";
             this.rogzitesBtn.Size = new System.Drawing.Size(172, 62);
             this.rogzitesBtn.TabIndex = 15;
@@ -172,6 +184,7 @@
             // 
             // helyeABeszamolobanCbx
             // 
+            this.helyeABeszamolobanCbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.helyeABeszamolobanCbx.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.helyeABeszamolobanCbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.helyeABeszamolobanCbx.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -183,6 +196,7 @@
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(133, 271);
             this.label6.Name = "label6";
@@ -192,6 +206,7 @@
             // 
             // kapcsolodikIdeTxb
             // 
+            this.kapcsolodikIdeTxb.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.kapcsolodikIdeTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kapcsolodikIdeTxb.Location = new System.Drawing.Point(314, 268);
             this.kapcsolodikIdeTxb.Name = "kapcsolodikIdeTxb";
@@ -219,7 +234,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "SzamlatukorKarbantartasFrm";
             this.Text = "SzamlatukorKarbantartasFrm";
