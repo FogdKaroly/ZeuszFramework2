@@ -33,5 +33,11 @@ namespace Zeusz.Lekerdezesek
             MutatoszamokFrm mutatoszamokFrm = new MutatoszamokFrm();
             mutatoszamokFrm.ShowDialog();
         }
+
+        private void egyeniLekerdezes_Click(object sender, EventArgs e)
+        {
+            EgyeniLekerdezesFrm egyeniLekerdezesFrm = new EgyeniLekerdezesFrm();
+            egyeniLekerdezesFrm.ShowDialog();
+        }
     }
 }

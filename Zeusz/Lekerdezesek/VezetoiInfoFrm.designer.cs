@@ -32,6 +32,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.osszesKtsgBtn = new System.Windows.Forms.Button();
             this.mutatoszamokBtn = new System.Windows.Forms.Button();
+            this.egyeniLekerdezes = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // kilepesBtn
@@ -78,12 +81,43 @@
             this.mutatoszamokBtn.UseVisualStyleBackColor = true;
             this.mutatoszamokBtn.Click += new System.EventHandler(this.mutatoszamokBtn_Click);
             // 
+            // egyeniLekerdezes
+            // 
+            this.egyeniLekerdezes.Location = new System.Drawing.Point(12, 197);
+            this.egyeniLekerdezes.Name = "egyeniLekerdezes";
+            this.egyeniLekerdezes.Size = new System.Drawing.Size(810, 46);
+            this.egyeniLekerdezes.TabIndex = 11;
+            this.egyeniLekerdezes.Text = "Egyéni lekérdezés";
+            this.egyeniLekerdezes.UseVisualStyleBackColor = true;
+            this.egyeniLekerdezes.Click += new System.EventHandler(this.egyeniLekerdezes_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 265);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(810, 46);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Adók elemzése";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 330);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(810, 46);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "Bevételek és költségek aránya";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // VezetoiInfoFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.egyeniLekerdezes);
             this.Controls.Add(this.mutatoszamokBtn);
             this.Controls.Add(this.osszesKtsgBtn);
             this.Controls.Add(this.label1);
@@ -103,5 +137,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button osszesKtsgBtn;
         private System.Windows.Forms.Button mutatoszamokBtn;
+        private System.Windows.Forms.Button egyeniLekerdezes;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

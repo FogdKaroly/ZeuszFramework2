@@ -178,6 +178,12 @@
     <Compile Include="Lekerdezesek\AfaAnalitikaFrm.designer.cs">
       <DependentUpon>AfaAnalitikaFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Lekerdezesek\EgyeniLekerdezesFrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Lekerdezesek\EgyeniLekerdezesFrm.Designer.cs">
+      <DependentUpon>EgyeniLekerdezesFrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Lekerdezesek\FokonyviKartonFrm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Lekerdezesek\AfaAnalitikaFrm.resx">
       <DependentUpon>AfaAnalitikaFrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lekerdezesek\EgyeniLekerdezesFrm.resx">
+      <DependentUpon>EgyeniLekerdezesFrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Lekerdezesek\FokonyviKartonFrm.resx">
       <DependentUpon>FokonyviKartonFrm.cs</DependentUpon>
