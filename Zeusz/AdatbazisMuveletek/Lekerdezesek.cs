@@ -1005,6 +1005,30 @@ namespace Zeusz.AdatbazisMuveletek
             return tetelek;
         }
 
+        public static bool OsszkoltsegesE(string schema)
+        {
+            bool osszktsg = false;
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string lekeres = $"SELECT osszkoltseg FROM {schema}.cegadatok;";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(lekeres, connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+                osszktsg = Convert.ToBoolean(reader["osszkoltseg"]);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az összköltség adatok lekérésénél! -> " + ex.Message);
+            }
+
+            connection.Close();
+
+            return osszktsg;
+        }
+
         //
         //Költségek chart-hoz
         //
@@ -1012,246 +1036,98 @@ namespace Zeusz.AdatbazisMuveletek
         {
             List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
 
-            string lekeres51 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '51%'";
-            string lekeres52 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '52%'";
-            string lekeres53 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '53%'";
-            string lekeres54 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '54%'";
-            string lekeres55 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '55%'";
-            string lekeres56 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '56%'";
-            string lekeres57 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {schema}.fokonyv WHERE Tszamla LIKE '57%'";
+            int egyenleg51 = AdatbazisMuveletek.Eredmeny.EAIV05();
+            int egyenleg52 = AdatbazisMuveletek.Eredmeny.EAIV06();
+            int egyenleg53 = AdatbazisMuveletek.Eredmeny.EAIV07();
+            int egyenleg54 = AdatbazisMuveletek.Eredmeny.EAV10();
+            int egyenleg55 = AdatbazisMuveletek.Eredmeny.EAV11();
+            int egyenleg56 = AdatbazisMuveletek.Eredmeny.EAV12();
+            int egyenleg57 = AdatbazisMuveletek.Eredmeny.EAVI();
 
-            connection = AdatbazisKapcsolodas.Kapcsolodas();
-            connection.Open();
-
-            try
+            if (egyenleg51 != 0)
             {
-                SqlCommand cmd = new SqlCommand(lekeres51, connection);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Anyagköltség", Convert.ToDouble(reader["tartozik"])));
-                    }
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres52;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Igénybe vett szolgáltatások", Convert.ToDouble(reader["tartozik"])));
-                    }
-                    
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres53;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Egyéb szolgáltatások", Convert.ToDouble(reader["tartozik"])));
-                    }
-                    
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres54;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérköltség", Convert.ToDouble(reader["tartozik"])));
-                    }
-                    
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres55;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Szem. jellegű e. kifiz.", Convert.ToDouble(reader["tartozik"])));
-                    }
-                    
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres56;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérjárulékok", Convert.ToDouble(reader["tartozik"])));
-                    }
-                    
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres57;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("ÉCS", Convert.ToDouble(reader["tartozik"])));
-                    }
-                    
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Hiba az egyenlegek lekérdezésénél! -> " + ex.Message);
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Anyagköltség", egyenleg51));
             }
 
-            connection.Close();
+            if (egyenleg52 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Igénybe vett szolgáltatások", egyenleg52));
+            }
+
+            if (egyenleg53 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Egyéb szolgáltatások", egyenleg53));
+            }
+
+            if (egyenleg54 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérköltség", egyenleg54));
+            }
+
+            if (egyenleg55 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Szem. jellegű e. kifiz.", egyenleg55));
+            }
+
+            if (egyenleg56 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérjárulékok", egyenleg56));
+            }
+
+            if (egyenleg57 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("ÉCS", egyenleg57));
+            }
 
             return egyenlegek;
         }
 
         public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BazisOsszesKoltsegLekerese(string schema)
         {
-            string bazisSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) - 1).ToString());
-
             List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
 
-            string lekeres51 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '51%'";
-            string lekeres52 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '52%'";
-            string lekeres53 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '53%'";
-            string lekeres54 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '54%'";
-            string lekeres55 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '55%'";
-            string lekeres56 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '56%'";
-            string lekeres57 = $"SELECT ISNULL(SUM(Tosszeg), 0) AS 'tartozik' FROM {bazisSchema}.fokonyv WHERE Tszamla LIKE '57%'";
+            int egyenleg51 = AdatbazisMuveletek.Eredmeny.ElozoEAIV05();
+            int egyenleg52 = AdatbazisMuveletek.Eredmeny.ElozoEAIV06();
+            int egyenleg53 = AdatbazisMuveletek.Eredmeny.ElozoEAIV07();
+            int egyenleg54 = AdatbazisMuveletek.Eredmeny.ElozoEAV10();
+            int egyenleg55 = AdatbazisMuveletek.Eredmeny.ElozoEAV11();
+            int egyenleg56 = AdatbazisMuveletek.Eredmeny.ElozoEAV12();
+            int egyenleg57 = AdatbazisMuveletek.Eredmeny.ElozoEAVI();
 
-            connection = AdatbazisKapcsolodas.Kapcsolodas();
-            connection.Open();
-
-            try
+            if (egyenleg51 != 0)
             {
-                SqlCommand cmd = new SqlCommand(lekeres51, connection);
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Anyagköltség", Convert.ToDouble(reader["tartozik"])));
-                    }
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres52;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Igénybe vett szolgáltatások", Convert.ToDouble(reader["tartozik"])));
-                    }
-
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres53;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Egyéb szolgáltatások", Convert.ToDouble(reader["tartozik"])));
-                    }
-
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres54;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérköltség", Convert.ToDouble(reader["tartozik"])));
-                    }
-
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres55;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Szem. jellegű e. kifiz.", Convert.ToDouble(reader["tartozik"])));
-                    }
-
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres56;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérjárulékok", Convert.ToDouble(reader["tartozik"])));
-                    }
-
-                }
-                reader.Close();
-
-                cmd.Parameters.Clear();
-                cmd.CommandText = lekeres57;
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    if ((double)reader["tartozik"] != 0)
-                    {
-                        egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("ÉCS", Convert.ToDouble(reader["tartozik"])));
-                    }
-
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Hiba az egyenlegek lekérdezésénél! -> " + ex.Message);
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Anyagköltség", egyenleg51));
             }
 
-            connection.Close();
+            if (egyenleg52 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Igénybe vett szolgáltatások", egyenleg52));
+            }
+
+            if (egyenleg53 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Egyéb szolgáltatások", egyenleg53));
+            }
+
+            if (egyenleg54 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérköltség", egyenleg54));
+            }
+
+            if (egyenleg55 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Szem. jellegű e. kifiz.", egyenleg55));
+            }
+
+            if (egyenleg56 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bérjárulékok", egyenleg56));
+            }
+
+            if (egyenleg57 != 0)
+            {
+                egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("ÉCS", egyenleg57));
+            }
 
             return egyenlegek;
         }
@@ -1457,6 +1333,58 @@ namespace Zeusz.AdatbazisMuveletek
             arany = (befEszk / osszesEszk) * 100;
 
             return arany;
+        }
+
+        //
+        //Bevétel-költség arány
+        //
+        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BevetelKtsgArany(string schema)
+        {
+            List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
+            double puffer = 0;
+
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            for (int i = 1; i < 12; i++)
+            {
+                string bevetelLekeresT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE Tszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string bevetelLekeresK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE Kszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string koltsegRafordT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE (Tszamla LIKE '5%' OR Tszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string koltsegRafordK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE (Kszamla LIKE '5%' OR Kszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(bevetelLekeresK, connection);
+                    puffer += Convert.ToDouble(cmd.ExecuteScalar());
+                    cmd.Parameters.Clear();
+
+                    cmd.CommandText = bevetelLekeresT;
+                    puffer -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                    egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Bevételek", puffer, i));
+                    puffer = 0;
+
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = koltsegRafordT;
+                    puffer = Convert.ToDouble(cmd.ExecuteScalar());
+
+                    cmd.Parameters.Clear();
+                    cmd.CommandText = koltsegRafordK;
+                    puffer -= Convert.ToDouble(cmd.ExecuteScalar());
+
+                    egyenlegek.Add(new Zeusz.Lekerdezesek.KoltsegEgyenleg("Költésgek, ráfordítások", puffer, i));
+                    puffer = 0;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Hiba a bevétel-költség lekérdezésnél! -> " + ex.Message);
+                } 
+            }
+
+            connection.Close();
+
+            return egyenlegek;
         }
     }
 }

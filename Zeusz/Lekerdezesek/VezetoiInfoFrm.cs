@@ -39,5 +39,11 @@ namespace Zeusz.Lekerdezesek
             EgyeniLekerdezesFrm egyeniLekerdezesFrm = new EgyeniLekerdezesFrm();
             egyeniLekerdezesFrm.ShowDialog();
         }
+
+        private void bevetelKtsgAranyBtn_Click(object sender, EventArgs e)
+        {
+            BevetelKtsgAranyFrm bevetelKtsgAranyFrm = new BevetelKtsgAranyFrm();
+            bevetelKtsgAranyFrm.ShowDialog();
+        }
     }
 }

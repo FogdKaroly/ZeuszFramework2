@@ -29,11 +29,9 @@ namespace Zeusz.Konyveles
         {
             eredmenyDgv.Rows.Clear();
 
-            List<KonyveltCegAdatai> cegadatok = AdatbazisMuveletek.Lekerdezesek.KönyveltcegAdataiLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
-
-            KonyveltCegAdatai ceg = cegadatok.First();
+            bool osszktsg = AdatbazisMuveletek.Lekerdezesek.OsszkoltsegesE(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
             
-            if (ceg.Osszkoltseg == true)
+            if (osszktsg)
             {
                 eredmenyDgv.Rows.Add(new Object[] { "    01.", "    Belföldi értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI01(), "", AdatbazisMuveletek.Eredmeny.EAI01() });
 
@@ -75,7 +73,7 @@ namespace Zeusz.Konyveles
 
                 eredmenyDgv.Rows.Add(new object[] { "A.", "Üzemi (üzleti) tevékenység eredménye", AdatbazisMuveletek.Eredmeny.ElozoEA(), "", AdatbazisMuveletek.Eredmeny.EA() });
             }
-            else if(ceg.Forgalmikoltseg == true)
+            else
             {
                 eredmenyDgv.Rows.Add(new Object[] { "    01.", "    Belföldi értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI01(), "", AdatbazisMuveletek.Eredmeny.EAI01() });
 

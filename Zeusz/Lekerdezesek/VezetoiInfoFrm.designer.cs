@@ -34,7 +34,7 @@
             this.mutatoszamokBtn = new System.Windows.Forms.Button();
             this.egyeniLekerdezes = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.bevetelKtsgAranyBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // kilepesBtn
@@ -100,14 +100,15 @@
             this.button1.Text = "Adók elemzése";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // bevetelKtsgAranyBtn
             // 
-            this.button2.Location = new System.Drawing.Point(12, 330);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(810, 46);
-            this.button2.TabIndex = 13;
-            this.button2.Text = "Bevételek és költségek aránya";
-            this.button2.UseVisualStyleBackColor = true;
+            this.bevetelKtsgAranyBtn.Location = new System.Drawing.Point(12, 330);
+            this.bevetelKtsgAranyBtn.Name = "bevetelKtsgAranyBtn";
+            this.bevetelKtsgAranyBtn.Size = new System.Drawing.Size(810, 46);
+            this.bevetelKtsgAranyBtn.TabIndex = 13;
+            this.bevetelKtsgAranyBtn.Text = "Bevételek és költségek aránya";
+            this.bevetelKtsgAranyBtn.UseVisualStyleBackColor = true;
+            this.bevetelKtsgAranyBtn.Click += new System.EventHandler(this.bevetelKtsgAranyBtn_Click);
             // 
             // VezetoiInfoFrm
             // 
@@ -115,7 +116,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.bevetelKtsgAranyBtn);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.egyeniLekerdezes);
             this.Controls.Add(this.mutatoszamokBtn);
@@ -139,6 +140,6 @@
         private System.Windows.Forms.Button mutatoszamokBtn;
         private System.Windows.Forms.Button egyeniLekerdezes;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button bevetelKtsgAranyBtn;
     }
 }
