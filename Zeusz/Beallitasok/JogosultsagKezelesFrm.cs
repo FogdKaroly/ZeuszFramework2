@@ -40,6 +40,7 @@ namespace Zeusz
         private void kilepesBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+            Form1.megnyitasFoablakban(new KezdokepernyoFrm());
         }
 
         private void rogzitesBtn_Click(object sender, EventArgs e)

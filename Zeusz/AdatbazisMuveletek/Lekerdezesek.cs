@@ -928,7 +928,7 @@ namespace Zeusz.AdatbazisMuveletek
             connection = AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            int egyenleg = 0;
+            int egyenleg;
             
             string lekeresT = $"SELECT SUM(ISNULL(Tosszeg, 0)) FROM {schema}.fokonyv WHERE Tszamla = '493'";
             string lekeresK = $"SELECT SUM(ISNULL(Kosszeg, 0)) FROM {schema}.fokonyv WHERE Kszamla = '493'";
@@ -954,7 +954,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static bool LezartE(string schema)
         {
-            bool lezart = false;
+            bool lezart;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1007,7 +1007,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static bool OsszkoltsegesE(string schema)
         {
-            bool osszktsg = false;
+            bool osszktsg;
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
@@ -1137,7 +1137,7 @@ namespace Zeusz.AdatbazisMuveletek
         //
         public static double AdossagallomanyAranyaLekerdezes(string schema)
         {
-            double arany = 0;
+            double arany;
             double adossagallomany = AdatbazisMuveletek.Merleg.MFI() + AdatbazisMuveletek.Merleg.MFII();
             double sajatToke = AdatbazisMuveletek.Merleg.MD();
 

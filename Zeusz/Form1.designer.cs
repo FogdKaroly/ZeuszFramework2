@@ -62,7 +62,7 @@ namespace Zeusz
             this.ujVevoKonyveleseBtn = new System.Windows.Forms.Button();
             this.konyvelesBtn = new System.Windows.Forms.Button();
             this.logoPanel = new System.Windows.Forms.Panel();
-            this.foAblakPanel = new System.Windows.Forms.Panel();
+            foAblakPanel = new System.Windows.Forms.Panel();
             this.oldalMenuPanel.SuspendLayout();
             this.sugoAlmenuPanel.SuspendLayout();
             this.beallitasokAlmenuPanel.SuspendLayout();
@@ -598,19 +598,19 @@ namespace Zeusz
             // 
             // foAblakPanel
             // 
-            this.foAblakPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
-            this.foAblakPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.foAblakPanel.Location = new System.Drawing.Point(300, 0);
-            this.foAblakPanel.Name = "foAblakPanel";
-            this.foAblakPanel.Size = new System.Drawing.Size(834, 661);
-            this.foAblakPanel.TabIndex = 1;
+            foAblakPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
+            foAblakPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            foAblakPanel.Location = new System.Drawing.Point(300, 0);
+            foAblakPanel.Name = "foAblakPanel";
+            foAblakPanel.Size = new System.Drawing.Size(834, 661);
+            foAblakPanel.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 661);
-            this.Controls.Add(this.foAblakPanel);
+            this.Controls.Add(foAblakPanel);
             this.Controls.Add(this.oldalMenuPanel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -657,7 +657,7 @@ namespace Zeusz
         private System.Windows.Forms.Button ujVevoKonyveleseBtn;
         private System.Windows.Forms.Button konyvelesBtn;
         private System.Windows.Forms.Panel logoPanel;
-        private System.Windows.Forms.Panel foAblakPanel;
+        private static System.Windows.Forms.Panel foAblakPanel;
         private System.Windows.Forms.Button partnerKarbantartasBtn;
         private System.Windows.Forms.Button szamlatukorKarbantartasBtn;
         private System.Windows.Forms.Button ujVegyesKonyveleseBtn;

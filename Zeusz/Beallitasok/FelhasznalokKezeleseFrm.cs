@@ -29,6 +29,7 @@ namespace Zeusz
         private void kilepesBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+            Form1.megnyitasFoablakban(new KezdokepernyoFrm());
         }
 
         private void felhasznalokCbx_SelectedIndexChanged(object sender, EventArgs e)

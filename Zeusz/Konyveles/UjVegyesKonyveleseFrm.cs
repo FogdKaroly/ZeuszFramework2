@@ -24,6 +24,7 @@ namespace Zeusz.Konyveles
         private void kilepesBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+            Form1.megnyitasFoablakban(new KezdokepernyoFrm());
         }
 
         private void tSzamlaTxb_Leave(object sender, EventArgs e)

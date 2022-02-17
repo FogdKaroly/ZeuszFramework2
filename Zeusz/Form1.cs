@@ -353,8 +353,8 @@ namespace Zeusz
             AlmenuElrejtes();
         }
 
-        private Form aktivForm = null;
-        public void megnyitasFoablakban(Form megnyitandoForm)
+        private static Form aktivForm = null;
+        public static void megnyitasFoablakban(Form megnyitandoForm)
         {
             if (aktivForm != null)
             {

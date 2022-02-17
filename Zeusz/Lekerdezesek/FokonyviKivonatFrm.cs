@@ -25,6 +25,7 @@ namespace Zeusz.Lekerdezesek
         private void kilepesBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+            Form1.megnyitasFoablakban(new KezdokepernyoFrm());
         }
 
         private void lekerdezesBtn_Click(object sender, EventArgs e)
