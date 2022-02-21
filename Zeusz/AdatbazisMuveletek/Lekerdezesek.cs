@@ -1016,8 +1016,8 @@ namespace Zeusz.AdatbazisMuveletek
             try
             {
                 SqlCommand cmd = new SqlCommand(lekeres, connection);
-                SqlDataReader reader = cmd.ExecuteReader();
-                osszktsg = Convert.ToBoolean(reader["osszkoltseg"]);
+                
+                osszktsg = Convert.ToBoolean(cmd.ExecuteScalar());
             }
             catch (Exception ex)
             {

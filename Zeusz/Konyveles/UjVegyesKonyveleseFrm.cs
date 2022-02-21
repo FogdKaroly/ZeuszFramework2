@@ -104,7 +104,7 @@ namespace Zeusz.Konyveles
                 Convert.ToDouble(tOsszegTxb.Text),
                 Convert.ToDouble(kOsszegTxb.Text),
                 gazdasagiEsemenyTxb.Text,
-                Convert.ToDateTime(DateTime.Now.ToShortDateString()),
+                esemenyDatumaDtp.Value,
                 DateTime.Now,
                 BejelentkezesFrm.Felhasznalo.Felhasznalonev
                 );

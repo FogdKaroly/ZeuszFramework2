@@ -45,6 +45,8 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.rogzitesBtn = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.esemenyDatumaDtp = new System.Windows.Forms.DateTimePicker();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -240,12 +242,32 @@
             this.rogzitesBtn.UseVisualStyleBackColor = false;
             this.rogzitesBtn.Click += new System.EventHandler(this.rogzitesBtn_Click);
             // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 515);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(212, 20);
+            this.label2.TabIndex = 44;
+            this.label2.Text = "Gazdasági esemény dátuma";
+            // 
+            // esemenyDatumaDtp
+            // 
+            this.esemenyDatumaDtp.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.esemenyDatumaDtp.Location = new System.Drawing.Point(242, 510);
+            this.esemenyDatumaDtp.Name = "esemenyDatumaDtp";
+            this.esemenyDatumaDtp.Size = new System.Drawing.Size(142, 26);
+            this.esemenyDatumaDtp.TabIndex = 45;
+            // 
             // UjVegyesKonyveleseFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.esemenyDatumaDtp);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.rogzitesBtn);
             this.Controls.Add(this.gazdasagiEsemenyTxb);
             this.Controls.Add(this.groupBox2);
@@ -285,5 +307,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button rogzitesBtn;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DateTimePicker esemenyDatumaDtp;
     }
 }

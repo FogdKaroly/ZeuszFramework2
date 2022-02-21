@@ -133,6 +133,18 @@ namespace Zeusz.Konyveles
             AdatbazisMuveletek.Insertek.UjVevoTetelFelvitele(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, konyvelesiTetel);
 
             MessageBox.Show("A könyvelés sikeres!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            partnerCbx.SelectedIndex = 0;
+            szamlaszamTxb.Text = "";
+            tSzamlaTxb.Text = "";
+            tSzamlaCbx.SelectedIndex = 0;
+            tOsszegTxb.Text = "";
+            kSzamlaTxb.Text = "";
+            kSzamlaCbx.SelectedIndex = 0;
+            kOsszegTxb.Text = "";
+            gazdasagiEsemenyTxb.Text = "";
+            afakulcsCbx.SelectedIndex = 0;
+            fizetesiModCbx.SelectedIndex = 0;
         }
 
         private void tSzamlaTxb_KeyPress(object sender, KeyPressEventArgs e)

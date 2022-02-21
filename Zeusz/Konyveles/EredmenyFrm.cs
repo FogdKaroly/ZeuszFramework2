@@ -34,110 +34,110 @@ namespace Zeusz.Konyveles
             
             if (osszktsg)
             {
-                eredmenyDgv.Rows.Add(new Object[] { "    01.", "    Belföldi értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI01(), "", AdatbazisMuveletek.Eredmeny.EAI01() });
+                eredmenyDgv.Rows.Add(new Object[] { "    01.", "    Belföldi értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAI01() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAI01() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    02.", "    Export értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI02(), "", AdatbazisMuveletek.Eredmeny.EAI02() });
+                eredmenyDgv.Rows.Add(new Object[] { "    02.", "    Export értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAI02() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAI02() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  I.", "  Értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI(), "", AdatbazisMuveletek.Eredmeny.EAI() });
+                eredmenyDgv.Rows.Add(new object[] { "  I.", "  Értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAI() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAI() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    03.", "    Saját termelésű készletek állományváltozása", AdatbazisMuveletek.Eredmeny.ElozoEAII03(), "", AdatbazisMuveletek.Eredmeny.EAII03() });
+                eredmenyDgv.Rows.Add(new Object[] { "    03.", "    Saját termelésű készletek állományváltozása", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAII03() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAII03() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    04.", "    Saját előállítású eszközök aktivált értéke", AdatbazisMuveletek.Eredmeny.ElozoEAII04(), "", AdatbazisMuveletek.Eredmeny.EAII04() });
+                eredmenyDgv.Rows.Add(new Object[] { "    04.", "    Saját előállítású eszközök aktivált értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAII04() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAII04() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  II.", "  Aktivált saját teljesítmények értéke", AdatbazisMuveletek.Eredmeny.ElozoEAII(), "", AdatbazisMuveletek.Eredmeny.EAII() });
+                eredmenyDgv.Rows.Add(new object[] { "  II.", "  Aktivált saját teljesítmények értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAII() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAII() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  III.", "  Egyéb bevételek", AdatbazisMuveletek.Eredmeny.ElozoEAIII(), "", AdatbazisMuveletek.Eredmeny.EAIII() });
+                eredmenyDgv.Rows.Add(new object[] { "  III.", "  Egyéb bevételek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIII() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIII() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    05.", "    Anyagköltség", AdatbazisMuveletek.Eredmeny.ElozoEAIV05(), "", AdatbazisMuveletek.Eredmeny.EAIV05() });
+                eredmenyDgv.Rows.Add(new Object[] { "    05.", "    Anyagköltség", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIV05() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIV05() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    06.", "    Igénybe vett szolgáltatások értéke", AdatbazisMuveletek.Eredmeny.ElozoEAIV06(), "", AdatbazisMuveletek.Eredmeny.EAIV06() });
+                eredmenyDgv.Rows.Add(new Object[] { "    06.", "    Igénybe vett szolgáltatások értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIV06() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIV06() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    07.", "    Egyéb szolgáltatások értéke", AdatbazisMuveletek.Eredmeny.ElozoEAIV07(), "", AdatbazisMuveletek.Eredmeny.EAIV07() });
+                eredmenyDgv.Rows.Add(new Object[] { "    07.", "    Egyéb szolgáltatások értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIV07() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIV07() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    08.", "    Eladott áruk beszerzési értéke", AdatbazisMuveletek.Eredmeny.ElozoEAIV08(), "", AdatbazisMuveletek.Eredmeny.EAIV08() });
+                eredmenyDgv.Rows.Add(new Object[] { "    08.", "    Eladott áruk beszerzési értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIV08() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIV08() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    09.", "    Eladott (közvetített) szolgáltatások értéke", AdatbazisMuveletek.Eredmeny.ElozoEAIV09(), "", AdatbazisMuveletek.Eredmeny.EAIV09() });
+                eredmenyDgv.Rows.Add(new Object[] { "    09.", "    Eladott (közvetített) szolgáltatások értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIV09() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIV09() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  IV.", "  Anyagjellegű ráfordítások", AdatbazisMuveletek.Eredmeny.ElozoEAIV(), "", AdatbazisMuveletek.Eredmeny.EAIV() });
+                eredmenyDgv.Rows.Add(new object[] { "  IV.", "  Anyagjellegű ráfordítások", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAIV() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAIV() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    10.", "    Bérköltség", AdatbazisMuveletek.Eredmeny.ElozoEAV10(), "", AdatbazisMuveletek.Eredmeny.EAV10() });
+                eredmenyDgv.Rows.Add(new Object[] { "    10.", "    Bérköltség", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAV10() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAV10() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    11.", "    Személyi jellegű egyéb kifizetések", AdatbazisMuveletek.Eredmeny.ElozoEAV11(), "", AdatbazisMuveletek.Eredmeny.EAV11() });
+                eredmenyDgv.Rows.Add(new Object[] { "    11.", "    Személyi jellegű egyéb kifizetések", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAV11() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAV11() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    12.", "    Bérjárulékok", AdatbazisMuveletek.Eredmeny.ElozoEAV12(), "", AdatbazisMuveletek.Eredmeny.EAV12() });
+                eredmenyDgv.Rows.Add(new Object[] { "    12.", "    Bérjárulékok", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAV12() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAV12() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  V.", "  Személyi jellegű ráfordítások", AdatbazisMuveletek.Eredmeny.ElozoEAV(), "", AdatbazisMuveletek.Eredmeny.EAV() });
+                eredmenyDgv.Rows.Add(new object[] { "  V.", "  Személyi jellegű ráfordítások", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAV() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAV() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  VI.", "  Értékcsökkenési leírás", AdatbazisMuveletek.Eredmeny.ElozoEAVI(), "", AdatbazisMuveletek.Eredmeny.EAVI() });
+                eredmenyDgv.Rows.Add(new object[] { "  VI.", "  Értékcsökkenési leírás", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAVI() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAVI() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  VII.", "  Egyéb ráfordítások", AdatbazisMuveletek.Eredmeny.ElozoEAVII(), "", AdatbazisMuveletek.Eredmeny.EAVII() });
+                eredmenyDgv.Rows.Add(new object[] { "  VII.", "  Egyéb ráfordítások", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAVII() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAVII() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "A.", "Üzemi (üzleti) tevékenység eredménye", AdatbazisMuveletek.Eredmeny.ElozoEA(), "", AdatbazisMuveletek.Eredmeny.EA() });
+                eredmenyDgv.Rows.Add(new object[] { "A.", "Üzemi (üzleti) tevékenység eredménye", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEA() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EA() / 1000f) });
             }
             else
             {
-                eredmenyDgv.Rows.Add(new Object[] { "    01.", "    Belföldi értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI01(), "", AdatbazisMuveletek.Eredmeny.EAI01() });
+                eredmenyDgv.Rows.Add(new Object[] { "    01.", "    Belföldi értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAI01() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAI01() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    02.", "    Export értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI02(), "", AdatbazisMuveletek.Eredmeny.EAI02() });
+                eredmenyDgv.Rows.Add(new Object[] { "    02.", "    Export értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAI02() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAI02() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  I.", "  Értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEAI(), "", AdatbazisMuveletek.Eredmeny.EAI() });
+                eredmenyDgv.Rows.Add(new object[] { "  I.", "  Értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEAI() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EAI() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    03.", "    Értékesítés elszámolt közvetlen önköltsége", AdatbazisMuveletek.Eredmeny.ElozoEFAII03(), "", AdatbazisMuveletek.Eredmeny.EFAII03() });
+                eredmenyDgv.Rows.Add(new Object[] { "    03.", "    Értékesítés elszámolt közvetlen önköltsége", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAII03() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAII03() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    04.", "    Eladott áruk beszerzési értéke", AdatbazisMuveletek.Eredmeny.ElozoEFAII04(), "", AdatbazisMuveletek.Eredmeny.EFAII04() });
+                eredmenyDgv.Rows.Add(new Object[] { "    04.", "    Eladott áruk beszerzési értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAII04() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAII04() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    05.", "    Eladott (közvetített) szolgáltatások értéke", AdatbazisMuveletek.Eredmeny.ElozoEFAII05(), "", AdatbazisMuveletek.Eredmeny.EFAII05() });
+                eredmenyDgv.Rows.Add(new Object[] { "    05.", "    Eladott (közvetített) szolgáltatások értéke", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAII05() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAII05() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  II.", "  Értékesítés nettó árbevétele", AdatbazisMuveletek.Eredmeny.ElozoEFAII(), "", AdatbazisMuveletek.Eredmeny.EFAII() });
+                eredmenyDgv.Rows.Add(new object[] { "  II.", "  Értékesítés nettó árbevétele", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAII() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAII() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  III.", "  Értékesítés bruttó eredménye", AdatbazisMuveletek.Eredmeny.ElozoEFAIII(), "", AdatbazisMuveletek.Eredmeny.EFAIII() });
+                eredmenyDgv.Rows.Add(new object[] { "  III.", "  Értékesítés bruttó eredménye", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAIII() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAIII() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    06.", "    Értékesítési, foorgalmazási költségek", AdatbazisMuveletek.Eredmeny.ElozoEFAIV06(), "", AdatbazisMuveletek.Eredmeny.EFAIV06() });
+                eredmenyDgv.Rows.Add(new Object[] { "    06.", "    Értékesítési, foorgalmazási költségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAIV06() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAIV06() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    07.", "    Igazgatási költségek", AdatbazisMuveletek.Eredmeny.ElozoEFAIV07(), "", AdatbazisMuveletek.Eredmeny.EFAIV07() });
+                eredmenyDgv.Rows.Add(new Object[] { "    07.", "    Igazgatási költségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAIV07() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAIV07() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new Object[] { "    08.", "    Egyéb általános költségek", AdatbazisMuveletek.Eredmeny.ElozoEFAIV08(), "", AdatbazisMuveletek.Eredmeny.EFAIV08() });
+                eredmenyDgv.Rows.Add(new Object[] { "    08.", "    Egyéb általános költségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAIV08() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAIV08() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  IV.", "  Értékesítés közvetett költségei", AdatbazisMuveletek.Eredmeny.ElozoEFAIV(), "", AdatbazisMuveletek.Eredmeny.EFAIV() });
+                eredmenyDgv.Rows.Add(new object[] { "  IV.", "  Értékesítés közvetett költségei", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAIV() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAIV() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  V.", "  Egyéb bevételek", AdatbazisMuveletek.Eredmeny.ElozoEFAV(), "", AdatbazisMuveletek.Eredmeny.EFAV() });
+                eredmenyDgv.Rows.Add(new object[] { "  V.", "  Egyéb bevételek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAV() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAV() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "  VI.", "  Egyéb ráfordítások", AdatbazisMuveletek.Eredmeny.ElozoEFAVI(), "", AdatbazisMuveletek.Eredmeny.EFAVI() });
+                eredmenyDgv.Rows.Add(new object[] { "  VI.", "  Egyéb ráfordítások", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFAVI() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFAVI() / 1000f) });
 
-                eredmenyDgv.Rows.Add(new object[] { "A.", "Üzemi (üzleti) tevékenység eredménye", AdatbazisMuveletek.Eredmeny.ElozoEFA(), "", AdatbazisMuveletek.Eredmeny.EFA() });
+                eredmenyDgv.Rows.Add(new object[] { "A.", "Üzemi (üzleti) tevékenység eredménye", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEFA() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EFA() / 1000f) });
             }
 
-            eredmenyDgv.Rows.Add(new Object[] { "    13.", "    Kapott (járó) osztalék és részesedés", AdatbazisMuveletek.Eredmeny.ElozoEBVIII13(), "", AdatbazisMuveletek.Eredmeny.EBVIII13() });
+            eredmenyDgv.Rows.Add(new Object[] { "    13.", "    Kapott (járó) osztalék és részesedés", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBVIII13() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBVIII13() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    14.", "    Részesedésekből származó bevételek, árfolyamnyereségek", AdatbazisMuveletek.Eredmeny.ElozoEBVIII14(), "", AdatbazisMuveletek.Eredmeny.EBVIII14() });
+            eredmenyDgv.Rows.Add(new Object[] { "    14.", "    Részesedésekből származó bevételek, árfolyamnyereségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBVIII14() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBVIII14() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    15.", "    Befektetett pénzügyi eszközökből (értékpapírokból, kölcsönökből) származó bevételek, árfolyamnyereségek", AdatbazisMuveletek.Eredmeny.ElozoEBVIII15(), "", AdatbazisMuveletek.Eredmeny.EBVIII15() });
+            eredmenyDgv.Rows.Add(new Object[] { "    15.", "    Befektetett pénzügyi eszközökből (értékpapírokból, kölcsönökből) származó bevételek, árfolyamnyereségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBVIII15() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBVIII15() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    16.", "    Egyéb kapott (járó) kamatok és kamatjellegű bevételek", AdatbazisMuveletek.Eredmeny.ElozoEBVIII16(), "", AdatbazisMuveletek.Eredmeny.EBVIII16() });
+            eredmenyDgv.Rows.Add(new Object[] { "    16.", "    Egyéb kapott (járó) kamatok és kamatjellegű bevételek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBVIII16() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBVIII16() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    17.", "    Pénzügyi műveletek egyéb bevételei", AdatbazisMuveletek.Eredmeny.ElozoEBVIII17(), "", AdatbazisMuveletek.Eredmeny.EBVIII17() });
+            eredmenyDgv.Rows.Add(new Object[] { "    17.", "    Pénzügyi műveletek egyéb bevételei", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBVIII17() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBVIII17() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new object[] { "  VIII.", "  Pénzügyi műveletek bevételei", AdatbazisMuveletek.Eredmeny.ElozoEBVIII(), "", AdatbazisMuveletek.Eredmeny.EBVIII() });
+            eredmenyDgv.Rows.Add(new object[] { "  VIII.", "  Pénzügyi műveletek bevételei", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBVIII() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBVIII() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    18.", "    Részesedésekből származó ráfordítások, árfolyamveszteségek", AdatbazisMuveletek.Eredmeny.ElozoEBIX18(), "", AdatbazisMuveletek.Eredmeny.EBIX18() });
+            eredmenyDgv.Rows.Add(new Object[] { "    18.", "    Részesedésekből származó ráfordítások, árfolyamveszteségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBIX18() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBIX18() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    19.", "    Befektetett pénzügyi eszközökből (értékpapírokból, kölcsönökből) származó ráfordítások, árfolyamveszteségek", AdatbazisMuveletek.Eredmeny.ElozoEBIX19(), "", AdatbazisMuveletek.Eredmeny.EBIX19() });
+            eredmenyDgv.Rows.Add(new Object[] { "    19.", "    Befektetett pénzügyi eszközökből (értékpapírokból, kölcsönökből) származó ráfordítások, árfolyamveszteségek", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBIX19() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBIX19() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    20.", "    Fizetendő (fizetett) kamatok és kamatjellegű ráfordítások", AdatbazisMuveletek.Eredmeny.ElozoEBIX20(), "", AdatbazisMuveletek.Eredmeny.EBIX20() });
+            eredmenyDgv.Rows.Add(new Object[] { "    20.", "    Fizetendő (fizetett) kamatok és kamatjellegű ráfordítások", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBIX20() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBIX20() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    21.", "    Részesedések, értékpapírok, tartósan adott kölcsönök, bankbetétek értékvesztése", AdatbazisMuveletek.Eredmeny.ElozoEBIX21(), "", AdatbazisMuveletek.Eredmeny.EBIX21() });
+            eredmenyDgv.Rows.Add(new Object[] { "    21.", "    Részesedések, értékpapírok, tartósan adott kölcsönök, bankbetétek értékvesztése", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBIX21() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBIX21() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new Object[] { "    22.", "    Pénzügyi műveletek egyéb ráfordításai", AdatbazisMuveletek.Eredmeny.ElozoEBIX22(), "", AdatbazisMuveletek.Eredmeny.EBIX22() });
+            eredmenyDgv.Rows.Add(new Object[] { "    22.", "    Pénzügyi műveletek egyéb ráfordításai", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBIX22() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBIX22() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new object[] { "  IX.", "  Pénzügyi műveletek ráfordításai", AdatbazisMuveletek.Eredmeny.ElozoEBIX(), "", AdatbazisMuveletek.Eredmeny.EBIX() });
+            eredmenyDgv.Rows.Add(new object[] { "  IX.", "  Pénzügyi műveletek ráfordításai", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEBIX() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EBIX() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new object[] { "B.", "Pénzügyi műveletek erredménye", AdatbazisMuveletek.Eredmeny.ElozoEB(), "", AdatbazisMuveletek.Eredmeny.EB() });
+            eredmenyDgv.Rows.Add(new object[] { "B.", "Pénzügyi műveletek erredménye", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEB() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EB() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new object[] { "C.", "Adózás előtti eredmény", AdatbazisMuveletek.Eredmeny.ElozoEC(), "", AdatbazisMuveletek.Eredmeny.EC() });
+            eredmenyDgv.Rows.Add(new object[] { "C.", "Adózás előtti eredmény", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEC() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EC() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new object[] { "  X.", "  Adófizetési kötelezettség", AdatbazisMuveletek.Eredmeny.ElozoEDX(), "", AdatbazisMuveletek.Eredmeny.EDX() });
+            eredmenyDgv.Rows.Add(new object[] { "  X.", "  Adófizetési kötelezettség", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoEDX() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.EDX() / 1000f) });
 
-            eredmenyDgv.Rows.Add(new object[] { "D.", "Adózott eredmény", AdatbazisMuveletek.Eredmeny.ElozoED(), "", AdatbazisMuveletek.Eredmeny.ED() });
+            eredmenyDgv.Rows.Add(new object[] { "D.", "Adózott eredmény", Math.Round(AdatbazisMuveletek.Eredmeny.ElozoED() / 1000f), "", Math.Round(AdatbazisMuveletek.Eredmeny.ED() / 1000f) });
 
         }
 
