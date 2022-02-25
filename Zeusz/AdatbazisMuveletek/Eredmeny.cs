@@ -14,16 +14,16 @@ namespace Zeusz.AdatbazisMuveletek
         static string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) - 1).ToString());
 
         // Összköltség típus
-        public static int EAI01()
+        public static int EAI01(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01')";
 
             try
             {
@@ -58,16 +58,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAI01()
+        public static int ElozoEAI01(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
             try
             {
@@ -102,16 +102,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAI02()
+        public static int EAI02(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI02') AND (({schema}.fokonyv.Tszamla <> '493') OR ({schema}.fokonyv.Kszamla <> '493'))";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI02') AND (({schema}.fokonyv.Tszamla <> '493') OR ({schema}.fokonyv.Kszamla <> '493'))";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI02') AND (({schema}.fokonyv.Tszamla <> '493') OR ({schema}.fokonyv.Kszamla <> '493'))";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI02') AND (({schema}.fokonyv.Tszamla <> '493') OR ({schema}.fokonyv.Kszamla <> '493'))";
 
             try
             {
@@ -146,16 +146,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAI02()
+        public static int ElozoEAI02(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
             try
             {
@@ -190,16 +190,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAI()
+        public static int EAI(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
 
             try
             {
@@ -234,16 +234,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAI()
+        public static int ElozoEAI(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
 
             try
             {
@@ -278,16 +278,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAII03()
+        public static int EAII03(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03')";
 
             try
             {
@@ -322,16 +322,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAII03()
+        public static int ElozoEAII03(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
 
             try
             {
@@ -366,16 +366,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAII04()
+        public static int EAII04(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII04')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII04')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII04')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII04')";
 
             try
             {
@@ -410,16 +410,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAII04()
+        public static int ElozoEAII04(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
 
             try
             {
@@ -454,16 +454,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAII()
+        public static int EAII(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
 
             try
             {
@@ -498,16 +498,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAII()
+        public static int ElozoEAII(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
 
             try
             {
@@ -542,16 +542,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIII()
+        public static int EAIII(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIII')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIII')";
 
             try
             {
@@ -586,16 +586,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIII()
+        public static int ElozoEAIII(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
 
             try
             {
@@ -630,16 +630,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIV05()
+        public static int EAIV05(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05')";
 
             try
             {
@@ -674,16 +674,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIV05()
+        public static int ElozoEAIV05(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
 
             try
             {
@@ -718,16 +718,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIV06()
+        public static int EAIV06(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV06')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV06')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV06')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV06')";
 
             try
             {
@@ -762,16 +762,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIV06()
+        public static int ElozoEAIV06(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
 
             try
             {
@@ -806,16 +806,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIV07()
+        public static int EAIV07(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV07')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV07')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV07')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV07')";
 
             try
             {
@@ -850,16 +850,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIV07()
+        public static int ElozoEAIV07(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
 
             try
             {
@@ -894,16 +894,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIV08()
+        public static int EAIV08(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV08')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV08')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV08')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV08')";
 
             try
             {
@@ -938,16 +938,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIV08()
+        public static int ElozoEAIV08(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
 
             try
             {
@@ -982,16 +982,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIV09()
+        public static int EAIV09(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV09')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV09')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV09')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV09')";
 
             try
             {
@@ -1026,16 +1026,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIV09()
+        public static int ElozoEAIV09(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
 
             try
             {
@@ -1070,16 +1070,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAIV()
+        public static int EAIV(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
 
             try
             {
@@ -1114,16 +1114,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAIV()
+        public static int ElozoEAIV(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
 
             try
             {
@@ -1158,16 +1158,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAV10()
+        public static int EAV10(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10')";
 
             try
             {
@@ -1202,16 +1202,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAV10()
+        public static int ElozoEAV10(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
 
             try
             {
@@ -1246,16 +1246,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAV11()
+        public static int EAV11(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV11')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV11')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV11')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV11')";
 
             try
             {
@@ -1290,16 +1290,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAV11()
+        public static int ElozoEAV11(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
 
             try
             {
@@ -1334,16 +1334,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAV12()
+        public static int EAV12(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV12')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV12')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV12')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV12')";
 
             try
             {
@@ -1378,16 +1378,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAV12()
+        public static int ElozoEAV12(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
 
             try
             {
@@ -1422,16 +1422,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAV()
+        public static int EAV(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
 
             try
             {
@@ -1466,16 +1466,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAV()
+        public static int ElozoEAV(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
 
             try
             {
@@ -1510,16 +1510,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAVI()
+        public static int EAVI(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVI')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVI')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVI')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVI')";
 
             try
             {
@@ -1554,16 +1554,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAVI()
+        public static int ElozoEAVI(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
 
             try
             {
@@ -1598,16 +1598,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EAVII()
+        public static int EAVII(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVII')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAVII')";
 
             try
             {
@@ -1642,16 +1642,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEAVII()
+        public static int ElozoEAVII(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
             try
             {
@@ -1686,17 +1686,17 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EA()
+        public static int EA(int ev)
         {
-            int egyenleg = EAI() + EAII() + EAIII() -EAIV() - EAV() - EAVI() - EAVII();
+            int egyenleg = EAI(ev) + EAII(ev) + EAIII(ev) -EAIV(ev) - EAV(ev) - EAVI(ev) - EAVII(ev);
 
             /*
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02', 'EAII03', 'EAII04', 'EAIII', 'EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09', 'EAV10', 'EAV11', 'EAV12', 'EAVI', 'EAVII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02', 'EAII03', 'EAII04', 'EAIII', 'EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09', 'EAV10', 'EAV11', 'EAV12', 'EAVI', 'EAVII')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02', 'EAII03', 'EAII04', 'EAIII', 'EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09', 'EAV10', 'EAV11', 'EAV12', 'EAVI', 'EAVII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EAI01', 'EAI02', 'EAII03', 'EAII04', 'EAIII', 'EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09', 'EAV10', 'EAV11', 'EAV12', 'EAVI', 'EAVII')";
 
             try
             {
@@ -1731,16 +1731,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEA()
+        public static int ElozoEA(int ev)
         {
-            int egyenleg = ElozoEAI() + ElozoEAII() + ElozoEAIII() - ElozoEAIV() - ElozoEAV() - ElozoEAVI() - ElozoEAVII();
+            int egyenleg = ElozoEAI(ev) + ElozoEAII(ev) + ElozoEAIII(ev) - ElozoEAIV(ev) - ElozoEAV(ev) - ElozoEAVI(ev) - ElozoEAVII(ev);
             /*
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
             try
             {
@@ -1776,16 +1776,16 @@ namespace Zeusz.AdatbazisMuveletek
         }
 
         // Forgalmi költség típus
-        public static int EFAII03()
+        public static int EFAII03(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII03')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII03')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII03')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII03')";
 
             try
             {
@@ -1820,16 +1820,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAII03()
+        public static int ElozoEFAII03(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
 
             try
             {
@@ -1864,16 +1864,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAII04()
+        public static int EFAII04(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII04')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII04')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII04')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII04')";
 
             try
             {
@@ -1908,16 +1908,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAII04()
+        public static int ElozoEFAII04(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
 
             try
             {
@@ -1952,16 +1952,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAII05()
+        public static int EFAII05(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII05')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII05')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII05')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAII05')";
 
             try
             {
@@ -1996,16 +1996,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAII05()
+        public static int ElozoEFAII05(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
 
             try
             {
@@ -2040,44 +2040,44 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAII()
+        public static int EFAII(int ev)
         {
-            int egyenleg = EFAII03() + EFAII04() + EFAII05();
+            int egyenleg = EFAII03(ev) + EFAII04(ev) + EFAII05(ev);
             
             return egyenleg;
         }
 
-        public static int ElozoEFAII()
+        public static int ElozoEFAII(int ev)
         {
-            int egyenleg = ElozoEFAII03() + ElozoEFAII04() + ElozoEFAII05();
+            int egyenleg = ElozoEFAII03(ev) + ElozoEFAII04(ev) + ElozoEFAII05(ev);
             
             return egyenleg;
         }
 
-        public static int EFAIII()
+        public static int EFAIII(int ev)
         {
-            int egyenleg = EAI() + EFAII();
+            int egyenleg = EAI(ev) + EFAII(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEFAIII()
+        public static int ElozoEFAIII(int ev)
         {
-            int egyenleg = ElozoEAI() + ElozoEFAII();
+            int egyenleg = ElozoEAI(ev) + ElozoEFAII(ev);
 
             return egyenleg;
         }
 
-        public static int EFAIV06()
+        public static int EFAIV06(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV06')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV06')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV06')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV06')";
 
             try
             {
@@ -2112,16 +2112,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAIV06()
+        public static int ElozoEFAIV06(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
 
             try
             {
@@ -2156,16 +2156,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAIV07()
+        public static int EFAIV07(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV07')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV07')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV07')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV07')";
 
             try
             {
@@ -2200,16 +2200,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAIV07()
+        public static int ElozoEFAIV07(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
 
             try
             {
@@ -2244,16 +2244,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAIV08()
+        public static int EFAIV08(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV08')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV08')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV08')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAIV08')";
 
             try
             {
@@ -2288,16 +2288,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAIV08()
+        public static int ElozoEFAIV08(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
 
             try
             {
@@ -2332,30 +2332,30 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAIV()
+        public static int EFAIV(int ev)
         {
-            int egyenleg = EAIV06() + EFAIV07() + EFAIV08();
+            int egyenleg = EAIV06(ev) + EFAIV07(ev) + EFAIV08(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEFAIV()
+        public static int ElozoEFAIV(int ev)
         {
-            int egyenleg = ElozoEAIV06() + ElozoEFAIV07() + ElozoEFAIV08();
+            int egyenleg = ElozoEAIV06(ev) + ElozoEFAIV07(ev) + ElozoEFAIV08(ev);
 
             return egyenleg;
         }
 
-        public static int EFAV()
+        public static int EFAV(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAV')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAV')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAV')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAV')";
 
             try
             {
@@ -2390,16 +2390,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAV()
+        public static int ElozoEFAV(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
 
             try
             {
@@ -2434,16 +2434,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFAVI()
+        public static int EFAVI(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAVI')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAVI')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAVI')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EFAVI')";
 
             try
             {
@@ -2478,16 +2478,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEFAVI()
+        public static int ElozoEFAVI(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
 
             try
             {
@@ -2522,31 +2522,31 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EFA()
+        public static int EFA(int ev)
         {
-            int egyenleg = EAI() + EAII() + EAIII() - EAIV() + EAV() - EAVI();
+            int egyenleg = EAI(ev) + EAII(ev) + EAIII(ev) - EAIV(ev) + EAV(ev) - EAVI(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEFA()
+        public static int ElozoEFA(int ev)
         {
-            int egyenleg = ElozoEAI() + ElozoEAII() + ElozoEAIII() - ElozoEAIV() + ElozoEAV() - ElozoEAVI();
+            int egyenleg = ElozoEAI(ev) + ElozoEAII(ev) + ElozoEAIII(ev) - ElozoEAIV(ev) + ElozoEAV(ev) - ElozoEAVI(ev);
 
             return egyenleg;
         }
 
         // Közös eredmény sorok
-        public static int EBVIII13()
+        public static int EBVIII13(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII13')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII13')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII13')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII13')";
 
             try
             {
@@ -2581,16 +2581,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBVIII13()
+        public static int ElozoEBVIII13(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
 
             try
             {
@@ -2625,16 +2625,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBVIII14()
+        public static int EBVIII14(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII14')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII14')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII14')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII14')";
 
             try
             {
@@ -2669,16 +2669,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBVIII14()
+        public static int ElozoEBVIII14(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
 
             try
             {
@@ -2713,16 +2713,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBVIII15()
+        public static int EBVIII15(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII15')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII15')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII15')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII15')";
 
             try
             {
@@ -2757,16 +2757,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBVIII15()
+        public static int ElozoEBVIII15(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
 
             try
             {
@@ -2801,16 +2801,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBVIII16()
+        public static int EBVIII16(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII16')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII16')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII16')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII16')";
 
             try
             {
@@ -2845,16 +2845,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBVIII16()
+        public static int ElozoEBVIII16(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
 
             try
             {
@@ -2889,16 +2889,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBVIII17()
+        public static int EBVIII17(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII17')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII17')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII17')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBVIII17')";
 
             try
             {
@@ -2933,16 +2933,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBVIII17()
+        public static int ElozoEBVIII17(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
 
             try
             {
@@ -2977,30 +2977,30 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBVIII()
+        public static int EBVIII(int ev)
         {
-            int egyenleg = EBVIII13() + EBVIII14() + EBVIII15()+ EBVIII16() + EBVIII17();
+            int egyenleg = EBVIII13(ev) + EBVIII14(ev) + EBVIII15(ev)+ EBVIII16(ev) + EBVIII17(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEBVIII()
+        public static int ElozoEBVIII(int ev)
         {
-            int egyenleg = ElozoEBVIII13() + ElozoEBVIII14() + ElozoEBVIII15() + ElozoEBVIII16() + ElozoEBVIII17();
+            int egyenleg = ElozoEBVIII13(ev) + ElozoEBVIII14(ev) + ElozoEBVIII15(ev) + ElozoEBVIII16(ev) + ElozoEBVIII17(ev);
 
             return egyenleg;
         }
 
-        public static int EBIX18()
+        public static int EBIX18(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX18')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX18')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX18')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX18')";
 
             try
             {
@@ -3035,16 +3035,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBIX18()
+        public static int ElozoEBIX18(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
 
             try
             {
@@ -3079,16 +3079,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBIX19()
+        public static int EBIX19(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX19')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX19')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX19')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX19')";
 
             try
             {
@@ -3123,16 +3123,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBIX19()
+        public static int ElozoEBIX19(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
 
             try
             {
@@ -3167,16 +3167,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBIX20()
+        public static int EBIX20(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX20')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX20')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX20')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX20')";
 
             try
             {
@@ -3211,16 +3211,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBIX20()
+        public static int ElozoEBIX20(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
 
             try
             {
@@ -3255,16 +3255,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBIX21()
+        public static int EBIX21(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX21')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX21')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX21')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX21')";
 
             try
             {
@@ -3299,16 +3299,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBIX21()
+        public static int ElozoEBIX21(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
 
             try
             {
@@ -3343,16 +3343,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBIX22()
+        public static int EBIX22(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX22')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX22')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX22')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EBIX22')";
 
             try
             {
@@ -3387,16 +3387,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEBIX22()
+        public static int ElozoEBIX22(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
 
             try
             {
@@ -3431,58 +3431,58 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int EBIX()
+        public static int EBIX(int ev)
         {
-            int egyenleg = EBIX18() + EBIX19() + EBIX20() + EBIX21() + EBIX22();
+            int egyenleg = EBIX18(ev) + EBIX19(ev) + EBIX20(ev) + EBIX21(ev) + EBIX22(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEBIX()
+        public static int ElozoEBIX(int ev)
         {
-            int egyenleg = ElozoEBIX18() + ElozoEBIX19() + ElozoEBIX20() + ElozoEBIX21() + ElozoEBIX22();
+            int egyenleg = ElozoEBIX18(ev) + ElozoEBIX19(ev) + ElozoEBIX20(ev) + ElozoEBIX21(ev) + ElozoEBIX22(ev);
 
             return egyenleg;
         }
 
-        public static int EB()
+        public static int EB(int ev)
         {
-            int egyenleg = EBVIII() - EBIX();
+            int egyenleg = EBVIII(ev) - EBIX(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEB()
+        public static int ElozoEB(int ev)
         {
-            int egyenleg = ElozoEBVIII() - ElozoEBIX();
+            int egyenleg = ElozoEBVIII(ev) - ElozoEBIX(ev);
 
             return egyenleg;
         }
 
-        public static int EC()
+        public static int EC(int ev)
         {
-            int egyenleg = EA() + EB();
+            int egyenleg = EA(ev) + EB(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoEC()
+        public static int ElozoEC(int ev)
         {
-            int egyenleg = ElozoEA() + ElozoEB();
+            int egyenleg = ElozoEA(ev) + ElozoEB(ev);
 
             return egyenleg;
         }
 
-        public static int EDX()
+        public static int EDX(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EDX')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EDX')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EDX')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('EDX')";
 
             try
             {
@@ -3517,16 +3517,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoEDX()
+        public static int ElozoEDX(int ev)
         {
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
 
             try
             {
@@ -3561,16 +3561,16 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ED()
+        public static int ED(int ev)
         {
-            int egyenleg = EC() - EDX();
+            int egyenleg = EC(ev) - EDX(ev);
 
             return egyenleg;
         }
 
-        public static int ElozoED()
+        public static int ElozoED(int ev)
         {
-            int egyenleg = ElozoEC() - ElozoEDX();
+            int egyenleg = ElozoEC(ev) - ElozoEDX(ev);
 
             return egyenleg;
         }

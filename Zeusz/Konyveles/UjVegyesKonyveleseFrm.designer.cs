@@ -254,6 +254,7 @@
             // 
             // esemenyDatumaDtp
             // 
+            this.esemenyDatumaDtp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.esemenyDatumaDtp.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.esemenyDatumaDtp.Location = new System.Drawing.Point(242, 510);
             this.esemenyDatumaDtp.Name = "esemenyDatumaDtp";

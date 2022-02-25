@@ -15,6 +15,7 @@ namespace Zeusz.Lekerdezesek
         public VezetoiInfoFrm()
         {
             InitializeComponent();
+            evTxb.Text = DateTime.Now.Year.ToString();
         }
 
         private void kilepesBtn_Click(object sender, EventArgs e)
@@ -25,13 +26,13 @@ namespace Zeusz.Lekerdezesek
 
         private void osszesKtsgBtn_Click(object sender, EventArgs e)
         {
-            OsszesKtsgFrm osszesKtsgFrm = new OsszesKtsgFrm();
+            OsszesKtsgFrm osszesKtsgFrm = new OsszesKtsgFrm(Convert.ToInt32(evTxb.Text));
             osszesKtsgFrm.ShowDialog();
         }
 
         private void mutatoszamokBtn_Click(object sender, EventArgs e)
         {
-            MutatoszamokFrm mutatoszamokFrm = new MutatoszamokFrm();
+            MutatoszamokFrm mutatoszamokFrm = new MutatoszamokFrm(Convert.ToInt32(evTxb.Text));
             mutatoszamokFrm.ShowDialog();
         }
 
@@ -43,7 +44,7 @@ namespace Zeusz.Lekerdezesek
 
         private void bevetelKtsgAranyBtn_Click(object sender, EventArgs e)
         {
-            BevetelKtsgAranyFrm bevetelKtsgAranyFrm = new BevetelKtsgAranyFrm();
+            BevetelKtsgAranyFrm bevetelKtsgAranyFrm = new BevetelKtsgAranyFrm(Convert.ToInt32(evTxb.Text));
             bevetelKtsgAranyFrm.ShowDialog();
         }
     }

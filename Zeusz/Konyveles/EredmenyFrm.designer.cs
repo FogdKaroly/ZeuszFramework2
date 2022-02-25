@@ -41,6 +41,9 @@
             this.elozoEv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modositasok = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.targyev = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label2 = new System.Windows.Forms.Label();
+            this.evTxb = new System.Windows.Forms.TextBox();
+            this.lekeresBtn = new System.Windows.Forms.Button();
             this.eredmenyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.eredmenyDgv)).BeginInit();
             this.SuspendLayout();
@@ -130,6 +133,7 @@
             // 
             this.eredmenyDgv.AllowUserToAddRows = false;
             this.eredmenyDgv.AllowUserToDeleteRows = false;
+            this.eredmenyDgv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this.eredmenyDgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.eredmenyDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.eredmenyDgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -175,12 +179,45 @@
             this.targyev.Name = "targyev";
             this.targyev.ReadOnly = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(513, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 20);
+            this.label2.TabIndex = 41;
+            this.label2.Text = "Év";
+            // 
+            // evTxb
+            // 
+            this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.evTxb.Location = new System.Drawing.Point(555, 14);
+            this.evTxb.Name = "evTxb";
+            this.evTxb.Size = new System.Drawing.Size(100, 26);
+            this.evTxb.TabIndex = 42;
+            // 
+            // lekeresBtn
+            // 
+            this.lekeresBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lekeresBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.lekeresBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lekeresBtn.Location = new System.Drawing.Point(655, 594);
+            this.lekeresBtn.Name = "lekeresBtn";
+            this.lekeresBtn.Size = new System.Drawing.Size(169, 58);
+            this.lekeresBtn.TabIndex = 43;
+            this.lekeresBtn.Text = "Lekérdezés";
+            this.lekeresBtn.UseVisualStyleBackColor = false;
+            this.lekeresBtn.Click += new System.EventHandler(this.lekeresBtn_Click);
+            // 
             // EredmenyFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.lekeresBtn);
+            this.Controls.Add(this.evTxb);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.eredmenyPanel);
             this.Controls.Add(this.lekerDatumLbl);
             this.Controls.Add(this.excelExportBtn);
@@ -214,5 +251,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn elozoEv;
         private System.Windows.Forms.DataGridViewTextBoxColumn modositasok;
         private System.Windows.Forms.DataGridViewTextBoxColumn targyev;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox evTxb;
+        private System.Windows.Forms.Button lekeresBtn;
     }
 }

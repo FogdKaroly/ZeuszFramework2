@@ -35,6 +35,8 @@
             this.egyeniLekerdezes = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.bevetelKtsgAranyBtn = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.evTxb = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // kilepesBtn
@@ -110,12 +112,31 @@
             this.bevetelKtsgAranyBtn.UseVisualStyleBackColor = true;
             this.bevetelKtsgAranyBtn.Click += new System.EventHandler(this.bevetelKtsgAranyBtn_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(424, 17);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 20);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Év";
+            // 
+            // evTxb
+            // 
+            this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.evTxb.Location = new System.Drawing.Point(467, 14);
+            this.evTxb.Name = "evTxb";
+            this.evTxb.Size = new System.Drawing.Size(128, 26);
+            this.evTxb.TabIndex = 15;
+            // 
             // VezetoiInfoFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.evTxb);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.bevetelKtsgAranyBtn);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.egyeniLekerdezes);
@@ -141,5 +162,7 @@
         private System.Windows.Forms.Button egyeniLekerdezes;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button bevetelKtsgAranyBtn;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox evTxb;
     }
 }

@@ -20,6 +20,7 @@ namespace Zeusz.Lekerdezesek
         {
             InitializeComponent();
             lekerDatumLbl.Text = DateTime.Now.ToShortDateString();
+            evTxb.Text = DateTime.Now.Year.ToString();
         }
 
         private void kilepesBtn_Click(object sender, EventArgs e)
@@ -30,7 +31,7 @@ namespace Zeusz.Lekerdezesek
 
         private void lekerdezesBtn_Click(object sender, EventArgs e)
         {
-            tetelek = AdatbazisMuveletek.Lekerdezesek.KartonLekeres(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, Convert.ToInt32(tolTxb.Text), Convert.ToInt32(igTxb.Text), fokonyviSzamTolTxb.Text, fokonyviSzamIgTxb.Text);
+            tetelek = AdatbazisMuveletek.Lekerdezesek.KartonLekeres(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, Convert.ToInt32(tolTxb.Text), Convert.ToInt32(igTxb.Text), fokonyviSzamTolTxb.Text, fokonyviSzamIgTxb.Text, Convert.ToInt32(evTxb.Text));
 
             kartonDgv.Rows.Clear();
 

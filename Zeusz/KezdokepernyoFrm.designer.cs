@@ -42,7 +42,6 @@
             // 
             this.legutobbiTetelekDgv.AllowUserToAddRows = false;
             this.legutobbiTetelekDgv.AllowUserToDeleteRows = false;
-            this.legutobbiTetelekDgv.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.legutobbiTetelekDgv.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.legutobbiTetelekDgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.legutobbiTetelekDgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -68,6 +67,7 @@
             this.sorszam.MinimumWidth = 50;
             this.sorszam.Name = "sorszam";
             this.sorszam.ReadOnly = true;
+            this.sorszam.Width = 125;
             // 
             // partnerkod
             // 
@@ -76,6 +76,7 @@
             this.partnerkod.MinimumWidth = 50;
             this.partnerkod.Name = "partnerkod";
             this.partnerkod.ReadOnly = true;
+            this.partnerkod.Width = 124;
             // 
             // szamlaszam
             // 
@@ -84,6 +85,7 @@
             this.szamlaszam.MinimumWidth = 50;
             this.szamlaszam.Name = "szamlaszam";
             this.szamlaszam.ReadOnly = true;
+            this.szamlaszam.Width = 125;
             // 
             // tartozik
             // 
@@ -92,6 +94,7 @@
             this.tartozik.MinimumWidth = 50;
             this.tartozik.Name = "tartozik";
             this.tartozik.ReadOnly = true;
+            this.tartozik.Width = 124;
             // 
             // kovetel
             // 
@@ -100,6 +103,7 @@
             this.kovetel.MinimumWidth = 50;
             this.kovetel.Name = "kovetel";
             this.kovetel.ReadOnly = true;
+            this.kovetel.Width = 125;
             // 
             // esemeny
             // 
@@ -107,6 +111,7 @@
             this.esemeny.HeaderText = "Esemény";
             this.esemeny.Name = "esemeny";
             this.esemeny.ReadOnly = true;
+            this.esemeny.Width = 168;
             // 
             // KezdokepernyoFrm
             // 
@@ -115,7 +120,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
             this.Controls.Add(this.legutobbiTetelekDgv);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "KezdokepernyoFrm";
             this.Text = "KezdokepernyoFrm";

@@ -52,6 +52,8 @@
             this.lekerDatumLbl = new System.Windows.Forms.Label();
             this.csvExportBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.label = new System.Windows.Forms.Label();
+            this.evTxb = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.kartonDgv)).BeginInit();
             this.SuspendLayout();
@@ -298,12 +300,31 @@
             this.label6.TabIndex = 20;
             this.label6.Text = "Lekérdezés dátuma:";
             // 
+            // label
+            // 
+            this.label.AutoSize = true;
+            this.label.Location = new System.Drawing.Point(379, 17);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(27, 20);
+            this.label.TabIndex = 32;
+            this.label.Text = "Év";
+            // 
+            // evTxb
+            // 
+            this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.evTxb.Location = new System.Drawing.Point(425, 14);
+            this.evTxb.Name = "evTxb";
+            this.evTxb.Size = new System.Drawing.Size(100, 26);
+            this.evTxb.TabIndex = 33;
+            // 
             // FokonyviKartonFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.evTxb);
+            this.Controls.Add(this.label);
             this.Controls.Add(this.lekerDatumLbl);
             this.Controls.Add(this.excelExportBtn);
             this.Controls.Add(this.csvExportBtn);
@@ -357,5 +378,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn tErtek;
         private System.Windows.Forms.DataGridViewTextBoxColumn kErtek;
         private System.Windows.Forms.DataGridViewTextBoxColumn gazdasagiEsemeny;
+        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.TextBox evTxb;
     }
 }

@@ -30,9 +30,9 @@ namespace Zeusz.Lekerdezesek
                 series.Points.Clear();
             }
 
-            List<Lekerdezesek.KoltsegEgyenleg> targyEgyenlegek = AdatbazisMuveletek.Lekerdezesek.OsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            List<Lekerdezesek.KoltsegEgyenleg> targyEgyenlegek = AdatbazisMuveletek.Lekerdezesek.OsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, Convert.ToInt32(evTxb.Text));
 
-            List<Lekerdezesek.KoltsegEgyenleg> bazisEgyenlegek = AdatbazisMuveletek.Lekerdezesek.BazisOsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            List<Lekerdezesek.KoltsegEgyenleg> bazisEgyenlegek = AdatbazisMuveletek.Lekerdezesek.BazisOsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, Convert.ToInt32(evTxb.Text));
 
             if (anyagktsgCbx.Checked)
             {

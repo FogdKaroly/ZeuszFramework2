@@ -340,6 +340,7 @@ namespace Zeusz
         private void kezikonyvBtn_Click(object sender, EventArgs e)
         {
             // Kézikönyv
+            megnyitasFoablakban(new Sugo.KezikonyvFrm());
 
             AlmenuElrejtes();
         }

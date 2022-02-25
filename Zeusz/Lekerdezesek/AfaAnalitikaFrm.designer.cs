@@ -49,6 +49,8 @@
             this.csvExportBtn = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.lekerdezesBtn = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.evTxb = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.afaAnalitikaDgv)).BeginInit();
             this.SuspendLayout();
@@ -258,12 +260,31 @@
             this.lekerdezesBtn.UseVisualStyleBackColor = false;
             this.lekerdezesBtn.Click += new System.EventHandler(this.lekerdezesBtn_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(266, 17);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(27, 20);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "Év";
+            // 
+            // evTxb
+            // 
+            this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.evTxb.Location = new System.Drawing.Point(299, 14);
+            this.evTxb.Name = "evTxb";
+            this.evTxb.Size = new System.Drawing.Size(100, 26);
+            this.evTxb.TabIndex = 38;
+            // 
             // AfaAnalitikaFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.evTxb);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.lekerDatumLbl);
             this.Controls.Add(this.excelExportBtn);
             this.Controls.Add(this.csvExportBtn);
@@ -310,5 +331,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn afakulcs;
         private System.Windows.Forms.DataGridViewTextBoxColumn afaTartalom;
         private System.Windows.Forms.DataGridViewTextBoxColumn brutto;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox evTxb;
     }
 }

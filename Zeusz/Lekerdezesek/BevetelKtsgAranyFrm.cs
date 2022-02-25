@@ -12,15 +12,15 @@ namespace Zeusz.Lekerdezesek
 {
     public partial class BevetelKtsgAranyFrm : Form
     {
-        public BevetelKtsgAranyFrm()
+        public BevetelKtsgAranyFrm(int ev)
         {
             InitializeComponent();
-            Megjelenites();
+            Megjelenites(ev);
         }
 
-        private void Megjelenites()
+        private void Megjelenites(int ev)
         {
-            List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = AdatbazisMuveletek.Lekerdezesek.BevetelKtsgArany(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = AdatbazisMuveletek.Lekerdezesek.BevetelKtsgArany(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev);
 
             
 

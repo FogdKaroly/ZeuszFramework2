@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.kilepesBtn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,6 +46,8 @@
             this.ertekcsokkenesCbx = new System.Windows.Forms.CheckBox();
             this.lekerdezesBtn = new System.Windows.Forms.Button();
             this.koltsegekChrt = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.label5 = new System.Windows.Forms.Label();
+            this.evTxb = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.koltsegekChrt)).BeginInit();
             this.SuspendLayout();
             // 
@@ -191,28 +193,45 @@
             // 
             // koltsegekChrt
             // 
-            chartArea2.Name = "ChartArea1";
-            this.koltsegekChrt.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.koltsegekChrt.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.koltsegekChrt.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.koltsegekChrt.Legends.Add(legend1);
             this.koltsegekChrt.Location = new System.Drawing.Point(303, 119);
             this.koltsegekChrt.Name = "koltsegekChrt";
             this.koltsegekChrt.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.SeaGreen;
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
-            series3.IsValueShownAsLabel = true;
-            series3.Legend = "Legend1";
-            series3.Name = "bazis";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
-            series4.IsValueShownAsLabel = true;
-            series4.Legend = "Legend1";
-            series4.Name = "targy";
-            this.koltsegekChrt.Series.Add(series3);
-            this.koltsegekChrt.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series1.IsValueShownAsLabel = true;
+            series1.Legend = "Legend1";
+            series1.Name = "bazis";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedColumn;
+            series2.IsValueShownAsLabel = true;
+            series2.Legend = "Legend1";
+            series2.Name = "targy";
+            this.koltsegekChrt.Series.Add(series1);
+            this.koltsegekChrt.Series.Add(series2);
             this.koltsegekChrt.Size = new System.Drawing.Size(519, 431);
             this.koltsegekChrt.TabIndex = 21;
             this.koltsegekChrt.Text = "Költségek";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 530);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(27, 20);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Év";
+            // 
+            // evTxb
+            // 
+            this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.evTxb.Location = new System.Drawing.Point(58, 527);
+            this.evTxb.Name = "evTxb";
+            this.evTxb.Size = new System.Drawing.Size(100, 26);
+            this.evTxb.TabIndex = 23;
             // 
             // EgyeniLekerdezesFrm
             // 
@@ -220,6 +239,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.evTxb);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.koltsegekChrt);
             this.Controls.Add(this.lekerdezesBtn);
             this.Controls.Add(this.ertekcsokkenesCbx);
@@ -261,5 +282,7 @@
         private System.Windows.Forms.CheckBox ertekcsokkenesCbx;
         private System.Windows.Forms.Button lekerdezesBtn;
         private System.Windows.Forms.DataVisualization.Charting.Chart koltsegekChrt;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox evTxb;
     }
 }

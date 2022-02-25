@@ -12,10 +12,10 @@ namespace Zeusz.Lekerdezesek
 {
     public partial class MutatoszamokFrm : Form
     {
-        public MutatoszamokFrm()
+        public MutatoszamokFrm(int ev)
         {
             InitializeComponent();
-            Megjelenites();
+            Megjelenites(ev);
         }
 
         private void kilepesBtn_Click(object sender, EventArgs e)
@@ -23,7 +23,7 @@ namespace Zeusz.Lekerdezesek
             this.Close();
         }
 
-        private void Megjelenites()
+        private void Megjelenites(int ev)
         {
             adossagallomanyAranyaLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.AdossagallomanyAranyaLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString() + "%";
 

@@ -696,7 +696,7 @@ namespace Zeusz.AdatbazisMuveletek
             connection.Close();
         }
 
-        public static List<Konyveles.KonyvelesiTetel> KartonLekeres(string schema, int tol, int ig, string fokonyviSzamTol, string fokonyviSzamIg)
+        public static List<Konyveles.KonyvelesiTetel> KartonLekeres(string schema, int tol, int ig, string fokonyviSzamTol, string fokonyviSzamIg, int ev)
         {
             List<Konyveles.KonyvelesiTetel> tetelek = new List<Konyveles.KonyvelesiTetel>();
 
@@ -723,13 +723,13 @@ namespace Zeusz.AdatbazisMuveletek
                 throw new Exception("Hiba a karton tábla létrehozásánál! -> " + ex.Message);
             }
             //AND {schema}.fokonyv.lezarva <> 1
-            string tOldal = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Tosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.fokonyv.Tszamla, {schema}.fokonyv.Kszamla, ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'tartozik', {schema}.fokonyv.gazdasagi_esemeny FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.fokonyv.Tszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg}  ORDER BY teljesites";
+            string tOldal = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Tosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.fokonyv.Tszamla, {schema}.fokonyv.Kszamla, ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'tartozik', {schema}.fokonyv.gazdasagi_esemeny FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.fokonyv.Tszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg}  ORDER BY teljesites";
 
-            string kOldal = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Kosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.fokonyv.Kszamla, {schema}.fokonyv.Tszamla, ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'kovetel', {schema}.fokonyv.gazdasagi_esemeny FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.fokonyv.Kszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg}  ORDER BY teljesites";
+            string kOldal = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Kosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.fokonyv.Kszamla, {schema}.fokonyv.Tszamla, ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'kovetel', {schema}.fokonyv.gazdasagi_esemeny FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.fokonyv.Kszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg}  ORDER BY teljesites";
 
-            string afaT = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Tosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.afa.Tszamla, {schema}.afa.Kszamla, ISNULL({schema}.afa.Tosszeg, 0) AS 'tartozik', {schema}.fokonyv.gazdasagi_esemeny + ' ÁFA' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam FULL JOIN {schema}.afa ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.afa.Tszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg} ORDER BY teljesites";
+            string afaT = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Tosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.afa.Tszamla, {schema}.afa.Kszamla, ISNULL({schema}.afa.Tosszeg, 0) AS 'tartozik', {schema}.fokonyv.gazdasagi_esemeny + ' ÁFA' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam FULL JOIN {schema}.afa ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.afa.Tszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg} ORDER BY teljesites";
 
-            string afaK = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Kosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.afa.Kszamla, {schema}.afa.Tszamla, ISNULL({schema}.afa.Kosszeg, 0) AS 'kovetel', {schema}.fokonyv.gazdasagi_esemeny + ' ÁFA' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam FULL JOIN {schema}.afa ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.afa.Kszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg} ORDER BY teljesites";
+            string afaK = $"INSERT INTO {schema}.karton(honap, teljesites, szamlaszam, ellenszamla, Kosszeg, gazdasagi_esemeny) SELECT MONTH({schema}.fokonyv.teljesites) AS 'honap', {schema}.fokonyv.teljesites, {schema}.afa.Kszamla, {schema}.afa.Tszamla, ISNULL({schema}.afa.Kosszeg, 0) AS 'kovetel', {schema}.fokonyv.gazdasagi_esemeny + ' ÁFA' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam FULL JOIN {schema}.afa ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {ev} AND MONTH({schema}.fokonyv.teljesites) BETWEEN {tol} AND {ig} AND {schema}.afa.Kszamla BETWEEN {fokonyviSzamTol} AND {fokonyviSzamIg} ORDER BY teljesites";
 
             try
             {
@@ -798,7 +798,7 @@ namespace Zeusz.AdatbazisMuveletek
             connection.Close();
         }
 
-        public static List<Konyveles.KonyvelesiTetel> AfaAnalitikaLekeres(string schema, int tol, int ig)
+        public static List<Konyveles.KonyvelesiTetel> AfaAnalitikaLekeres(string schema, int tol, int ig, int ev)
         {
             List<Konyveles.KonyvelesiTetel> tetelek = new List<Konyveles.KonyvelesiTetel>();
 
@@ -825,9 +825,9 @@ namespace Zeusz.AdatbazisMuveletek
                 throw new Exception("Hiba az áfa átmeneti tábla létrehozásánál! -> " + ex.Message);
             }
 
-            string visszaigenyelheto = $"INSERT INTO {schema}.afaPuffer SELECT MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs, {schema}.afa.Tosszeg, {schema}.fokonyv.szamlaszam, {schema}.fokonyv.partnerkod, {schema}.fokonyv.afa_teljesites, {schema}.fokonyv.Kosszeg FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.afa.fokonyv_id = {schema}.fokonyv.id WHERE {schema}.afa.Tszamla = '466' AND MONTH(afa_teljesites) BETWEEN {tol} AND {ig} ORDER BY MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs";
+            string visszaigenyelheto = $"INSERT INTO {schema}.afaPuffer SELECT MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs, {schema}.afa.Tosszeg, {schema}.fokonyv.szamlaszam, {schema}.fokonyv.partnerkod, {schema}.fokonyv.afa_teljesites, {schema}.fokonyv.Kosszeg FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.afa.fokonyv_id = {schema}.fokonyv.id WHERE YEAR({schema}.fokonyv.afa_teljesites) = {ev} AND {schema}.afa.Tszamla = '466' AND MONTH(afa_teljesites) BETWEEN {tol} AND {ig} ORDER BY MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs";
             
-            string fizetendo = $"INSERT INTO {schema}.afaPuffer SELECT MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs, (-1 * ({schema}.afa.Kosszeg)), {schema}.fokonyv.szamlaszam, {schema}.fokonyv.partnerkod, {schema}.fokonyv.afa_teljesites, {schema}.fokonyv.Tosszeg FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.afa.fokonyv_id = {schema}.fokonyv.id WHERE {schema}.afa.Kszamla = '467' AND MONTH(afa_teljesites) BETWEEN {tol} AND {ig} ORDER BY MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs";
+            string fizetendo = $"INSERT INTO {schema}.afaPuffer SELECT MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs, (-1 * ({schema}.afa.Kosszeg)), {schema}.fokonyv.szamlaszam, {schema}.fokonyv.partnerkod, {schema}.fokonyv.afa_teljesites, {schema}.fokonyv.Tosszeg FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.afa.fokonyv_id = {schema}.fokonyv.id WHERE YEAR({schema}.fokonyv.afa_teljesites) = {ev} AND {schema}.afa.Kszamla = '467' AND MONTH(afa_teljesites) BETWEEN {tol} AND {ig} ORDER BY MONTH({schema}.fokonyv.afa_teljesites), {schema}.afa.afakulcs";
 
             try
             {
@@ -1032,17 +1032,17 @@ namespace Zeusz.AdatbazisMuveletek
         //
         //Költségek chart-hoz
         //
-        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> OsszesKoltsegLekerese(string schema)
+        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> OsszesKoltsegLekerese(string schema, int ev)
         {
             List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
 
-            int egyenleg51 = AdatbazisMuveletek.Eredmeny.EAIV05();
-            int egyenleg52 = AdatbazisMuveletek.Eredmeny.EAIV06();
-            int egyenleg53 = AdatbazisMuveletek.Eredmeny.EAIV07();
-            int egyenleg54 = AdatbazisMuveletek.Eredmeny.EAV10();
-            int egyenleg55 = AdatbazisMuveletek.Eredmeny.EAV11();
-            int egyenleg56 = AdatbazisMuveletek.Eredmeny.EAV12();
-            int egyenleg57 = AdatbazisMuveletek.Eredmeny.EAVI();
+            int egyenleg51 = AdatbazisMuveletek.Eredmeny.EAIV05(ev);
+            int egyenleg52 = AdatbazisMuveletek.Eredmeny.EAIV06(ev);
+            int egyenleg53 = AdatbazisMuveletek.Eredmeny.EAIV07(ev);
+            int egyenleg54 = AdatbazisMuveletek.Eredmeny.EAV10(ev);
+            int egyenleg55 = AdatbazisMuveletek.Eredmeny.EAV11(ev);
+            int egyenleg56 = AdatbazisMuveletek.Eredmeny.EAV12(ev);
+            int egyenleg57 = AdatbazisMuveletek.Eredmeny.EAVI(ev);
 
             if (egyenleg51 != 0)
             {
@@ -1082,17 +1082,17 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenlegek;
         }
 
-        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BazisOsszesKoltsegLekerese(string schema)
+        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BazisOsszesKoltsegLekerese(string schema, int ev)
         {
             List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
 
-            int egyenleg51 = AdatbazisMuveletek.Eredmeny.ElozoEAIV05();
-            int egyenleg52 = AdatbazisMuveletek.Eredmeny.ElozoEAIV06();
-            int egyenleg53 = AdatbazisMuveletek.Eredmeny.ElozoEAIV07();
-            int egyenleg54 = AdatbazisMuveletek.Eredmeny.ElozoEAV10();
-            int egyenleg55 = AdatbazisMuveletek.Eredmeny.ElozoEAV11();
-            int egyenleg56 = AdatbazisMuveletek.Eredmeny.ElozoEAV12();
-            int egyenleg57 = AdatbazisMuveletek.Eredmeny.ElozoEAVI();
+            int egyenleg51 = AdatbazisMuveletek.Eredmeny.ElozoEAIV05(ev);
+            int egyenleg52 = AdatbazisMuveletek.Eredmeny.ElozoEAIV06(ev);
+            int egyenleg53 = AdatbazisMuveletek.Eredmeny.ElozoEAIV07(ev);
+            int egyenleg54 = AdatbazisMuveletek.Eredmeny.ElozoEAV10(ev);
+            int egyenleg55 = AdatbazisMuveletek.Eredmeny.ElozoEAV11(ev);
+            int egyenleg56 = AdatbazisMuveletek.Eredmeny.ElozoEAV12(ev);
+            int egyenleg57 = AdatbazisMuveletek.Eredmeny.ElozoEAVI(ev);
 
             if (egyenleg51 != 0)
             {
@@ -1338,7 +1338,7 @@ namespace Zeusz.AdatbazisMuveletek
         //
         //Bevétel-költség arány
         //
-        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BevetelKtsgArany(string schema)
+        public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BevetelKtsgArany(string schema, int ev)
         {
             List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
             double puffer = 0;
@@ -1348,10 +1348,10 @@ namespace Zeusz.AdatbazisMuveletek
 
             for (int i = 1; i < 12; i++)
             {
-                string bevetelLekeresT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE Tszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
-                string bevetelLekeresK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE Kszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
-                string koltsegRafordT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE (Tszamla LIKE '5%' OR Tszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
-                string koltsegRafordK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE (Kszamla LIKE '5%' OR Kszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string bevetelLekeresT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND Tszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string bevetelLekeresK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND Kszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string koltsegRafordT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND (Tszamla LIKE '5%' OR Tszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string koltsegRafordK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND (Kszamla LIKE '5%' OR Kszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
 
                 try
                 {

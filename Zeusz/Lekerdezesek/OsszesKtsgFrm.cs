@@ -12,10 +12,10 @@ namespace Zeusz.Lekerdezesek
 {
     public partial class OsszesKtsgFrm : Form
     {
-        public OsszesKtsgFrm()
+        public OsszesKtsgFrm(int ev)
         {
             InitializeComponent();
-            Megjelenites();
+            Megjelenites(ev);
         }
 
         private void kilepesBtn_Click(object sender, EventArgs e)
@@ -23,9 +23,9 @@ namespace Zeusz.Lekerdezesek
             this.Close();
         }
 
-        private void Megjelenites()
+        private void Megjelenites(int ev)
         {
-            List<Lekerdezesek.KoltsegEgyenleg> egyenlegek = AdatbazisMuveletek.Lekerdezesek.OsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            List<Lekerdezesek.KoltsegEgyenleg> egyenlegek = AdatbazisMuveletek.Lekerdezesek.OsszesKoltsegLekerese(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev);
 
             osszesKtsgChrt.DataSource = egyenlegek;
             osszesKtsgChrt.Series["OsszesKtsg"].XValueMember = "FokonyviSzam";
