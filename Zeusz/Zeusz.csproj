@@ -115,6 +115,16 @@
     <Compile Include="CegvalasztoFrm.designer.cs">
       <DependentUpon>CegvalasztoFrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Diagramok\CegAdatbazisElemek.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CegAdatbazisElemek.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Diagramok\FoAdatbazisElemek.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FoAdatbazisElemek.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Felhasznalo.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -361,6 +371,30 @@
     <EmbeddedResource Include="Sugo\Nevjegy.resx">
       <DependentUpon>Nevjegy.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Diagramok\CegAdatbazisElemek.xsc">
+      <DependentUpon>CegAdatbazisElemek.xsd</DependentUpon>
+    </None>
+    <None Include="Diagramok\CegAdatbazisElemek.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>CegAdatbazisElemek.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Diagramok\CegAdatbazisElemek.xss">
+      <DependentUpon>CegAdatbazisElemek.xsd</DependentUpon>
+    </None>
+    <None Include="Diagramok\FoAdatbazisElemek.xsc">
+      <DependentUpon>FoAdatbazisElemek.xsd</DependentUpon>
+    </None>
+    <None Include="Diagramok\FoAdatbazisElemek.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>FoAdatbazisElemek.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Diagramok\FoAdatbazisElemek.xss">
+      <DependentUpon>FoAdatbazisElemek.xsd</DependentUpon>
+    </None>
+    <None Include="Diagramok\Formok.cd" />
+    <None Include="Diagramok\Osztalyok.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

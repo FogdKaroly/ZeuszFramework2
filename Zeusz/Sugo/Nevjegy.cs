@@ -16,11 +16,11 @@ namespace Zeusz
             InitializeComponent();
             this.Text = "Névjegy";
             this.labelProductName.Text = "Zeusz könyvelőprogram";
-            this.labelVersion.Text = "1.0";
+            this.labelVersion.Text = "2.0";
             this.labelCopyright.Text = "Készítette: Fogd Károly";
             //this.labelCompanyName.Text = AssemblyCompany;
-            this.textBoxDescription.Text = "Ez a könyvelőprogram egy projektmunka keretében jött létre. \n" +
-                "Egy könnyen használható és egyszerűen, gyorsan megtanulható kezelőfelülettel rendelkező program";
+            this.textBoxDescription.Text = "Ez a könyvelőprogram szoftverfejlesztő tanfolyam projektmunka keretében jött létre. \n" +
+                "Egy könnyen használható és egyszerűen, gyorsan megtanulható kezelőfelülettel rendelkező program.";
         }
 
         #region Assembly Attribute Accessors

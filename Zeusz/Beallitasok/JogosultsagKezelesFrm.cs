@@ -13,6 +13,8 @@ namespace Zeusz
     public partial class JogosultsagKezelesFrm : Form
     {
         List<Felhasznalo> felhasznalok = AdatbazisMuveletek.Lekerdezesek.FelhasznaloLekerdezes();
+        
+
         public JogosultsagKezelesFrm()
         {
             InitializeComponent();
@@ -59,14 +61,13 @@ namespace Zeusz
                 else
                 {
                     AdatbazisMuveletek.Insertek.JogosultsagFeltoltes(felhasznaloCbx.SelectedItem.ToString(), sor.Cells["menupont_neve"].Value.ToString(), Convert.ToByte(sor.Cells["jogosultsag"].Value));
-
                     sikeres = true;
                 }
             }
             if (sikeres)
             {
-                MessageBox.Show("A jogosultságok feltöltése sikeres!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                MessageBox.Show("A jogosultságok feltöltése sikeres!\n A módosítások életbe lépéséhez újra kell indítani a programot!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Form1.megnyitasFoablakban(new KezdokepernyoFrm());
             }
         }
     }

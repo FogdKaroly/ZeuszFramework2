@@ -31,7 +31,7 @@ namespace Zeusz
             JogosultsagEllenorzes();
             
         }
-        private void JogosultsagEllenorzes()
+        public static void JogosultsagEllenorzes()
         {
             foreach (var jog in BejelentkezesFrm.Felhasznalo.Jogosultsagok)
             {

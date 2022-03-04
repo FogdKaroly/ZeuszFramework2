@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Zeusz.Beallitasok.SzamlatukorKarbantartasFrm" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAKgAACQAABAAEAGQAAADCgAAAAACAABAAIBBAAI=</HashCode>
+      <FileName>Beallitasok\SzamlatukorKarbantartasFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.FelhasznalokKezeleseFrm" Collapsed="true">
+    <Position X="0.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAIgAACAAIBAQAACQAAACAAAAQAIgEAFAAAAAACA=</HashCode>
+      <FileName>Beallitasok\FelhasznalokKezeleseFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.JogosultsagKezelesFrm" Collapsed="true">
+    <Position X="7.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAEiAAAJAAAASQAAACAIAAAAAAAAAAAIBAACA=</HashCode>
+      <FileName>Beallitasok\JogosultsagKezelesFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.KonyvelocegAdataiFrm" Collapsed="true">
+    <Position X="4.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/wAAAIAACCAAADEAAACQIAADRAEgAAoAAiQAAIjAARA=</HashCode>
+      <FileName>Beallitasok\KonyvelocegAdataiFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.KonyveltCegAdataiFrm" Collapsed="true">
+    <Position X="6" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/wgEAIgACCABIBEgAACRIAADRAEgAAogAiRAAQiAATA=</HashCode>
+      <FileName>Beallitasok\KonyveltCegAdataiFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.PartenrtorzsFrm" Collapsed="true">
+    <Position X="4.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/4ACgJgACCABIBBQQQGRAAgCVAAAIQJJBCBICYhAADA=</HashCode>
+      <FileName>Beallitasok\PartenrtorzsFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.BejelentkezesFrm" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAQAAAAACACAJAAAACBAAACAAAAQAAAAAAAIAAAACA=</HashCode>
+      <FileName>BejelentkezesFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.CegvalasztoFrm" Collapsed="true">
+    <Position X="0.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACAAABAAEACBAAECAABAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>CegvalasztoFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Form1" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kGE6QZQIgzAADCIASoCQCAgGMAAgCxgI2AoBICo1gAQ=</HashCode>
+      <FileName>Form1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.KezdokepernyoFrm" Collapsed="true">
+    <Position X="4.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAgAADAAAAAAAACBAAACAAIAEAAAAAAAAAAhAAA=</HashCode>
+      <FileName>KezdokepernyoFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Nevjegy" Collapsed="true">
+    <Position X="2.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kIAAAAgAACAACAUAAACAAAADAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sugo\Nevjegy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.EredmenyFrm" Collapsed="true">
+    <Position X="0.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACIAABiABQWQAAAiAAAABAAAIJAAAAAJAEA=</HashCode>
+      <FileName>Konyveles\EredmenyFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.MerlegFrm" Collapsed="true">
+    <Position X="0.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIBAACIAABAABQSQAIACAAAABAAAIIQAAAAJAEA=</HashCode>
+      <FileName>Konyveles\MerlegFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.NyitasFrm" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAEACAAABAAAAGQAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Konyveles\NyitasFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.UjSzallitoKonyveleseFrm" Collapsed="true">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8xEACIICAGSIABABAEGQAAACAgAAAIAIViAEgIJwAIA=</HashCode>
+      <FileName>Konyveles\UjSzallitoKonyveleseFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.UjVegyesKonyveleseFrm" Collapsed="true">
+    <Position X="2.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAACIACAGQAABABAECQAACCAAAAAIAIViAEAIJwAIA=</HashCode>
+      <FileName>Konyveles\UjVegyesKonyveleseFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.UjVevoKonyveleseFrm" Collapsed="true">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>8xEACIICAGSIABABAEGQAAACAgAAAIAIViAEgIJwAIA=</HashCode>
+      <FileName>Konyveles\UjVevoKonyveleseFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.ZarasFrm" Collapsed="true">
+    <Position X="6" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACAAABAAAACQAAACAACIAAAAAEAAAAEAAAA=</HashCode>
+      <FileName>Konyveles\ZarasFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.AfaAnalitikaFrm" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAACIBAACIggBgABQCYAAAyAIACBAAABAAAAQARAEA=</HashCode>
+      <FileName>Lekerdezesek\AfaAnalitikaFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.BevetelKtsgAranyFrm" Collapsed="true">
+    <Position X="2.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAIAAACAAABAAAACQAAACAAAAAAAAgAAAAgAAAAA=</HashCode>
+      <FileName>Lekerdezesek\BevetelKtsgAranyFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.EgyeniLekerdezesFrm" Collapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAIAAACAAADgACACQAAACAACCAACAAAAAAEFAAAI=</HashCode>
+      <FileName>Lekerdezesek\EgyeniLekerdezesFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.FokonyviKartonFrm" Collapsed="true">
+    <Position X="7.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>RAQEAIBAACIAAFgARQCYBIACAIAiBAAAAAAAAQAQAEA=</HashCode>
+      <FileName>Lekerdezesek\FokonyviKartonFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.FokonyviKivonatFrm" Collapsed="true">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAIABACIAABgEBQCQEAACAIAiBAAAAAAAAwAQAEA=</HashCode>
+      <FileName>Lekerdezesek\FokonyviKivonatFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.MutatoszamokFrm" Collapsed="true">
+    <Position X="0.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAgIAAACAAABQEAACQAAACAAgAAwAAAGAAAgAAAAA=</HashCode>
+      <FileName>Lekerdezesek\MutatoszamokFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.NyitottSzallitoFrm" Collapsed="true">
+    <Position X="6" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAABCAAEBQAAACQAAACAAABAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Lekerdezesek\NyitottSzallitoFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.NyitottSzallitoLezarasaFrm" Collapsed="true">
+    <Position X="7.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAQCJACAiAAABAAAECUAAACAAAAAQEAMCAAQKBAAIA=</HashCode>
+      <FileName>Lekerdezesek\NyitottSzallitoLezarasaFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.NyitottVevoFrm" Collapsed="true">
+    <Position X="4.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAJAAACAAABAACACQAAACAAAAAEAAAIAAAAAAAAI=</HashCode>
+      <FileName>Lekerdezesek\NyitottVevoFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.NyitottVevoLezarasaFrm" Collapsed="true">
+    <Position X="2.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAJAAAiAAABABBACUAAACAACAgQAABqAEQIBgAAA=</HashCode>
+      <FileName>Lekerdezesek\NyitottVevoLezarasaFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.OsszesKtsgFrm" Collapsed="true">
+    <Position X="2.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAACAAABAAABCQAAQCAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Lekerdezesek\OsszesKtsgFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.VezetoiInfoFrm" Collapsed="true">
+    <Position X="7.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQAAAIAAASAACBgAABCUAAACAAACAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Lekerdezesek\VezetoiInfoFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Sugo.KezikonyvFrm" Collapsed="true">
+    <Position X="6" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAQAAAAI=</HashCode>
+      <FileName>Sugo\KezikonyvFrm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

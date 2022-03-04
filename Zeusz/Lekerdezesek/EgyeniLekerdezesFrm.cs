@@ -15,6 +15,7 @@ namespace Zeusz.Lekerdezesek
         public EgyeniLekerdezesFrm()
         {
             InitializeComponent();
+            evTxb.Text = DateTime.Now.Year.ToString();
         }
 
         private void kilepesBtn_Click(object sender, EventArgs e)

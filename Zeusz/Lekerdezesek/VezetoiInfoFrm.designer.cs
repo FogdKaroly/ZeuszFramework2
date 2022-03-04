@@ -33,7 +33,6 @@
             this.osszesKtsgBtn = new System.Windows.Forms.Button();
             this.mutatoszamokBtn = new System.Windows.Forms.Button();
             this.egyeniLekerdezes = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.bevetelKtsgAranyBtn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.evTxb = new System.Windows.Forms.TextBox();
@@ -93,18 +92,9 @@
             this.egyeniLekerdezes.UseVisualStyleBackColor = true;
             this.egyeniLekerdezes.Click += new System.EventHandler(this.egyeniLekerdezes_Click);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 265);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(810, 46);
-            this.button1.TabIndex = 12;
-            this.button1.Text = "Adók elemzése";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // bevetelKtsgAranyBtn
             // 
-            this.bevetelKtsgAranyBtn.Location = new System.Drawing.Point(12, 330);
+            this.bevetelKtsgAranyBtn.Location = new System.Drawing.Point(12, 269);
             this.bevetelKtsgAranyBtn.Name = "bevetelKtsgAranyBtn";
             this.bevetelKtsgAranyBtn.Size = new System.Drawing.Size(810, 46);
             this.bevetelKtsgAranyBtn.TabIndex = 13;
@@ -138,7 +128,6 @@
             this.Controls.Add(this.evTxb);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.bevetelKtsgAranyBtn);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.egyeniLekerdezes);
             this.Controls.Add(this.mutatoszamokBtn);
             this.Controls.Add(this.osszesKtsgBtn);
@@ -160,7 +149,6 @@
         private System.Windows.Forms.Button osszesKtsgBtn;
         private System.Windows.Forms.Button mutatoszamokBtn;
         private System.Windows.Forms.Button egyeniLekerdezes;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button bevetelKtsgAranyBtn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox evTxb;

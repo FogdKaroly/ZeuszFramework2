@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Zeusz.AdatbazisMuveletek.AdatbazisKapcsolodas">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdatbazisMuveletek\AdatbazisKapcsolodas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.AdatbazisMuveletek.AktualisAdatbazis">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>AdatbazisMuveletek\AktualisAdatbazis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.AdatbazisMuveletek.Createek">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAABAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AdatbazisMuveletek\Createek.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.AdatbazisMuveletek.Eredmeny" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEg2BGAQCAQgGkOJLo3BEkoQgEDgBADDwWAAgf4DCGg=</HashCode>
+      <FileName>AdatbazisMuveletek\Eredmeny.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.AdatbazisMuveletek.Insertek">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAQEAAIgAAESkAIABQAAAAAAAAgEAAgQIAgAEAAA=</HashCode>
+      <FileName>AdatbazisMuveletek\Insertek.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.AdatbazisMuveletek.Lekerdezesek" Collapsed="true">
+    <Position X="9.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhAKAAVAEaIEAACIhAALAsIIEAAAIACEgAkCUKAFgAA=</HashCode>
+      <FileName>AdatbazisMuveletek\Lekerdezesek.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.AdatbazisMuveletek.Merleg" Collapsed="true">
+    <Position X="9.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>PxJk6BLhXzDQv4oG7X/pfumSV64IBBQhXQFKQcE9J+A=</HashCode>
+      <FileName>AdatbazisMuveletek\Merleg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Beallitasok.BeszamoloSor">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAkAAAAJAAA=</HashCode>
+      <FileName>Beallitasok\BeszamoloSor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Cegadat">
+    <Position X="2.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEjEAACAKAQAgCiEgAQAgIAEAAAAFAAAABAAAABIhA=</HashCode>
+      <FileName>Beallitasok\Cegadat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Jogosultsag">
+    <Position X="8" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAABAAAAAAAEAAAABAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Beallitasok\Jogosultsag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.KonyvelocegAdatai">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAgAAAAIAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Beallitasok\KonyvelocegAdatai.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.KonyveltCegAdatai">
+    <Position X="4.5" Y="5" Width="1.5" />
+    <InheritanceLine Type="Zeusz.KonyvelocegAdatai" FixedToPoint="true">
+      <Path>
+        <Point X="5.25" Y="3.405" />
+        <Point X="5.25" Y="5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAQAAAAAAAAAAAAAAAAAAACAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Beallitasok\KonyveltCegAdatai.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.PartnercegAdatai">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAQIBAAECMFAgABAAIAAAAAAEgAAIFIAAAAAAA=</HashCode>
+      <FileName>Beallitasok\PartnercegAdatai.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Felhasznalo">
+    <Position X="8" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAEAAAkBAAABAAAAAAAAAAABAAAAAQAAAA=</HashCode>
+      <FileName>Felhasznalo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.KonyvelesiTetel" Collapsed="true">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AERmEgBEIBAgICBFKGAAIQAkACAIJABACAAAAAAABgI=</HashCode>
+      <FileName>Konyveles\KonyvelesiTetel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Konyveles.Szamla">
+    <Position X="6.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAEAAAAAABEAAAAAAgAAAAAAABEAAAABAgABAA=</HashCode>
+      <FileName>Konyveles\Szamla.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zeusz.Lekerdezesek.KoltsegEgyenleg" Collapsed="true">
+    <Position X="9.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEIAAABAAAAAAAAQAAAAEAAAAAAAAAAAAAAAAAACAAA=</HashCode>
+      <FileName>Lekerdezesek\KoltsegEgyenleg.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Zeusz.KozteruletJellege" Collapsed="true">
+    <Position X="11.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAQAAAAAIAAAgAMEAQBAAQAEAAAACAABAAAAAA=</HashCode>
+      <FileName>Beallitasok\Cegadat.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Zeusz.Konyveles.FizetesiMod" Collapsed="true">
+    <Position X="11.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAQAAAAA=</HashCode>
+      <FileName>Konyveles\KonyvelesiTetel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

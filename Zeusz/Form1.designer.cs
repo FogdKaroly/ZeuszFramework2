@@ -30,12 +30,12 @@ namespace Zeusz
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.oldalMenuPanel = new System.Windows.Forms.Panel();
-            this.sugoAlmenuPanel = new System.Windows.Forms.Panel();
+            oldalMenuPanel = new System.Windows.Forms.Panel();
+            sugoAlmenuPanel = new System.Windows.Forms.Panel();
             this.nevjegyBtn = new System.Windows.Forms.Button();
             this.kezikonyvBtn = new System.Windows.Forms.Button();
             this.sugoBtn = new System.Windows.Forms.Button();
-            this.beallitasokAlmenuPanel = new System.Windows.Forms.Panel();
+            beallitasokAlmenuPanel = new System.Windows.Forms.Panel();
             this.szamlatukorKarbantartasBtn = new System.Windows.Forms.Button();
             this.partnerKarbantartasBtn = new System.Windows.Forms.Button();
             this.cegvaltasBtn = new System.Windows.Forms.Button();
@@ -44,7 +44,7 @@ namespace Zeusz
             this.felhasznalokKezeleseBtn = new System.Windows.Forms.Button();
             this.konyveloCegAdataiBtn = new System.Windows.Forms.Button();
             this.beallitasokBtn = new System.Windows.Forms.Button();
-            this.lekerdezesekAlmenuPanel = new System.Windows.Forms.Panel();
+            lekerdezesekAlmenuPanel = new System.Windows.Forms.Panel();
             this.vezetoiInfoBtn = new System.Windows.Forms.Button();
             this.afaAnalitikaBtn = new System.Windows.Forms.Button();
             this.nyitottSzallitoBtn = new System.Windows.Forms.Button();
@@ -52,7 +52,7 @@ namespace Zeusz
             this.kartonBtn = new System.Windows.Forms.Button();
             this.kivonatBtn = new System.Windows.Forms.Button();
             this.lekerdezesekBtn = new System.Windows.Forms.Button();
-            this.konyvelesAlmenuPanel = new System.Windows.Forms.Panel();
+            konyvelesAlmenuPanel = new System.Windows.Forms.Panel();
             this.ujVegyesKonyveleseBtn = new System.Windows.Forms.Button();
             this.ujSzallitoKonyveleseBtn = new System.Windows.Forms.Button();
             this.evZarasBtn = new System.Windows.Forms.Button();
@@ -63,43 +63,43 @@ namespace Zeusz
             this.konyvelesBtn = new System.Windows.Forms.Button();
             this.logoPanel = new System.Windows.Forms.Panel();
             foAblakPanel = new System.Windows.Forms.Panel();
-            this.oldalMenuPanel.SuspendLayout();
-            this.sugoAlmenuPanel.SuspendLayout();
-            this.beallitasokAlmenuPanel.SuspendLayout();
-            this.lekerdezesekAlmenuPanel.SuspendLayout();
-            this.konyvelesAlmenuPanel.SuspendLayout();
+            oldalMenuPanel.SuspendLayout();
+            sugoAlmenuPanel.SuspendLayout();
+            beallitasokAlmenuPanel.SuspendLayout();
+            lekerdezesekAlmenuPanel.SuspendLayout();
+            konyvelesAlmenuPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // oldalMenuPanel
             // 
-            this.oldalMenuPanel.AutoScroll = true;
-            this.oldalMenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(151)))), ((int)(((byte)(136)))));
-            this.oldalMenuPanel.Controls.Add(this.sugoAlmenuPanel);
-            this.oldalMenuPanel.Controls.Add(this.sugoBtn);
-            this.oldalMenuPanel.Controls.Add(this.beallitasokAlmenuPanel);
-            this.oldalMenuPanel.Controls.Add(this.beallitasokBtn);
-            this.oldalMenuPanel.Controls.Add(this.lekerdezesekAlmenuPanel);
-            this.oldalMenuPanel.Controls.Add(this.lekerdezesekBtn);
-            this.oldalMenuPanel.Controls.Add(this.konyvelesAlmenuPanel);
-            this.oldalMenuPanel.Controls.Add(this.konyvelesBtn);
-            this.oldalMenuPanel.Controls.Add(this.logoPanel);
-            this.oldalMenuPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.oldalMenuPanel.Font = new System.Drawing.Font("Calibri", 11F);
-            this.oldalMenuPanel.Location = new System.Drawing.Point(0, 0);
-            this.oldalMenuPanel.Name = "oldalMenuPanel";
-            this.oldalMenuPanel.Size = new System.Drawing.Size(300, 661);
-            this.oldalMenuPanel.TabIndex = 0;
+            oldalMenuPanel.AutoScroll = true;
+            oldalMenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(151)))), ((int)(((byte)(136)))));
+            oldalMenuPanel.Controls.Add(sugoAlmenuPanel);
+            oldalMenuPanel.Controls.Add(this.sugoBtn);
+            oldalMenuPanel.Controls.Add(beallitasokAlmenuPanel);
+            oldalMenuPanel.Controls.Add(this.beallitasokBtn);
+            oldalMenuPanel.Controls.Add(lekerdezesekAlmenuPanel);
+            oldalMenuPanel.Controls.Add(this.lekerdezesekBtn);
+            oldalMenuPanel.Controls.Add(konyvelesAlmenuPanel);
+            oldalMenuPanel.Controls.Add(this.konyvelesBtn);
+            oldalMenuPanel.Controls.Add(this.logoPanel);
+            oldalMenuPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            oldalMenuPanel.Font = new System.Drawing.Font("Calibri", 11F);
+            oldalMenuPanel.Location = new System.Drawing.Point(0, 0);
+            oldalMenuPanel.Name = "oldalMenuPanel";
+            oldalMenuPanel.Size = new System.Drawing.Size(300, 661);
+            oldalMenuPanel.TabIndex = 0;
             // 
             // sugoAlmenuPanel
             // 
-            this.sugoAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.sugoAlmenuPanel.Controls.Add(this.nevjegyBtn);
-            this.sugoAlmenuPanel.Controls.Add(this.kezikonyvBtn);
-            this.sugoAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.sugoAlmenuPanel.Location = new System.Drawing.Point(0, 1100);
-            this.sugoAlmenuPanel.Name = "sugoAlmenuPanel";
-            this.sugoAlmenuPanel.Size = new System.Drawing.Size(283, 85);
-            this.sugoAlmenuPanel.TabIndex = 7;
+            sugoAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            sugoAlmenuPanel.Controls.Add(this.nevjegyBtn);
+            sugoAlmenuPanel.Controls.Add(this.kezikonyvBtn);
+            sugoAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            sugoAlmenuPanel.Location = new System.Drawing.Point(0, 1100);
+            sugoAlmenuPanel.Name = "sugoAlmenuPanel";
+            sugoAlmenuPanel.Size = new System.Drawing.Size(283, 85);
+            sugoAlmenuPanel.TabIndex = 7;
             // 
             // nevjegyBtn
             // 
@@ -153,19 +153,19 @@ namespace Zeusz
             // 
             // beallitasokAlmenuPanel
             // 
-            this.beallitasokAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.beallitasokAlmenuPanel.Controls.Add(this.szamlatukorKarbantartasBtn);
-            this.beallitasokAlmenuPanel.Controls.Add(this.partnerKarbantartasBtn);
-            this.beallitasokAlmenuPanel.Controls.Add(this.cegvaltasBtn);
-            this.beallitasokAlmenuPanel.Controls.Add(this.konyveltCegAdataiBtn);
-            this.beallitasokAlmenuPanel.Controls.Add(this.jogosultsagKezelesBtn);
-            this.beallitasokAlmenuPanel.Controls.Add(this.felhasznalokKezeleseBtn);
-            this.beallitasokAlmenuPanel.Controls.Add(this.konyveloCegAdataiBtn);
-            this.beallitasokAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.beallitasokAlmenuPanel.Location = new System.Drawing.Point(0, 765);
-            this.beallitasokAlmenuPanel.Name = "beallitasokAlmenuPanel";
-            this.beallitasokAlmenuPanel.Size = new System.Drawing.Size(283, 290);
-            this.beallitasokAlmenuPanel.TabIndex = 5;
+            beallitasokAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            beallitasokAlmenuPanel.Controls.Add(this.szamlatukorKarbantartasBtn);
+            beallitasokAlmenuPanel.Controls.Add(this.partnerKarbantartasBtn);
+            beallitasokAlmenuPanel.Controls.Add(this.cegvaltasBtn);
+            beallitasokAlmenuPanel.Controls.Add(this.konyveltCegAdataiBtn);
+            beallitasokAlmenuPanel.Controls.Add(this.jogosultsagKezelesBtn);
+            beallitasokAlmenuPanel.Controls.Add(this.felhasznalokKezeleseBtn);
+            beallitasokAlmenuPanel.Controls.Add(this.konyveloCegAdataiBtn);
+            beallitasokAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            beallitasokAlmenuPanel.Location = new System.Drawing.Point(0, 765);
+            beallitasokAlmenuPanel.Name = "beallitasokAlmenuPanel";
+            beallitasokAlmenuPanel.Size = new System.Drawing.Size(283, 290);
+            beallitasokAlmenuPanel.TabIndex = 5;
             // 
             // szamlatukorKarbantartasBtn
             // 
@@ -304,18 +304,18 @@ namespace Zeusz
             // 
             // lekerdezesekAlmenuPanel
             // 
-            this.lekerdezesekAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.lekerdezesekAlmenuPanel.Controls.Add(this.vezetoiInfoBtn);
-            this.lekerdezesekAlmenuPanel.Controls.Add(this.afaAnalitikaBtn);
-            this.lekerdezesekAlmenuPanel.Controls.Add(this.nyitottSzallitoBtn);
-            this.lekerdezesekAlmenuPanel.Controls.Add(this.nyitottVevoBtn);
-            this.lekerdezesekAlmenuPanel.Controls.Add(this.kartonBtn);
-            this.lekerdezesekAlmenuPanel.Controls.Add(this.kivonatBtn);
-            this.lekerdezesekAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lekerdezesekAlmenuPanel.Location = new System.Drawing.Point(0, 475);
-            this.lekerdezesekAlmenuPanel.Name = "lekerdezesekAlmenuPanel";
-            this.lekerdezesekAlmenuPanel.Size = new System.Drawing.Size(283, 245);
-            this.lekerdezesekAlmenuPanel.TabIndex = 3;
+            lekerdezesekAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            lekerdezesekAlmenuPanel.Controls.Add(this.vezetoiInfoBtn);
+            lekerdezesekAlmenuPanel.Controls.Add(this.afaAnalitikaBtn);
+            lekerdezesekAlmenuPanel.Controls.Add(this.nyitottSzallitoBtn);
+            lekerdezesekAlmenuPanel.Controls.Add(this.nyitottVevoBtn);
+            lekerdezesekAlmenuPanel.Controls.Add(this.kartonBtn);
+            lekerdezesekAlmenuPanel.Controls.Add(this.kivonatBtn);
+            lekerdezesekAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            lekerdezesekAlmenuPanel.Location = new System.Drawing.Point(0, 475);
+            lekerdezesekAlmenuPanel.Name = "lekerdezesekAlmenuPanel";
+            lekerdezesekAlmenuPanel.Size = new System.Drawing.Size(283, 245);
+            lekerdezesekAlmenuPanel.TabIndex = 3;
             // 
             // vezetoiInfoBtn
             // 
@@ -437,19 +437,19 @@ namespace Zeusz
             // 
             // konyvelesAlmenuPanel
             // 
-            this.konyvelesAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
-            this.konyvelesAlmenuPanel.Controls.Add(this.ujVegyesKonyveleseBtn);
-            this.konyvelesAlmenuPanel.Controls.Add(this.ujSzallitoKonyveleseBtn);
-            this.konyvelesAlmenuPanel.Controls.Add(this.evZarasBtn);
-            this.konyvelesAlmenuPanel.Controls.Add(this.evNyitasBtn);
-            this.konyvelesAlmenuPanel.Controls.Add(this.eredmenyKesziteseBtn);
-            this.konyvelesAlmenuPanel.Controls.Add(this.merlegKesziteseBtn);
-            this.konyvelesAlmenuPanel.Controls.Add(this.ujVevoKonyveleseBtn);
-            this.konyvelesAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.konyvelesAlmenuPanel.Location = new System.Drawing.Point(0, 145);
-            this.konyvelesAlmenuPanel.Name = "konyvelesAlmenuPanel";
-            this.konyvelesAlmenuPanel.Size = new System.Drawing.Size(283, 285);
-            this.konyvelesAlmenuPanel.TabIndex = 1;
+            konyvelesAlmenuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            konyvelesAlmenuPanel.Controls.Add(this.ujVegyesKonyveleseBtn);
+            konyvelesAlmenuPanel.Controls.Add(this.ujSzallitoKonyveleseBtn);
+            konyvelesAlmenuPanel.Controls.Add(this.evZarasBtn);
+            konyvelesAlmenuPanel.Controls.Add(this.evNyitasBtn);
+            konyvelesAlmenuPanel.Controls.Add(this.eredmenyKesziteseBtn);
+            konyvelesAlmenuPanel.Controls.Add(this.merlegKesziteseBtn);
+            konyvelesAlmenuPanel.Controls.Add(this.ujVevoKonyveleseBtn);
+            konyvelesAlmenuPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            konyvelesAlmenuPanel.Location = new System.Drawing.Point(0, 145);
+            konyvelesAlmenuPanel.Name = "konyvelesAlmenuPanel";
+            konyvelesAlmenuPanel.Size = new System.Drawing.Size(283, 285);
+            konyvelesAlmenuPanel.TabIndex = 1;
             // 
             // ujVegyesKonyveleseBtn
             // 
@@ -611,37 +611,37 @@ namespace Zeusz
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1134, 661);
             this.Controls.Add(foAblakPanel);
-            this.Controls.Add(this.oldalMenuPanel);
+            this.Controls.Add(oldalMenuPanel);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(1150, 700);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
-            this.oldalMenuPanel.ResumeLayout(false);
-            this.sugoAlmenuPanel.ResumeLayout(false);
-            this.beallitasokAlmenuPanel.ResumeLayout(false);
-            this.lekerdezesekAlmenuPanel.ResumeLayout(false);
-            this.konyvelesAlmenuPanel.ResumeLayout(false);
+            oldalMenuPanel.ResumeLayout(false);
+            sugoAlmenuPanel.ResumeLayout(false);
+            beallitasokAlmenuPanel.ResumeLayout(false);
+            lekerdezesekAlmenuPanel.ResumeLayout(false);
+            konyvelesAlmenuPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel oldalMenuPanel;
-        private System.Windows.Forms.Panel sugoAlmenuPanel;
+        private static System.Windows.Forms.Panel oldalMenuPanel;
+        private static System.Windows.Forms.Panel sugoAlmenuPanel;
         private System.Windows.Forms.Button nevjegyBtn;
         private System.Windows.Forms.Button kezikonyvBtn;
         private System.Windows.Forms.Button sugoBtn;
-        private System.Windows.Forms.Panel beallitasokAlmenuPanel;
+        private static System.Windows.Forms.Panel beallitasokAlmenuPanel;
         private System.Windows.Forms.Button cegvaltasBtn;
         private System.Windows.Forms.Button konyveltCegAdataiBtn;
         private System.Windows.Forms.Button jogosultsagKezelesBtn;
         private System.Windows.Forms.Button felhasznalokKezeleseBtn;
         private System.Windows.Forms.Button konyveloCegAdataiBtn;
         private System.Windows.Forms.Button beallitasokBtn;
-        private System.Windows.Forms.Panel lekerdezesekAlmenuPanel;
+        private static System.Windows.Forms.Panel lekerdezesekAlmenuPanel;
         private System.Windows.Forms.Button vezetoiInfoBtn;
         private System.Windows.Forms.Button afaAnalitikaBtn;
         private System.Windows.Forms.Button nyitottSzallitoBtn;
@@ -649,7 +649,7 @@ namespace Zeusz
         private System.Windows.Forms.Button kartonBtn;
         private System.Windows.Forms.Button kivonatBtn;
         private System.Windows.Forms.Button lekerdezesekBtn;
-        private System.Windows.Forms.Panel konyvelesAlmenuPanel;
+        private static System.Windows.Forms.Panel konyvelesAlmenuPanel;
         private System.Windows.Forms.Button evZarasBtn;
         private System.Windows.Forms.Button evNyitasBtn;
         private System.Windows.Forms.Button eredmenyKesziteseBtn;
