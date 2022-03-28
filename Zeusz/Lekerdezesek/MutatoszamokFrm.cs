@@ -25,21 +25,21 @@ namespace Zeusz.Lekerdezesek
 
         private void Megjelenites(int ev)
         {
-            adossagallomanyAranyaLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.AdossagallomanyAranyaLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString() + "%";
+            adossagallomanyAranyaLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.AdossagallomanyAranyaLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString() + "%";
 
-            likviditasiMutatoLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.LikviditasiMutatoLekeres(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString();
+            likviditasiMutatoLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.LikviditasiMutatoLekeres(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString();
 
-            likviditasiGyorsrataLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.LikviditasiGyorsrataLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString();
+            likviditasiGyorsrataLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.LikviditasiGyorsrataLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString();
 
-            nettoMukodoTokeLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.NettoMukodoTokeLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString();
+            nettoMukodoTokeLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.NettoMukodoTokeLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString();
 
-            tokeszerkezetiMutatoLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.TokeszerkezetiMutatoLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString() + "%";
+            tokeszerkezetiMutatoLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.TokeszerkezetiMutatoLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString() + "%";
 
-            befektetettEszkozFedezettsegLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.BefektetettEszkozFedezetettsegLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString() + "%";
+            befektetettEszkozFedezettsegLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.BefektetettEszkozFedezetettsegLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString() + "%";
 
-            vagyonszerkezetLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.VagyonszerkezetLekeres(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString() + "%";
+            vagyonszerkezetLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.VagyonszerkezetLekeres(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString() + "%";
 
-            befektetettEszkozAranyLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.BefektetettEszkozokAranyaLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis), 2).ToString() + "%";
+            befektetettEszkozAranyLbl.Text = Math.Round(AdatbazisMuveletek.Lekerdezesek.BefektetettEszkozokAranyaLekerdezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis, ev), 2).ToString() + "%";
         }
     }
 }

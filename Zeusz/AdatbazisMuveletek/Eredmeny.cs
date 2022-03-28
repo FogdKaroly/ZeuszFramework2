@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Zeusz.AdatbazisMuveletek
 {
@@ -11,11 +12,14 @@ namespace Zeusz.AdatbazisMuveletek
     {
         static SqlConnection connection;
         static string schema = AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis;
-        static string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) - 1).ToString());
+        //string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) - 1).ToString());
 
         // Összköltség típus
         public static int EAI01(int ev)
         {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString());
+            string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString());
+
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
@@ -60,14 +64,17 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAI01(int ev)
         {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); 
+            string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString());
+
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
             try
             {
@@ -104,7 +111,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAI02(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -148,14 +155,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAI02(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI02') AND (({elozoEvSchema}.fokonyv.Tszamla <> '493') OR ({elozoEvSchema}.fokonyv.Kszamla <> '493'))";
 
             try
             {
@@ -192,7 +199,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -236,14 +243,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAI01', 'EAI02')";
 
             try
             {
@@ -280,7 +287,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAII03(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -324,14 +331,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAII03(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03')";
 
             try
             {
@@ -368,7 +375,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAII04(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -412,14 +419,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAII04(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII04')";
 
             try
             {
@@ -456,7 +463,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -500,14 +507,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAII03', 'EAII04')";
 
             try
             {
@@ -544,7 +551,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -588,14 +595,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIII')";
 
             try
             {
@@ -632,7 +639,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIV05(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -676,14 +683,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIV05(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05')";
 
             try
             {
@@ -720,7 +727,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIV06(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -764,14 +771,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIV06(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV06')";
 
             try
             {
@@ -808,7 +815,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIV07(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -852,14 +859,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIV07(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV07')";
 
             try
             {
@@ -896,7 +903,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIV08(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -940,14 +947,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIV08(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV08')";
 
             try
             {
@@ -984,7 +991,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIV09(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1028,14 +1035,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIV09(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV09')";
 
             try
             {
@@ -1072,7 +1079,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAIV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1116,14 +1123,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAIV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAIV05', 'EAIV06', 'EAIV07', 'EAIV08', 'EAIV09')";
 
             try
             {
@@ -1160,7 +1167,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAV10(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1204,14 +1211,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAV10(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10')";
 
             try
             {
@@ -1248,7 +1255,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAV11(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1292,14 +1299,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAV11(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV11')";
 
             try
             {
@@ -1336,7 +1343,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAV12(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1380,14 +1387,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAV12(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV12')";
 
             try
             {
@@ -1424,7 +1431,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1468,14 +1475,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAV10', 'EAV11', 'EAV12')";
 
             try
             {
@@ -1512,7 +1519,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAVI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1556,14 +1563,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAVI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVI')";
 
             try
             {
@@ -1600,7 +1607,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EAVII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1644,14 +1651,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEAVII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
             try
             {
@@ -1738,9 +1745,9 @@ namespace Zeusz.AdatbazisMuveletek
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EAVII')";
 
             try
             {
@@ -1778,7 +1785,7 @@ namespace Zeusz.AdatbazisMuveletek
         // Forgalmi költség típus
         public static int EFAII03(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1822,14 +1829,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAII03(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII03')";
 
             try
             {
@@ -1866,7 +1873,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAII04(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1910,14 +1917,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAII04(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII04')";
 
             try
             {
@@ -1954,7 +1961,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAII05(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1998,14 +2005,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAII05(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAII05')";
 
             try
             {
@@ -2070,7 +2077,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAIV06(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2114,14 +2121,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAIV06(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV06')";
 
             try
             {
@@ -2158,7 +2165,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAIV07(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2202,14 +2209,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAIV07(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV07')";
 
             try
             {
@@ -2246,7 +2253,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAIV08(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2290,14 +2297,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAIV08(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAIV08')";
 
             try
             {
@@ -2348,7 +2355,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2392,14 +2399,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAV')";
 
             try
             {
@@ -2436,7 +2443,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EFAVI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2480,14 +2487,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEFAVI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EFAVI')";
 
             try
             {
@@ -2539,7 +2546,7 @@ namespace Zeusz.AdatbazisMuveletek
         // Közös eredmény sorok
         public static int EBVIII13(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2583,14 +2590,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBVIII13(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII13')";
 
             try
             {
@@ -2627,7 +2634,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBVIII14(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2671,14 +2678,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBVIII14(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII14')";
 
             try
             {
@@ -2715,7 +2722,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBVIII15(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2759,14 +2766,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBVIII15(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII15')";
 
             try
             {
@@ -2803,7 +2810,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBVIII16(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2847,14 +2854,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBVIII16(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII16')";
 
             try
             {
@@ -2891,7 +2898,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBVIII17(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -2935,14 +2942,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBVIII17(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBVIII17')";
 
             try
             {
@@ -2993,7 +3000,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBIX18(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -3037,14 +3044,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBIX18(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX18')";
 
             try
             {
@@ -3081,7 +3088,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBIX19(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -3125,14 +3132,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBIX19(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX19')";
 
             try
             {
@@ -3169,7 +3176,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBIX20(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -3213,14 +3220,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBIX20(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX20')";
 
             try
             {
@@ -3257,7 +3264,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBIX21(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -3301,14 +3308,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBIX21(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX21')";
 
             try
             {
@@ -3345,7 +3352,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EBIX22(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -3389,14 +3396,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEBIX22(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EBIX22')";
 
             try
             {
@@ -3475,7 +3482,7 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int EDX(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -3519,14 +3526,14 @@ namespace Zeusz.AdatbazisMuveletek
 
         public static int ElozoEDX(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('EDX')";
 
             try
             {

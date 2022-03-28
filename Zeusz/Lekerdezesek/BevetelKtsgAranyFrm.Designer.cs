@@ -76,8 +76,13 @@
             // 
             // bevetelKtsgChrt
             // 
+            chartArea1.AxisX.Interval = 1D;
             chartArea1.AxisX.Maximum = 12D;
             chartArea1.AxisX.Minimum = 1D;
+            chartArea1.AxisX.Title = "Hónap";
+            chartArea1.AxisX.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            chartArea1.AxisY.Title = "Ft";
+            chartArea1.AxisY.TitleFont = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             chartArea1.Name = "ChartArea1";
             this.bevetelKtsgChrt.ChartAreas.Add(chartArea1);
             this.bevetelKtsgChrt.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -120,6 +125,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "BevetelKtsgAranyFrm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BevetelKtsgAranyFrm";
             this.bevetelKtsgAranyPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.bevetelKtsgChrt)).EndInit();

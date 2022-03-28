@@ -54,6 +54,14 @@ namespace Zeusz
             if (AdatbazisMuveletek.Lekerdezesek.Belepes(felhasznaloCbx.SelectedItem.ToString(), jelszoTxb.Text))
             {
                 felhasznalo = new Jogosultsag(felhasznaloCbx.SelectedItem.ToString(), AdatbazisMuveletek.Lekerdezesek.JogosultsagLekerdezes(felhasznaloCbx.SelectedItem.ToString()));
+                CegvalasztoFrm cegvalasztoFrm = new CegvalasztoFrm();
+                if (cegvalasztoFrm.ShowDialog() == DialogResult.OK)
+                {
+                    Form1 form1 = new Form1();
+                    form1.ShowDialog();
+                }
+                //jelszoTxb.Text = "";
+                this.Close();
             }
             else
             {

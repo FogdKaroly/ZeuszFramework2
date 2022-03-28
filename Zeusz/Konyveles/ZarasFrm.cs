@@ -33,6 +33,7 @@ namespace Zeusz.Konyveles
         {
             AdatbazisMuveletek.Insertek.EredmenyZaras(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
             AdatbazisMuveletek.Insertek.EredmenyKonyveles(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            AdatbazisMuveletek.Insertek.AfaZaras(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
             AdatbazisMuveletek.Insertek.MerlegZaras(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
             AdatbazisMuveletek.Insertek.EvLezarasa(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
 

@@ -301,6 +301,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Konyveles\EredmenyFrm.resx">
       <DependentUpon>EredmenyFrm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Konyveles\MerlegFrm.resx">
       <DependentUpon>MerlegFrm.cs</DependentUpon>

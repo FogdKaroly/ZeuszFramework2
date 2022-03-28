@@ -32,15 +32,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.merlegPanel = new System.Windows.Forms.Panel();
             this.merlegDgv = new System.Windows.Forms.DataGridView();
-            this.lekerDatumLbl = new System.Windows.Forms.Label();
-            this.excelExportBtn = new System.Windows.Forms.Button();
-            this.csvExportBtn = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
             this.sorszam = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.megnevezes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.elozoEv = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.modositasok = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.targyev = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lekerDatumLbl = new System.Windows.Forms.Label();
+            this.excelExportBtn = new System.Windows.Forms.Button();
+            this.csvExportBtn = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.evTxb = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lekeresBtn = new System.Windows.Forms.Button();
             this.merlegPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.merlegDgv)).BeginInit();
             this.SuspendLayout();
@@ -99,6 +102,36 @@
             this.merlegDgv.Size = new System.Drawing.Size(810, 533);
             this.merlegDgv.TabIndex = 0;
             // 
+            // sorszam
+            // 
+            this.sorszam.HeaderText = "Sorszám";
+            this.sorszam.Name = "sorszam";
+            this.sorszam.ReadOnly = true;
+            // 
+            // megnevezes
+            // 
+            this.megnevezes.HeaderText = "Megnevezés";
+            this.megnevezes.Name = "megnevezes";
+            this.megnevezes.ReadOnly = true;
+            // 
+            // elozoEv
+            // 
+            this.elozoEv.HeaderText = "Előző év (eFt)";
+            this.elozoEv.Name = "elozoEv";
+            this.elozoEv.ReadOnly = true;
+            // 
+            // modositasok
+            // 
+            this.modositasok.HeaderText = "Módosítások (eFt)";
+            this.modositasok.Name = "modositasok";
+            this.modositasok.ReadOnly = true;
+            // 
+            // targyev
+            // 
+            this.targyev.HeaderText = "Tárgyév (eFt)";
+            this.targyev.Name = "targyev";
+            this.targyev.ReadOnly = true;
+            // 
             // lekerDatumLbl
             // 
             this.lekerDatumLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -145,35 +178,36 @@
             this.label6.TabIndex = 33;
             this.label6.Text = "Lekérdezés dátuma:";
             // 
-            // sorszam
+            // evTxb
             // 
-            this.sorszam.HeaderText = "Sorszám";
-            this.sorszam.Name = "sorszam";
-            this.sorszam.ReadOnly = true;
+            this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.evTxb.Location = new System.Drawing.Point(564, 11);
+            this.evTxb.Name = "evTxb";
+            this.evTxb.ReadOnly = true;
+            this.evTxb.Size = new System.Drawing.Size(100, 26);
+            this.evTxb.TabIndex = 44;
             // 
-            // megnevezes
+            // label2
             // 
-            this.megnevezes.HeaderText = "Megnevezés";
-            this.megnevezes.Name = "megnevezes";
-            this.megnevezes.ReadOnly = true;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(522, 14);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(27, 20);
+            this.label2.TabIndex = 43;
+            this.label2.Text = "Év";
             // 
-            // elozoEv
+            // lekeresBtn
             // 
-            this.elozoEv.HeaderText = "Előző év (eFt)";
-            this.elozoEv.Name = "elozoEv";
-            this.elozoEv.ReadOnly = true;
-            // 
-            // modositasok
-            // 
-            this.modositasok.HeaderText = "Módosítások (eFt)";
-            this.modositasok.Name = "modositasok";
-            this.modositasok.ReadOnly = true;
-            // 
-            // targyev
-            // 
-            this.targyev.HeaderText = "Tárgyév (eFt)";
-            this.targyev.Name = "targyev";
-            this.targyev.ReadOnly = true;
+            this.lekeresBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lekeresBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
+            this.lekeresBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lekeresBtn.Location = new System.Drawing.Point(653, 591);
+            this.lekeresBtn.Name = "lekeresBtn";
+            this.lekeresBtn.Size = new System.Drawing.Size(169, 58);
+            this.lekeresBtn.TabIndex = 45;
+            this.lekeresBtn.Text = "Lekérdezés";
+            this.lekeresBtn.UseVisualStyleBackColor = false;
+            this.lekeresBtn.Click += new System.EventHandler(this.lekeresBtn_Click);
             // 
             // MerlegFrm
             // 
@@ -181,6 +215,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.lekeresBtn);
+            this.Controls.Add(this.evTxb);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lekerDatumLbl);
             this.Controls.Add(this.excelExportBtn);
             this.Controls.Add(this.csvExportBtn);
@@ -214,5 +251,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn elozoEv;
         private System.Windows.Forms.DataGridViewTextBoxColumn modositasok;
         private System.Windows.Forms.DataGridViewTextBoxColumn targyev;
+        private System.Windows.Forms.TextBox evTxb;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button lekeresBtn;
     }
 }

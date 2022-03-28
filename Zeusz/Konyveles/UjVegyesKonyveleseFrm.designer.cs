@@ -60,7 +60,7 @@
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
             this.kilepesBtn.Size = new System.Drawing.Size(25, 25);
-            this.kilepesBtn.TabIndex = 0;
+            this.kilepesBtn.TabIndex = 13;
             this.kilepesBtn.Text = "X";
             this.kilepesBtn.UseVisualStyleBackColor = false;
             this.kilepesBtn.Click += new System.EventHandler(this.kilepesBtn_Click);
@@ -82,7 +82,7 @@
             this.gazdasagiEsemenyTxb.Location = new System.Drawing.Point(172, 456);
             this.gazdasagiEsemenyTxb.Name = "gazdasagiEsemenyTxb";
             this.gazdasagiEsemenyTxb.Size = new System.Drawing.Size(650, 26);
-            this.gazdasagiEsemenyTxb.TabIndex = 39;
+            this.gazdasagiEsemenyTxb.TabIndex = 10;
             // 
             // groupBox2
             // 
@@ -96,7 +96,7 @@
             this.groupBox2.MaximumSize = new System.Drawing.Size(810, 178);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(810, 178);
-            this.groupBox2.TabIndex = 37;
+            this.groupBox2.TabIndex = 5;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Követel";
             // 
@@ -173,7 +173,7 @@
             this.groupBox1.MaximumSize = new System.Drawing.Size(810, 178);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(810, 178);
-            this.groupBox1.TabIndex = 36;
+            this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tartozik";
             // 
@@ -237,7 +237,7 @@
             this.rogzitesBtn.MaximumSize = new System.Drawing.Size(181, 70);
             this.rogzitesBtn.Name = "rogzitesBtn";
             this.rogzitesBtn.Size = new System.Drawing.Size(181, 70);
-            this.rogzitesBtn.TabIndex = 43;
+            this.rogzitesBtn.TabIndex = 12;
             this.rogzitesBtn.Text = "Rögzítés";
             this.rogzitesBtn.UseVisualStyleBackColor = false;
             this.rogzitesBtn.Click += new System.EventHandler(this.rogzitesBtn_Click);
@@ -259,7 +259,7 @@
             this.esemenyDatumaDtp.Location = new System.Drawing.Point(242, 510);
             this.esemenyDatumaDtp.Name = "esemenyDatumaDtp";
             this.esemenyDatumaDtp.Size = new System.Drawing.Size(142, 26);
-            this.esemenyDatumaDtp.TabIndex = 45;
+            this.esemenyDatumaDtp.TabIndex = 11;
             // 
             // UjVegyesKonyveleseFrm
             // 

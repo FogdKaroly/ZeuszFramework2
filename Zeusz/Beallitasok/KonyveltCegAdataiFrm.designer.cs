@@ -70,8 +70,8 @@
             this.label19 = new System.Windows.Forms.Label();
             this.cegvalasztoCbx = new System.Windows.Forms.ComboBox();
             this.modositasBtn = new System.Windows.Forms.Button();
-            this.osszktsgCbx = new System.Windows.Forms.CheckBox();
-            this.forgalmiktsgCbx = new System.Windows.Forms.CheckBox();
+            this.osszktsgCbx = new System.Windows.Forms.RadioButton();
+            this.forgalmiktsgCbx = new System.Windows.Forms.RadioButton();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -89,7 +89,7 @@
             this.groupBox2.Location = new System.Drawing.Point(8, 408);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(814, 170);
-            this.groupBox2.TabIndex = 32;
+            this.groupBox2.TabIndex = 17;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Banki adatok";
             // 
@@ -99,7 +99,7 @@
             this.bankszamlaszam3Txb.Location = new System.Drawing.Point(175, 119);
             this.bankszamlaszam3Txb.Name = "bankszamlaszam3Txb";
             this.bankszamlaszam3Txb.Size = new System.Drawing.Size(629, 26);
-            this.bankszamlaszam3Txb.TabIndex = 5;
+            this.bankszamlaszam3Txb.TabIndex = 20;
             // 
             // label16
             // 
@@ -116,7 +116,7 @@
             this.bankszamlaszam2Txb.Location = new System.Drawing.Point(175, 77);
             this.bankszamlaszam2Txb.Name = "bankszamlaszam2Txb";
             this.bankszamlaszam2Txb.Size = new System.Drawing.Size(629, 26);
-            this.bankszamlaszam2Txb.TabIndex = 3;
+            this.bankszamlaszam2Txb.TabIndex = 19;
             // 
             // label15
             // 
@@ -133,7 +133,7 @@
             this.bankszamlaszam1Txb.Location = new System.Drawing.Point(175, 36);
             this.bankszamlaszam1Txb.Name = "bankszamlaszam1Txb";
             this.bankszamlaszam1Txb.Size = new System.Drawing.Size(629, 26);
-            this.bankszamlaszam1Txb.TabIndex = 1;
+            this.bankszamlaszam1Txb.TabIndex = 18;
             // 
             // label14
             // 
@@ -151,7 +151,7 @@
             this.euAdoszamtxb.Location = new System.Drawing.Point(365, 347);
             this.euAdoszamtxb.Name = "euAdoszamtxb";
             this.euAdoszamtxb.Size = new System.Drawing.Size(156, 26);
-            this.euAdoszamtxb.TabIndex = 30;
+            this.euAdoszamtxb.TabIndex = 13;
             // 
             // cegjegyzekszamTxb
             // 
@@ -160,7 +160,7 @@
             this.cegjegyzekszamTxb.Location = new System.Drawing.Point(662, 347);
             this.cegjegyzekszamTxb.Name = "cegjegyzekszamTxb";
             this.cegjegyzekszamTxb.Size = new System.Drawing.Size(156, 26);
-            this.cegjegyzekszamTxb.TabIndex = 31;
+            this.cegjegyzekszamTxb.TabIndex = 14;
             // 
             // ajtoTxb
             // 
@@ -168,7 +168,7 @@
             this.ajtoTxb.Location = new System.Drawing.Point(429, 135);
             this.ajtoTxb.Name = "ajtoTxb";
             this.ajtoTxb.Size = new System.Drawing.Size(65, 26);
-            this.ajtoTxb.TabIndex = 13;
+            this.ajtoTxb.TabIndex = 11;
             // 
             // label10
             // 
@@ -185,7 +185,7 @@
             this.lepcsohazTxb.Location = new System.Drawing.Point(281, 135);
             this.lepcsohazTxb.Name = "lepcsohazTxb";
             this.lepcsohazTxb.Size = new System.Drawing.Size(65, 26);
-            this.lepcsohazTxb.TabIndex = 11;
+            this.lepcsohazTxb.TabIndex = 10;
             // 
             // label9
             // 
@@ -222,7 +222,7 @@
             this.kozteruletJellegeCbx.Location = new System.Drawing.Point(593, 81);
             this.kozteruletJellegeCbx.Name = "kozteruletJellegeCbx";
             this.kozteruletJellegeCbx.Size = new System.Drawing.Size(146, 28);
-            this.kozteruletJellegeCbx.TabIndex = 7;
+            this.kozteruletJellegeCbx.TabIndex = 8;
             // 
             // label7
             // 
@@ -239,7 +239,7 @@
             this.kozteruletNeveTbx.Location = new System.Drawing.Point(131, 81);
             this.kozteruletNeveTbx.Name = "kozteruletNeveTbx";
             this.kozteruletNeveTbx.Size = new System.Drawing.Size(272, 26);
-            this.kozteruletNeveTbx.TabIndex = 5;
+            this.kozteruletNeveTbx.TabIndex = 7;
             // 
             // label6
             // 
@@ -257,7 +257,7 @@
             this.varosTxb.Location = new System.Drawing.Point(425, 36);
             this.varosTxb.Name = "varosTxb";
             this.varosTxb.Size = new System.Drawing.Size(314, 26);
-            this.varosTxb.TabIndex = 3;
+            this.varosTxb.TabIndex = 6;
             // 
             // label5
             // 
@@ -275,7 +275,7 @@
             this.emailTxb.Location = new System.Drawing.Point(94, 578);
             this.emailTxb.Name = "emailTxb";
             this.emailTxb.Size = new System.Drawing.Size(237, 26);
-            this.emailTxb.TabIndex = 35;
+            this.emailTxb.TabIndex = 21;
             // 
             // label18
             // 
@@ -305,7 +305,7 @@
             this.rogzitesUjkentBtn.Location = new System.Drawing.Point(354, 581);
             this.rogzitesUjkentBtn.Name = "rogzitesUjkentBtn";
             this.rogzitesUjkentBtn.Size = new System.Drawing.Size(217, 68);
-            this.rogzitesUjkentBtn.TabIndex = 37;
+            this.rogzitesUjkentBtn.TabIndex = 23;
             this.rogzitesUjkentBtn.Text = "Rögzítés újként";
             this.rogzitesUjkentBtn.UseVisualStyleBackColor = false;
             this.rogzitesUjkentBtn.Click += new System.EventHandler(this.rogzitesUjkentBtn_Click);
@@ -316,7 +316,7 @@
             this.iranyitoszamTxb.Location = new System.Drawing.Point(112, 33);
             this.iranyitoszamTxb.Name = "iranyitoszamTxb";
             this.iranyitoszamTxb.Size = new System.Drawing.Size(100, 26);
-            this.iranyitoszamTxb.TabIndex = 1;
+            this.iranyitoszamTxb.TabIndex = 5;
             this.iranyitoszamTxb.Leave += new System.EventHandler(this.iranyitoszamTxb_Leave);
             // 
             // label13
@@ -365,7 +365,7 @@
             this.telefonTxb.Location = new System.Drawing.Point(94, 618);
             this.telefonTxb.Name = "telefonTxb";
             this.telefonTxb.Size = new System.Drawing.Size(237, 26);
-            this.telefonTxb.TabIndex = 36;
+            this.telefonTxb.TabIndex = 22;
             // 
             // adoszamTxb
             // 
@@ -374,7 +374,7 @@
             this.adoszamTxb.Location = new System.Drawing.Point(94, 347);
             this.adoszamTxb.Name = "adoszamTxb";
             this.adoszamTxb.Size = new System.Drawing.Size(156, 26);
-            this.adoszamTxb.TabIndex = 29;
+            this.adoszamTxb.TabIndex = 12;
             // 
             // groupBox1
             // 
@@ -397,7 +397,7 @@
             this.groupBox1.MaximumSize = new System.Drawing.Size(810, 186);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(810, 186);
-            this.groupBox1.TabIndex = 25;
+            this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Székhely adatok";
             // 
@@ -408,7 +408,7 @@
             this.rovidCegnevTxb.Location = new System.Drawing.Point(287, 96);
             this.rovidCegnevTxb.Name = "rovidCegnevTxb";
             this.rovidCegnevTxb.Size = new System.Drawing.Size(535, 26);
-            this.rovidCegnevTxb.TabIndex = 24;
+            this.rovidCegnevTxb.TabIndex = 3;
             // 
             // label3
             // 
@@ -427,7 +427,7 @@
             this.teljesCegnevTxb.Location = new System.Drawing.Point(287, 53);
             this.teljesCegnevTxb.Name = "teljesCegnevTxb";
             this.teljesCegnevTxb.Size = new System.Drawing.Size(535, 26);
-            this.teljesCegnevTxb.TabIndex = 22;
+            this.teljesCegnevTxb.TabIndex = 2;
             // 
             // label2
             // 
@@ -442,7 +442,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(60, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(165, 20);
@@ -453,12 +453,12 @@
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
             this.kilepesBtn.Size = new System.Drawing.Size(25, 25);
-            this.kilepesBtn.TabIndex = 19;
+            this.kilepesBtn.TabIndex = 25;
             this.kilepesBtn.Text = "X";
             this.kilepesBtn.UseVisualStyleBackColor = false;
             this.kilepesBtn.Click += new System.EventHandler(this.kilepesBtn_Click);
@@ -466,7 +466,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label19.Location = new System.Drawing.Point(293, 17);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(170, 20);
@@ -482,7 +482,7 @@
             this.cegvalasztoCbx.Location = new System.Drawing.Point(469, 14);
             this.cegvalasztoCbx.Name = "cegvalasztoCbx";
             this.cegvalasztoCbx.Size = new System.Drawing.Size(353, 28);
-            this.cegvalasztoCbx.TabIndex = 39;
+            this.cegvalasztoCbx.TabIndex = 1;
             this.cegvalasztoCbx.SelectedIndexChanged += new System.EventHandler(this.cegvalasztoCbx_SelectedIndexChanged);
             // 
             // modositasBtn
@@ -493,7 +493,7 @@
             this.modositasBtn.Location = new System.Drawing.Point(605, 581);
             this.modositasBtn.Name = "modositasBtn";
             this.modositasBtn.Size = new System.Drawing.Size(217, 68);
-            this.modositasBtn.TabIndex = 40;
+            this.modositasBtn.TabIndex = 24;
             this.modositasBtn.Text = "Módosítás";
             this.modositasBtn.UseVisualStyleBackColor = false;
             this.modositasBtn.Click += new System.EventHandler(this.modositasBtn_Click);
@@ -501,20 +501,22 @@
             // osszktsgCbx
             // 
             this.osszktsgCbx.AutoSize = true;
-            this.osszktsgCbx.Location = new System.Drawing.Point(256, 387);
+            this.osszktsgCbx.Location = new System.Drawing.Point(342, 387);
             this.osszktsgCbx.Name = "osszktsgCbx";
-            this.osszktsgCbx.Size = new System.Drawing.Size(165, 24);
-            this.osszktsgCbx.TabIndex = 41;
+            this.osszktsgCbx.Size = new System.Drawing.Size(164, 24);
+            this.osszktsgCbx.TabIndex = 15;
+            this.osszktsgCbx.TabStop = true;
             this.osszktsgCbx.Text = "Összköltség eljárás";
             this.osszktsgCbx.UseVisualStyleBackColor = true;
             // 
             // forgalmiktsgCbx
             // 
             this.forgalmiktsgCbx.AutoSize = true;
-            this.forgalmiktsgCbx.Location = new System.Drawing.Point(527, 387);
+            this.forgalmiktsgCbx.Location = new System.Drawing.Point(531, 387);
             this.forgalmiktsgCbx.Name = "forgalmiktsgCbx";
-            this.forgalmiktsgCbx.Size = new System.Drawing.Size(190, 24);
-            this.forgalmiktsgCbx.TabIndex = 42;
+            this.forgalmiktsgCbx.Size = new System.Drawing.Size(189, 24);
+            this.forgalmiktsgCbx.TabIndex = 16;
+            this.forgalmiktsgCbx.TabStop = true;
             this.forgalmiktsgCbx.Text = "Forgalmiköltség eljárás";
             this.forgalmiktsgCbx.UseVisualStyleBackColor = true;
             // 
@@ -548,7 +550,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "KonyveltCegAdataiFrm";
             this.Text = "KonyveltCegAdataiFrm";
@@ -605,7 +607,7 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ComboBox cegvalasztoCbx;
         private System.Windows.Forms.Button modositasBtn;
-        private System.Windows.Forms.CheckBox osszktsgCbx;
-        private System.Windows.Forms.CheckBox forgalmiktsgCbx;
+        private System.Windows.Forms.RadioButton osszktsgCbx;
+        private System.Windows.Forms.RadioButton forgalmiktsgCbx;
     }
 }

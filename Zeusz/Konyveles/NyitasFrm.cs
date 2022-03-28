@@ -26,6 +26,7 @@ namespace Zeusz.Konyveles
         private void nyitasBtn_Click(object sender, EventArgs e)
         {
             AdatbazisMuveletek.Insertek.Nyitas(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
+            AdatbazisMuveletek.Insertek.AfaRendezes(AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis);
             MessageBox.Show("A nyitás sikeresen megtörtént!", "Siker", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }

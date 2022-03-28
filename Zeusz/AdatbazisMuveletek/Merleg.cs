@@ -11,23 +11,27 @@ namespace Zeusz.AdatbazisMuveletek
     internal static class Merleg
     {
         static SqlConnection connection;
+        
         static string schema = AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis;
-        static string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) - 1).ToString());
+        
 
-        public static int MA()
+        public static int MA(int ev)
         {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString());
+            string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString());
+
             int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
             string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
             try
             {
@@ -52,7 +56,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -84,18 +88,18 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoMA()
+        public static int ElozoMA(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
             string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
@@ -122,7 +126,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -154,20 +158,20 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int MAI()
+        public static int MAI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
             string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
             try
             {
@@ -192,7 +196,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -224,18 +228,18 @@ namespace Zeusz.AdatbazisMuveletek
             return egyenleg;
         }
 
-        public static int ElozoMAI()
+        public static int ElozoMAI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
             string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7')";
 
@@ -262,7 +266,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -293,21 +297,21 @@ namespace Zeusz.AdatbazisMuveletek
 
             return (egyenleg);
         }
-
-        public static int MAI1()
+        
+        public static int MAI1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI1')";
 
             try
             {
@@ -332,7 +336,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -364,20 +368,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI1()
+        public static int ElozoMAI1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1')";
 
             try
             {
@@ -402,7 +406,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -434,20 +438,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAI2()
+        public static int MAI2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI2')";
 
             try
             {
@@ -472,7 +476,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -504,20 +508,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI2()
+        public static int ElozoMAI2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI2')";
 
             try
             {
@@ -542,7 +546,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -574,20 +578,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAI3()
+        public static int MAI3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI3')";
 
             try
             {
@@ -612,7 +616,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -644,20 +648,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI3()
+        public static int ElozoMAI3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI3')";
 
             try
             {
@@ -682,7 +686,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -714,20 +718,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAI4()
+        public static int MAI4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI4')";
 
             try
             {
@@ -752,7 +756,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -784,20 +788,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI4()
+        public static int ElozoMAI4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI4')";
 
             try
             {
@@ -822,7 +826,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -854,20 +858,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAI5()
+        public static int MAI5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI5')";
 
             try
             {
@@ -892,7 +896,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -924,20 +928,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI5()
+        public static int ElozoMAI5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI5')";
 
             try
             {
@@ -962,7 +966,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -994,20 +998,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAI6()
+        public static int MAI6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI6')";
 
             try
             {
@@ -1032,7 +1036,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1064,20 +1068,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI6()
+        public static int ElozoMAI6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI6')";
 
             try
             {
@@ -1102,7 +1106,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1134,20 +1138,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAI7()
+        public static int MAI7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI7')";
 
             try
             {
@@ -1172,7 +1176,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1204,20 +1208,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAI7()
+        public static int ElozoMAI7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI7')";
 
             try
             {
@@ -1242,7 +1246,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1274,20 +1278,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII()
+        public static int MAII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
             try
             {
@@ -1312,7 +1316,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1344,20 +1348,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII()
+        public static int ElozoMAII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7')";
 
             try
             {
@@ -1382,7 +1386,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1414,20 +1418,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII1()
+        public static int MAII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII1')";
 
             try
             {
@@ -1452,7 +1456,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1484,20 +1488,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII1()
+        public static int ElozoMAII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII1')";
 
             try
             {
@@ -1522,7 +1526,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1554,20 +1558,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII2()
+        public static int MAII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII2')";
 
             try
             {
@@ -1592,7 +1596,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1624,20 +1628,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII2()
+        public static int ElozoMAII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII2')";
 
             try
             {
@@ -1662,7 +1666,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1694,20 +1698,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII3()
+        public static int MAII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII3')";
 
             try
             {
@@ -1732,7 +1736,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1764,20 +1768,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII3()
+        public static int ElozoMAII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII3')";
 
             try
             {
@@ -1802,7 +1806,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1834,20 +1838,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII4()
+        public static int MAII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII4')";
 
             try
             {
@@ -1872,7 +1876,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1904,20 +1908,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII4()
+        public static int ElozoMAII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII4')";
 
             try
             {
@@ -1942,7 +1946,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -1974,20 +1978,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII5()
+        public static int MAII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII5')";
 
             try
             {
@@ -2012,7 +2016,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2044,20 +2048,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII5()
+        public static int ElozoMAII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII5')";
 
             try
             {
@@ -2082,7 +2086,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2114,20 +2118,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII6()
+        public static int MAII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII6')";
 
             try
             {
@@ -2152,7 +2156,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2184,20 +2188,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII6()
+        public static int ElozoMAII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII6')";
 
             try
             {
@@ -2222,7 +2226,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2254,20 +2258,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAII7()
+        public static int MAII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAII7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAII7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAII7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAII7')";
 
             try
             {
@@ -2292,7 +2296,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2324,20 +2328,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAII7()
+        public static int ElozoMAII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAII7')";
 
             try
             {
@@ -2362,7 +2366,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2394,20 +2398,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII()
+        public static int MAIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
             try
             {
@@ -2432,7 +2436,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2464,20 +2468,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII()
+        public static int ElozoMAIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10')";
 
             try
             {
@@ -2502,7 +2506,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2534,20 +2538,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII1()
+        public static int MAIII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII1')";
 
             try
             {
@@ -2572,7 +2576,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2604,20 +2608,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII1()
+        public static int ElozoMAIII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII1')";
 
             try
             {
@@ -2642,7 +2646,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2674,20 +2678,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII2()
+        public static int MAIII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII2')";
 
             try
             {
@@ -2712,7 +2716,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2744,20 +2748,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII2()
+        public static int ElozoMAIII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII2')";
 
             try
             {
@@ -2782,7 +2786,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2814,20 +2818,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII3()
+        public static int MAIII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII3')";
 
             try
             {
@@ -2852,7 +2856,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2884,20 +2888,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII3()
+        public static int ElozoMAIII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII3')";
 
             try
             {
@@ -2922,7 +2926,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -2954,20 +2958,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII4()
+        public static int MAIII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII4')";
 
             try
             {
@@ -2992,7 +2996,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3024,20 +3028,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII4()
+        public static int ElozoMAIII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII4')";
 
             try
             {
@@ -3062,7 +3066,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3094,20 +3098,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII5()
+        public static int MAIII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII5')";
 
             try
             {
@@ -3132,7 +3136,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3164,20 +3168,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII5()
+        public static int ElozoMAIII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII5')";
 
             try
             {
@@ -3202,7 +3206,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3234,20 +3238,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII6()
+        public static int MAIII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII6')";
 
             try
             {
@@ -3272,7 +3276,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3304,20 +3308,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII6()
+        public static int ElozoMAIII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII6')";
 
             try
             {
@@ -3342,7 +3346,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3374,20 +3378,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII7()
+        public static int MAIII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII7')";
 
             try
             {
@@ -3412,7 +3416,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3444,20 +3448,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII7()
+        public static int ElozoMAIII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII7')";
 
             try
             {
@@ -3482,7 +3486,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3514,20 +3518,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII8()
+        public static int MAIII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII8')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII8')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII8')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII8')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII8')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII8')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII8')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII8')";
 
             try
             {
@@ -3552,7 +3556,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3584,20 +3588,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII8()
+        public static int ElozoMAIII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII8')";
 
             try
             {
@@ -3622,7 +3626,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3654,20 +3658,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII9()
+        public static int MAIII9(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII9')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII9')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII9')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII9')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII9')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII9')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII9')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII9')";
 
             try
             {
@@ -3692,7 +3696,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3724,20 +3728,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII9()
+        public static int ElozoMAIII9(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII9')";
 
             try
             {
@@ -3762,7 +3766,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3794,20 +3798,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MAIII10()
+        public static int MAIII10(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII10')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII10')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII10')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAIII10')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAIII10')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAIII10')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAIII10')";
 
             try
             {
@@ -3832,7 +3836,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3864,20 +3868,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMAIII10()
+        public static int ElozoMAIII10(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAIII10')";
 
             try
             {
@@ -3902,7 +3906,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -3934,20 +3938,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MB()
+        public static int MB(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
             try
             {
@@ -3972,7 +3976,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4004,20 +4008,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMB()
+        public static int ElozoMB(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2')";
 
             try
             {
@@ -4042,7 +4046,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4074,20 +4078,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI()
+        public static int MBI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
             try
             {
@@ -4112,7 +4116,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4144,20 +4148,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI()
+        public static int ElozoMBI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6')";
 
             try
             {
@@ -4182,7 +4186,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4214,20 +4218,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI1()
+        public static int MBI1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI1')";
 
             try
             {
@@ -4252,7 +4256,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4284,20 +4288,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI1()
+        public static int ElozoMBI1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI1')";
 
             try
             {
@@ -4322,7 +4326,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4354,20 +4358,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI2()
+        public static int MBI2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI2')";
 
             try
             {
@@ -4392,7 +4396,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4424,20 +4428,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI2()
+        public static int ElozoMBI2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI2')";
 
             try
             {
@@ -4462,7 +4466,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4494,20 +4498,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI3()
+        public static int MBI3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI3')";
 
             try
             {
@@ -4532,7 +4536,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4564,20 +4568,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI3()
+        public static int ElozoMBI3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI3')";
 
             try
             {
@@ -4602,7 +4606,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4634,20 +4638,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI4()
+        public static int MBI4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI4')";
 
             try
             {
@@ -4672,7 +4676,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4704,20 +4708,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI4()
+        public static int ElozoMBI4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI4')";
 
             try
             {
@@ -4742,7 +4746,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4774,20 +4778,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI5()
+        public static int MBI5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI5')";
 
             try
             {
@@ -4812,7 +4816,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4844,20 +4848,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI5()
+        public static int ElozoMBI5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI5')";
 
             try
             {
@@ -4882,7 +4886,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4914,20 +4918,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBI6()
+        public static int MBI6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBI6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBI6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBI6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBI6')";
 
             try
             {
@@ -4952,7 +4956,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -4984,20 +4988,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBI6()
+        public static int ElozoMBI6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBI6')";
 
             try
             {
@@ -5022,7 +5026,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5054,20 +5058,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII()
+        public static int MBII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
             try
             {
@@ -5092,7 +5096,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5124,20 +5128,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII()
+        public static int ElozoMBII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8')";
 
             try
             {
@@ -5162,7 +5166,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5194,20 +5198,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII1()
+        public static int MBII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII1')";
 
             try
             {
@@ -5232,7 +5236,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5264,20 +5268,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII1()
+        public static int ElozoMBII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII1')";
 
             try
             {
@@ -5302,7 +5306,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5334,20 +5338,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII2()
+        public static int MBII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII2')";
 
             try
             {
@@ -5372,7 +5376,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5404,20 +5408,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII2()
+        public static int ElozoMBII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII2')";
 
             try
             {
@@ -5442,7 +5446,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5474,20 +5478,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII3()
+        public static int MBII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII3')";
 
             try
             {
@@ -5512,7 +5516,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5544,20 +5548,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII3()
+        public static int ElozoMBII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII3')";
 
             try
             {
@@ -5582,7 +5586,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5614,20 +5618,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII4()
+        public static int MBII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII4')";
 
             try
             {
@@ -5652,7 +5656,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5684,20 +5688,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII4()
+        public static int ElozoMBII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII4')";
 
             try
             {
@@ -5722,7 +5726,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5754,20 +5758,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII5()
+        public static int MBII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII5')";
 
             try
             {
@@ -5792,7 +5796,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5824,20 +5828,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII5()
+        public static int ElozoMBII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII5')";
 
             try
             {
@@ -5862,7 +5866,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5894,20 +5898,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII6()
+        public static int MBII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII6')";
 
             try
             {
@@ -5932,7 +5936,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -5964,20 +5968,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII6()
+        public static int ElozoMBII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII6')";
 
             try
             {
@@ -6002,7 +6006,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6034,20 +6038,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII7()
+        public static int MBII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII7')";
 
             try
             {
@@ -6072,7 +6076,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6104,20 +6108,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII7()
+        public static int ElozoMBII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII7')";
 
             try
             {
@@ -6142,7 +6146,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6174,20 +6178,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBII8()
+        public static int MBII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII8')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII8')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII8')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBII8')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBII8')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII8')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBII8')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBII8')";
 
             try
             {
@@ -6212,7 +6216,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6244,20 +6248,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBII8()
+        public static int ElozoMBII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBII8')";
 
             try
             {
@@ -6282,7 +6286,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6314,20 +6318,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII()
+        public static int MBIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
             try
             {
@@ -6352,7 +6356,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6384,20 +6388,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII()
+        public static int ElozoMBIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6')";
 
             try
             {
@@ -6422,7 +6426,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6454,20 +6458,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII1()
+        public static int MBIII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII1')";
 
             try
             {
@@ -6492,7 +6496,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6524,20 +6528,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII1()
+        public static int ElozoMBIII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII1')";
 
             try
             {
@@ -6562,7 +6566,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6594,20 +6598,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII2()
+        public static int MBIII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII2')";
 
             try
             {
@@ -6632,7 +6636,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6664,20 +6668,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII2()
+        public static int ElozoMBIII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII2')";
 
             try
             {
@@ -6702,7 +6706,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6734,20 +6738,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII3()
+        public static int MBIII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII3')";
 
             try
             {
@@ -6772,7 +6776,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6804,20 +6808,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII3()
+        public static int ElozoMBIII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII3')";
 
             try
             {
@@ -6842,7 +6846,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6874,20 +6878,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII4()
+        public static int MBIII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII4')";
 
             try
             {
@@ -6912,7 +6916,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -6944,20 +6948,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII4()
+        public static int ElozoMBIII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII4')";
 
             try
             {
@@ -6982,7 +6986,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7014,20 +7018,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII5()
+        public static int MBIII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII5')";
 
             try
             {
@@ -7052,7 +7056,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7084,20 +7088,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII5()
+        public static int ElozoMBIII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII5')";
 
             try
             {
@@ -7122,7 +7126,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7154,20 +7158,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIII6()
+        public static int MBIII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIII6')";
 
             try
             {
@@ -7192,7 +7196,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7224,20 +7228,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIII6()
+        public static int ElozoMBIII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIII6')";
 
             try
             {
@@ -7262,7 +7266,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7294,20 +7298,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIV()
+        public static int MBIV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
             try
             {
@@ -7332,7 +7336,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7364,20 +7368,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIV()
+        public static int ElozoMBIV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1', 'MBIV2')";
 
             try
             {
@@ -7402,7 +7406,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7434,20 +7438,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIV1()
+        public static int MBIV1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIV1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIV1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIV1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIV1')";
 
             try
             {
@@ -7472,7 +7476,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7504,20 +7508,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIV1()
+        public static int ElozoMBIV1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV1')";
 
             try
             {
@@ -7542,7 +7546,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7574,20 +7578,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MBIV2()
+        public static int MBIV2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MBIV2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MBIV2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIV2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MBIV2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MBIV2')";
 
             try
             {
@@ -7612,7 +7616,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7644,20 +7648,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMBIV2()
+        public static int ElozoMBIV2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MBIV2')";
 
             try
             {
@@ -7682,7 +7686,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7714,20 +7718,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MC()
+        public static int MC(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
             try
             {
@@ -7752,147 +7756,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaToldal;
-
-                SqlDataReader reader2 = command.ExecuteReader();
-
-                while (reader2.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
-                }
-
-                reader2.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaKoldal;
-
-                SqlDataReader reader3 = command.ExecuteReader();
-
-                while (reader3.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Hiba a Befektetett eszközök lekérésénél! -> " + ex.Message);
-            }
-            connection.Close();
-
-            return (egyenleg);
-        }
-
-        public static int ElozoMC()
-        {
-            int egyenleg = 0;
-
-            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
-            connection.Open();
-
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
-
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
-
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
-
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
-
-            try
-            {
-                SqlCommand command = new SqlCommand(Toldal, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
-                }
-
-                reader.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = Koldal;
-
-                SqlDataReader reader1 = command.ExecuteReader();
-
-                while (reader1.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
-                }
-
-                reader1.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaToldal;
-
-                SqlDataReader reader2 = command.ExecuteReader();
-
-                while (reader2.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
-                }
-
-                reader2.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaKoldal;
-
-                SqlDataReader reader3 = command.ExecuteReader();
-
-                while (reader3.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Hiba az előző évi befektetett eszközök lekérésénél! -> " + ex.Message);
-            }
-            connection.Close();
-
-            return (egyenleg);
-        }
-
-        public static int MC1()
-        {
-            int egyenleg = 0;
-
-            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
-            connection.Open();
-
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1')";
-
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1')";
-
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MC1')";
-
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MC1')";
-
-            try
-            {
-                SqlCommand command = new SqlCommand(Toldal, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
-                }
-
-                reader.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = Koldal;
-
-                SqlDataReader reader1 = command.ExecuteReader();
-
-                while (reader1.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
-                }
-
-                reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7924,20 +7788,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMC1()
+        public static int ElozoMC(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1', 'MC2', 'MC3')";
 
             try
             {
@@ -7962,7 +7826,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -7994,20 +7858,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MC2()
+        public static int MC1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MC2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MC2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC1')";
 
             try
             {
@@ -8032,147 +7896,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaToldal;
-
-                SqlDataReader reader2 = command.ExecuteReader();
-
-                while (reader2.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
-                }
-
-                reader2.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaKoldal;
-
-                SqlDataReader reader3 = command.ExecuteReader();
-
-                while (reader3.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Hiba a Befektetett eszközök lekérésénél! -> " + ex.Message);
-            }
-            connection.Close();
-
-            return (egyenleg);
-        }
-
-        public static int ElozoMC2()
-        {
-            int egyenleg = 0;
-
-            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
-            connection.Open();
-
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
-
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
-
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
-
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
-
-            try
-            {
-                SqlCommand command = new SqlCommand(Toldal, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
-                }
-
-                reader.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = Koldal;
-
-                SqlDataReader reader1 = command.ExecuteReader();
-
-                while (reader1.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
-                }
-
-                reader1.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaToldal;
-
-                SqlDataReader reader2 = command.ExecuteReader();
-
-                while (reader2.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
-                }
-
-                reader2.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = afaKoldal;
-
-                SqlDataReader reader3 = command.ExecuteReader();
-
-                while (reader3.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Hiba az előző évi befektetett eszközök lekérésénél! -> " + ex.Message);
-            }
-            connection.Close();
-
-            return (egyenleg);
-        }
-
-        public static int MC3()
-        {
-            int egyenleg = 0;
-
-            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
-            connection.Open();
-
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC3')";
-
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC3')";
-
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MC3')";
-
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MC3')";
-
-            try
-            {
-                SqlCommand command = new SqlCommand(Toldal, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
-                }
-
-                reader.Close();
-
-                command.Parameters.Clear();
-                command.CommandText = Koldal;
-
-                SqlDataReader reader1 = command.ExecuteReader();
-
-                while (reader1.Read())
-                {
-                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
-                }
-
-                reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8204,20 +7928,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMC3()
+        public static int ElozoMC1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC1')";
 
             try
             {
@@ -8242,7 +7966,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8274,20 +7998,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MOsszesEszkoz()
+        public static int MC2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC2')";
 
             try
             {
@@ -8312,7 +8036,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8344,20 +8068,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMOsszesEszkoz()
+        public static int ElozoMC2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC2')";
 
             try
             {
@@ -8382,7 +8106,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8414,20 +8138,300 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MD()
+        public static int MC3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MC3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MC3')";
+
+            try
+            {
+                SqlCommand command = new SqlCommand(Toldal, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
+                }
+
+                reader.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = Koldal;
+
+                SqlDataReader reader1 = command.ExecuteReader();
+
+                while (reader1.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
+                }
+
+                reader1.Close();
+                
+                command.Parameters.Clear();
+                command.CommandText = afaToldal;
+
+                SqlDataReader reader2 = command.ExecuteReader();
+
+                while (reader2.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
+                }
+
+                reader2.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = afaKoldal;
+
+                SqlDataReader reader3 = command.ExecuteReader();
+
+                while (reader3.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba a Befektetett eszközök lekérésénél! -> " + ex.Message);
+            }
+            connection.Close();
+
+            return (egyenleg);
+        }
+
+        public static int ElozoMC3(int ev)
+        {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
+
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MC3')";
+
+            try
+            {
+                SqlCommand command = new SqlCommand(Toldal, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
+                }
+
+                reader.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = Koldal;
+
+                SqlDataReader reader1 = command.ExecuteReader();
+
+                while (reader1.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
+                }
+
+                reader1.Close();
+                
+                command.Parameters.Clear();
+                command.CommandText = afaToldal;
+
+                SqlDataReader reader2 = command.ExecuteReader();
+
+                while (reader2.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
+                }
+
+                reader2.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = afaKoldal;
+
+                SqlDataReader reader3 = command.ExecuteReader();
+
+                while (reader3.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az előző évi befektetett eszközök lekérésénél! -> " + ex.Message);
+            }
+            connection.Close();
+
+            return (egyenleg);
+        }
+
+        public static int MOsszesEszkoz(int ev)
+        {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
+
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            try
+            {
+                SqlCommand command = new SqlCommand(Toldal, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
+                }
+
+                reader.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = Koldal;
+
+                SqlDataReader reader1 = command.ExecuteReader();
+
+                while (reader1.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
+                }
+
+                reader1.Close();
+                
+                command.Parameters.Clear();
+                command.CommandText = afaToldal;
+
+                SqlDataReader reader2 = command.ExecuteReader();
+
+                while (reader2.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
+                }
+
+                reader2.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = afaKoldal;
+
+                SqlDataReader reader3 = command.ExecuteReader();
+
+                while (reader3.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba a Befektetett eszközök lekérésénél! -> " + ex.Message);
+            }
+            connection.Close();
+
+            return (egyenleg);
+        }
+
+        public static int ElozoMOsszesEszkoz(int ev)
+        {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
+
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MAI1', 'MAI2', 'MAI3', 'MAI4', 'MAI5', 'MAI6', 'MAI7', 'MAII1', 'MAII2', 'MAII3', 'MAII4', 'MAII5', 'MAII6', 'MAII7', 'MAIII1', 'MAIII2', 'MAIII3', 'MAIII4', 'MAIII5', 'MAIII6', 'MAIII7', 'MAIII8', 'MAIII9', 'MAIII10', 'MBI1', 'MBI2', 'MBI3', 'MBI4', 'MBI5', 'MBI6', 'MBII1', 'MBII2', 'MBII3', 'MBII4', 'MBII5', 'MBII6', 'MBII7', 'MBII8', 'MBIII1', 'MBIII2', 'MBIII3', 'MBIII4', 'MBIII5', 'MBIII6', 'MBIV1', 'MBIV2', 'MC1', 'MC2', 'MC3')";
+
+            try
+            {
+                SqlCommand command = new SqlCommand(Toldal, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader["fokonyv_t"]);
+                }
+
+                reader.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = Koldal;
+
+                SqlDataReader reader1 = command.ExecuteReader();
+
+                while (reader1.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader1["fokonyv_k"]);
+                }
+
+                reader1.Close();
+                
+                command.Parameters.Clear();
+                command.CommandText = afaToldal;
+
+                SqlDataReader reader2 = command.ExecuteReader();
+
+                while (reader2.Read())
+                {
+                    egyenleg += Convert.ToInt32(reader2["afa_t"]);
+                }
+
+                reader2.Close();
+
+                command.Parameters.Clear();
+                command.CommandText = afaKoldal;
+
+                SqlDataReader reader3 = command.ExecuteReader();
+
+                while (reader3.Read())
+                {
+                    egyenleg -= Convert.ToInt32(reader3["afa_k"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az előző évi befektetett eszközök lekérésénél! -> " + ex.Message);
+            }
+            connection.Close();
+
+            return (egyenleg);
+        }
+
+        public static int MD(int ev)
+        {
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
+
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
 
             try
             {
@@ -8452,7 +8456,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8484,20 +8488,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMD()
+        public static int ElozoMD(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII')";
 
             try
             {
@@ -8522,7 +8526,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8554,20 +8558,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDI()
+        public static int MDI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDI')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDI')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDI')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDI')";
 
             try
             {
@@ -8592,7 +8596,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8624,20 +8628,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDI()
+        public static int ElozoMDI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI')";
 
             try
             {
@@ -8662,7 +8666,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8694,20 +8698,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDII()
+        public static int MDII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDII')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDII')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDII')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDII')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDII')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDII')";
 
             try
             {
@@ -8732,7 +8736,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8764,20 +8768,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDII()
+        public static int ElozoMDII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDII')";
 
             try
             {
@@ -8802,7 +8806,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8834,20 +8838,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDIII()
+        public static int MDIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIII')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIII')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDIII')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDIII')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDIII')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDIII')";
 
             try
             {
@@ -8872,7 +8876,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8904,20 +8908,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDIII()
+        public static int ElozoMDIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIII')";
 
             try
             {
@@ -8942,7 +8946,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -8974,20 +8978,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDIV()
+        public static int MDIV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIV')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIV')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIV')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDIV')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDIV')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDIV')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDIV')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDIV')";
 
             try
             {
@@ -9012,7 +9016,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9044,20 +9048,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDIV()
+        public static int ElozoMDIV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDIV')";
 
             try
             {
@@ -9082,7 +9086,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9114,20 +9118,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDV()
+        public static int MDV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDV')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDV')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDV')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDV')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDV')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDV')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDV')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDV')";
 
             try
             {
@@ -9152,7 +9156,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9184,20 +9188,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDV()
+        public static int ElozoMDV(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDV')";
 
             try
             {
@@ -9222,7 +9226,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9254,20 +9258,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDVI()
+        public static int MDVI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVI')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVI')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVI')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVI')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDVI')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDVI')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDVI')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDVI')";
 
             try
             {
@@ -9292,7 +9296,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9324,20 +9328,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDVI()
+        public static int ElozoMDVI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVI')";
 
             try
             {
@@ -9362,7 +9366,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9394,20 +9398,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MDVII()
+        public static int MDVII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVII')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVII')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVII')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDVII')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDVII')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDVII')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDVII')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDVII')";
 
             try
             {
@@ -9432,7 +9436,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9464,20 +9468,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMDVII()
+        public static int ElozoMDVII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDVII')";
 
             try
             {
@@ -9502,7 +9506,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9534,20 +9538,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ME()
+        public static int ME(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
             try
             {
@@ -9572,7 +9576,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9604,20 +9608,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoME()
+        public static int ElozoME(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1', 'ME2', 'ME3')";
 
             try
             {
@@ -9642,7 +9646,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9674,20 +9678,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ME1()
+        public static int ME1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('ME1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('ME1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME1')";
 
             try
             {
@@ -9712,7 +9716,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9744,20 +9748,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoME1()
+        public static int ElozoME1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME1')";
 
             try
             {
@@ -9782,7 +9786,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9814,20 +9818,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ME2()
+        public static int ME2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('ME2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('ME2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME2')";
 
             try
             {
@@ -9852,7 +9856,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9884,20 +9888,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoME2()
+        public static int ElozoME2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME2')";
 
             try
             {
@@ -9922,7 +9926,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -9954,20 +9958,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ME3()
+        public static int ME3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('ME3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('ME3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('ME3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('ME3')";
 
             try
             {
@@ -9992,7 +9996,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10024,20 +10028,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoME3()
+        public static int ElozoME3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('ME3')";
 
             try
             {
@@ -10062,7 +10066,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10094,20 +10098,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MF()
+        public static int MF(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
             try
             {
@@ -10132,7 +10136,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10164,20 +10168,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMF()
+        public static int ElozoMF(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
             try
             {
@@ -10202,7 +10206,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10234,20 +10238,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFI()
+        public static int MFI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
             try
             {
@@ -10272,7 +10276,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10304,20 +10308,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFI()
+        public static int ElozoMFI(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1', 'MFI2', 'MFI3', 'MFI4')";
 
             try
             {
@@ -10342,7 +10346,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10374,20 +10378,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFI1()
+        public static int MFI1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFI1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFI1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI1')";
 
             try
             {
@@ -10412,7 +10416,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10444,20 +10448,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFI1()
+        public static int ElozoMFI1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI1')";
 
             try
             {
@@ -10482,7 +10486,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10514,20 +10518,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFI2()
+        public static int MFI2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFI2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFI2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI2')";
 
             try
             {
@@ -10552,7 +10556,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10584,20 +10588,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFI2()
+        public static int ElozoMFI2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI2')";
 
             try
             {
@@ -10622,7 +10626,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10654,20 +10658,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFI3()
+        public static int MFI3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFI3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFI3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI3')";
 
             try
             {
@@ -10692,7 +10696,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10724,20 +10728,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFI3()
+        public static int ElozoMFI3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI3')";
 
             try
             {
@@ -10762,7 +10766,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10794,20 +10798,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFI4()
+        public static int MFI4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFI4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFI4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFI4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFI4')";
 
             try
             {
@@ -10832,7 +10836,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10864,20 +10868,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFI4()
+        public static int ElozoMFI4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFI4')";
 
             try
             {
@@ -10902,7 +10906,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -10934,20 +10938,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII()
+        public static int MFII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
             try
             {
@@ -10972,7 +10976,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11004,20 +11008,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII()
+        public static int ElozoMFII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9')";
 
             try
             {
@@ -11042,7 +11046,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11074,20 +11078,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII1()
+        public static int MFII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII1')";
 
             try
             {
@@ -11112,7 +11116,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11144,20 +11148,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII1()
+        public static int ElozoMFII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII1')";
 
             try
             {
@@ -11182,7 +11186,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11214,20 +11218,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII2()
+        public static int MFII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII2')";
 
             try
             {
@@ -11252,7 +11256,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11284,20 +11288,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII2()
+        public static int ElozoMFII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII2')";
 
             try
             {
@@ -11322,7 +11326,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11354,20 +11358,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII3()
+        public static int MFII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII3')";
 
             try
             {
@@ -11392,7 +11396,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11424,20 +11428,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII3()
+        public static int ElozoMFII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII3')";
 
             try
             {
@@ -11462,7 +11466,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11494,20 +11498,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII4()
+        public static int MFII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII4')";
 
             try
             {
@@ -11532,7 +11536,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11564,20 +11568,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII4()
+        public static int ElozoMFII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII4')";
 
             try
             {
@@ -11602,7 +11606,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11634,20 +11638,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII5()
+        public static int MFII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII5')";
 
             try
             {
@@ -11672,7 +11676,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11704,20 +11708,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII5()
+        public static int ElozoMFII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII5')";
 
             try
             {
@@ -11742,7 +11746,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11774,20 +11778,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII6()
+        public static int MFII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII6')";
 
             try
             {
@@ -11812,7 +11816,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11844,20 +11848,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII6()
+        public static int ElozoMFII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII6')";
 
             try
             {
@@ -11882,7 +11886,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11914,20 +11918,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII7()
+        public static int MFII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII7')";
 
             try
             {
@@ -11952,7 +11956,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -11984,20 +11988,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII7()
+        public static int ElozoMFII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII7')";
 
             try
             {
@@ -12022,7 +12026,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12054,20 +12058,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII8()
+        public static int MFII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII8')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII8')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII8')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII8')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII8')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII8')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII8')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII8')";
 
             try
             {
@@ -12092,7 +12096,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12124,20 +12128,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII8()
+        public static int ElozoMFII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII8')";
 
             try
             {
@@ -12162,7 +12166,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12194,20 +12198,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFII9()
+        public static int MFII9(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII9')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII9')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII9')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFII9')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFII9')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII9')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFII9')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFII9')";
 
             try
             {
@@ -12232,7 +12236,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12264,20 +12268,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFII9()
+        public static int ElozoMFII9(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFII9')";
 
             try
             {
@@ -12302,7 +12306,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12334,20 +12338,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII()
+        public static int MFIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
             try
             {
@@ -12372,7 +12376,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12404,20 +12408,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII()
+        public static int ElozoMFIII(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11')";
 
             try
             {
@@ -12442,7 +12446,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12474,20 +12478,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII1()
+        public static int MFIII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII1')";
 
             try
             {
@@ -12512,7 +12516,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12544,20 +12548,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII1()
+        public static int ElozoMFIII1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII1')";
 
             try
             {
@@ -12582,7 +12586,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12614,20 +12618,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII2()
+        public static int MFIII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII2')";
 
             try
             {
@@ -12652,7 +12656,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12684,20 +12688,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII2()
+        public static int ElozoMFIII2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII2')";
 
             try
             {
@@ -12722,7 +12726,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12754,20 +12758,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII3()
+        public static int MFIII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII3')";
 
             try
             {
@@ -12792,7 +12796,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12824,20 +12828,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII3()
+        public static int ElozoMFIII3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII3')";
 
             try
             {
@@ -12862,7 +12866,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12894,20 +12898,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII4()
+        public static int MFIII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII4')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII4')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII4')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII4')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII4')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII4')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII4')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII4')";
 
             try
             {
@@ -12932,7 +12936,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -12964,20 +12968,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII4()
+        public static int ElozoMFIII4(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII4')";
 
             try
             {
@@ -13002,7 +13006,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13034,20 +13038,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII5()
+        public static int MFIII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII5')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII5')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII5')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII5')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII5')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII5')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII5')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII5')";
 
             try
             {
@@ -13072,7 +13076,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13104,20 +13108,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII5()
+        public static int ElozoMFIII5(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII5')";
 
             try
             {
@@ -13142,7 +13146,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13174,20 +13178,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII6()
+        public static int MFIII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII6')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII6')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII6')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII6')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII6')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII6')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII6')";
 
             try
             {
@@ -13212,7 +13216,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13244,20 +13248,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII6()
+        public static int ElozoMFIII6(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII6')";
 
             try
             {
@@ -13282,7 +13286,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13314,20 +13318,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII7()
+        public static int MFIII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII7')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII7')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII7')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII7')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII7')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII7')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII7')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII7')";
 
             try
             {
@@ -13352,7 +13356,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13384,20 +13388,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII7()
+        public static int ElozoMFIII7(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII7')";
 
             try
             {
@@ -13422,7 +13426,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13454,20 +13458,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII8()
+        public static int MFIII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII8')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII8')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII8')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII8')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII8')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII8')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII8')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII8')";
 
             try
             {
@@ -13492,7 +13496,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13524,20 +13528,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII8()
+        public static int ElozoMFIII8(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII8')";
 
             try
             {
@@ -13562,7 +13566,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13594,20 +13598,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII9()
+        public static int MFIII9(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII9')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII9')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII9')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII9')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII9')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII9')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII9')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII9')";
 
             try
             {
@@ -13632,7 +13636,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13664,20 +13668,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII9()
+        public static int ElozoMFIII9(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII9')";
 
             try
             {
@@ -13702,7 +13706,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13734,20 +13738,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII10()
+        public static int MFIII10(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII10')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII10')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII10')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII10')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII10')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII10')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII10')";
 
             try
             {
@@ -13772,7 +13776,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13804,20 +13808,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII10()
+        public static int ElozoMFIII10(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII10')";
 
             try
             {
@@ -13842,7 +13846,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13874,20 +13878,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MFIII11()
+        public static int MFIII11(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII11')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII11')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII11')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MFIII11')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MFIII11')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII11')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MFIII11')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MFIII11')";
 
             try
             {
@@ -13912,7 +13916,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -13944,20 +13948,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMFIII11()
+        public static int ElozoMFIII11(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MFIII11')";
 
             try
             {
@@ -13982,7 +13986,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14014,20 +14018,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MG()
+        public static int MG(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
             try
             {
@@ -14052,7 +14056,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14084,20 +14088,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMG()
+        public static int ElozoMG(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1', 'MG2', 'MG3')";
 
             try
             {
@@ -14122,7 +14126,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14154,20 +14158,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MG1()
+        public static int MG1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG1')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MG1')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG1')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MG1')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG1')";
 
             try
             {
@@ -14192,7 +14196,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14224,20 +14228,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMG1()
+        public static int ElozoMG1(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG1')";
 
             try
             {
@@ -14262,7 +14266,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14294,20 +14298,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MG2()
+        public static int MG2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG2')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG2')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG2')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG2')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MG2')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG2')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MG2')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG2')";
 
             try
             {
@@ -14332,7 +14336,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14364,20 +14368,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMG2()
+        public static int ElozoMG2(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG2')";
 
             try
             {
@@ -14402,7 +14406,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14434,20 +14438,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MG3()
+        public static int MG3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MG3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MG3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MG3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MG3')";
 
             try
             {
@@ -14472,7 +14476,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14504,20 +14508,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMG3()
+        public static int ElozoMG3(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MG3')";
 
             try
             {
@@ -14542,7 +14546,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14574,20 +14578,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int MOsszesForras()
+        public static int MOsszesForras(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string Toldal = $"SELECT ISNULL({schema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Tszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
-            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string Koldal = $"SELECT ISNULL({schema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {schema}.fokonyv FULL JOIN {schema}.szamlatukor ON {schema}.fokonyv.Kszamla = {schema}.szamlatukor.szamlaszam WHERE (YEAR({schema}.fokonyv.teljesites) = {ev} OR {schema}.fokonyv.nyito = 1) AND {schema}.fokonyv.lezarva <> 1 AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
-            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam WHERE {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string afaToldal = $"SELECT ISNULL({schema}.afa.Tosszeg, 0) AS 'afa_t' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Tszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
-            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam WHERE  {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string afaKoldal = $"SELECT ISNULL({schema}.afa.Kosszeg, 0) AS 'afa_k' FROM {schema}.afa FULL JOIN {schema}.szamlatukor ON {schema}.afa.Kszamla = {schema}.szamlatukor.szamlaszam  WHERE {schema}.afa.teljesites LIKE '{ev}%' AND {schema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
             try
             {
@@ -14612,7 +14616,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 
@@ -14644,20 +14648,20 @@ namespace Zeusz.AdatbazisMuveletek
             return (egyenleg);
         }
 
-        public static int ElozoMOsszesForras()
+        public static int ElozoMOsszesForras(int ev)
         {
-            int egyenleg = 0;
+            schema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev)).ToString()); string elozoEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(ev) - 1).ToString()); int egyenleg = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string Toldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Tosszeg, 0) AS 'fokonyv_t' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
-            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string Koldal = $"SELECT ISNULL({elozoEvSchema}.fokonyv.Kosszeg, 0) AS 'fokonyv_k' FROM {elozoEvSchema}.fokonyv FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.fokonyv.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE (YEAR({elozoEvSchema}.fokonyv.teljesites) = {ev} - 1  OR {elozoEvSchema}.fokonyv.nyito = 1) AND {elozoEvSchema}.fokonyv.lezarva <> 1 AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
-            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE  {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string afaToldal = $"SELECT ISNULL({elozoEvSchema}.afa.Tosszeg, 0) AS 'afa_t' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Tszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
-            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
+            string afaKoldal = $"SELECT ISNULL({elozoEvSchema}.afa.Kosszeg, 0) AS 'afa_k' FROM {elozoEvSchema}.afa FULL JOIN {elozoEvSchema}.szamlatukor ON {elozoEvSchema}.afa.Kszamla = {elozoEvSchema}.szamlatukor.szamlaszam WHERE {elozoEvSchema}.afa.teljesites LIKE '{ev - 1}%' AND {elozoEvSchema}.szamlatukor.beszamolo IN('MDI', 'MDII', 'MDIII', 'MDIV', 'MDV', 'MDVI', 'MDVII', 'ME1', 'ME2', 'ME3', 'MFI1', 'MFI2', 'MFI3', 'MFI4', 'MFII1', 'MFII2', 'MFII3', 'MFII4', 'MFII5', 'MFII6', 'MFII7', 'MFII8', 'MFII9', 'MFIII1', 'MFIII2', 'MFIII3', 'MFIII4', 'MFIII5', 'MFIII6', 'MFIII7', 'MFIII8', 'MFIII9', 'MFIII10', 'MFIII11', 'MG1', 'MG2', 'MG3')";
 
             try
             {
@@ -14682,7 +14686,7 @@ namespace Zeusz.AdatbazisMuveletek
                 }
 
                 reader1.Close();
-
+                
                 command.Parameters.Clear();
                 command.CommandText = afaToldal;
 

@@ -98,7 +98,7 @@
             this.kSzamlaCbx.Location = new System.Drawing.Point(6, 84);
             this.kSzamlaCbx.Name = "kSzamlaCbx";
             this.kSzamlaCbx.Size = new System.Drawing.Size(380, 24);
-            this.kSzamlaCbx.TabIndex = 8;
+            this.kSzamlaCbx.TabIndex = 9;
             this.kSzamlaCbx.SelectedIndexChanged += new System.EventHandler(this.kSzamlaCbx_SelectedIndexChanged);
             // 
             // kSzamlaTxb
@@ -107,7 +107,7 @@
             this.kSzamlaTxb.Location = new System.Drawing.Point(141, 35);
             this.kSzamlaTxb.Name = "kSzamlaTxb";
             this.kSzamlaTxb.Size = new System.Drawing.Size(245, 26);
-            this.kSzamlaTxb.TabIndex = 7;
+            this.kSzamlaTxb.TabIndex = 8;
             this.kSzamlaTxb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.kSzamlaTxb_KeyPress);
             this.kSzamlaTxb.Leave += new System.EventHandler(this.kSzamlaTxb_Leave);
             // 
@@ -131,7 +131,7 @@
             this.groupBox3.MaximumSize = new System.Drawing.Size(386, 100);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(386, 100);
-            this.groupBox3.TabIndex = 43;
+            this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Teljesítési idők";
             // 
@@ -141,7 +141,7 @@
             this.afaTeljesitesDtp.Location = new System.Drawing.Point(171, 55);
             this.afaTeljesitesDtp.Name = "afaTeljesitesDtp";
             this.afaTeljesitesDtp.Size = new System.Drawing.Size(200, 26);
-            this.afaTeljesitesDtp.TabIndex = 15;
+            this.afaTeljesitesDtp.TabIndex = 14;
             // 
             // teljesitesDtp
             // 
@@ -149,7 +149,7 @@
             this.teljesitesDtp.Location = new System.Drawing.Point(171, 23);
             this.teljesitesDtp.Name = "teljesitesDtp";
             this.teljesitesDtp.Size = new System.Drawing.Size(200, 26);
-            this.teljesitesDtp.TabIndex = 14;
+            this.teljesitesDtp.TabIndex = 13;
             // 
             // label14
             // 
@@ -178,7 +178,7 @@
             this.rogzitesBtn.MaximumSize = new System.Drawing.Size(181, 70);
             this.rogzitesBtn.Name = "rogzitesBtn";
             this.rogzitesBtn.Size = new System.Drawing.Size(181, 70);
-            this.rogzitesBtn.TabIndex = 42;
+            this.rogzitesBtn.TabIndex = 19;
             this.rogzitesBtn.Text = "Rögzítés";
             this.rogzitesBtn.UseVisualStyleBackColor = false;
             this.rogzitesBtn.Click += new System.EventHandler(this.rogzitesBtn_Click);
@@ -193,7 +193,7 @@
             this.fizetesiModCbx.Location = new System.Drawing.Point(117, 499);
             this.fizetesiModCbx.Name = "fizetesiModCbx";
             this.fizetesiModCbx.Size = new System.Drawing.Size(287, 28);
-            this.fizetesiModCbx.TabIndex = 41;
+            this.fizetesiModCbx.TabIndex = 18;
             // 
             // label12
             // 
@@ -211,7 +211,7 @@
             this.kOsszegTxb.Location = new System.Drawing.Point(141, 130);
             this.kOsszegTxb.Name = "kOsszegTxb";
             this.kOsszegTxb.Size = new System.Drawing.Size(245, 26);
-            this.kOsszegTxb.TabIndex = 9;
+            this.kOsszegTxb.TabIndex = 10;
             this.kOsszegTxb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.kOsszegTxb_KeyPress);
             this.kOsszegTxb.Leave += new System.EventHandler(this.kOsszegTxb_Leave);
             // 
@@ -227,7 +227,7 @@
             this.esedekessegDtp.Location = new System.Drawing.Point(412, 438);
             this.esedekessegDtp.Name = "esedekessegDtp";
             this.esedekessegDtp.Size = new System.Drawing.Size(143, 26);
-            this.esedekessegDtp.TabIndex = 39;
+            this.esedekessegDtp.TabIndex = 16;
             // 
             // label11
             // 
@@ -261,7 +261,7 @@
             this.szamlaKelteDtp.Location = new System.Drawing.Point(118, 438);
             this.szamlaKelteDtp.Name = "szamlaKelteDtp";
             this.szamlaKelteDtp.Size = new System.Drawing.Size(143, 26);
-            this.szamlaKelteDtp.TabIndex = 38;
+            this.szamlaKelteDtp.TabIndex = 15;
             // 
             // gazdasagiEsemenyTxb
             // 
@@ -270,7 +270,7 @@
             this.gazdasagiEsemenyTxb.Location = new System.Drawing.Point(172, 380);
             this.gazdasagiEsemenyTxb.Name = "gazdasagiEsemenyTxb";
             this.gazdasagiEsemenyTxb.Size = new System.Drawing.Size(650, 26);
-            this.gazdasagiEsemenyTxb.TabIndex = 35;
+            this.gazdasagiEsemenyTxb.TabIndex = 11;
             // 
             // label7
             // 
@@ -296,7 +296,7 @@
             this.afakulcsCbx.Location = new System.Drawing.Point(647, 440);
             this.afakulcsCbx.Name = "afakulcsCbx";
             this.afakulcsCbx.Size = new System.Drawing.Size(73, 28);
-            this.afakulcsCbx.TabIndex = 45;
+            this.afakulcsCbx.TabIndex = 17;
             // 
             // groupBox2
             // 
@@ -310,7 +310,7 @@
             this.groupBox2.MaximumSize = new System.Drawing.Size(392, 178);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(392, 178);
-            this.groupBox2.TabIndex = 33;
+            this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Követel";
             // 
@@ -320,7 +320,7 @@
             this.tOsszegTxb.Location = new System.Drawing.Point(141, 130);
             this.tOsszegTxb.Name = "tOsszegTxb";
             this.tOsszegTxb.Size = new System.Drawing.Size(245, 26);
-            this.tOsszegTxb.TabIndex = 4;
+            this.tOsszegTxb.TabIndex = 6;
             this.tOsszegTxb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tOsszegTxb_KeyPress);
             this.tOsszegTxb.Leave += new System.EventHandler(this.tOsszegTxb_Leave);
             // 
@@ -334,7 +334,7 @@
             this.tSzamlaCbx.Location = new System.Drawing.Point(6, 84);
             this.tSzamlaCbx.Name = "tSzamlaCbx";
             this.tSzamlaCbx.Size = new System.Drawing.Size(380, 24);
-            this.tSzamlaCbx.TabIndex = 3;
+            this.tSzamlaCbx.TabIndex = 5;
             this.tSzamlaCbx.SelectedIndexChanged += new System.EventHandler(this.tSzamlaCbx_SelectedIndexChanged);
             // 
             // tSzamlaTxb
@@ -343,7 +343,7 @@
             this.tSzamlaTxb.Location = new System.Drawing.Point(141, 35);
             this.tSzamlaTxb.Name = "tSzamlaTxb";
             this.tSzamlaTxb.Size = new System.Drawing.Size(245, 26);
-            this.tSzamlaTxb.TabIndex = 2;
+            this.tSzamlaTxb.TabIndex = 4;
             this.tSzamlaTxb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tSzamlaTxb_KeyPress);
             this.tSzamlaTxb.Leave += new System.EventHandler(this.tSzamlaTxb_Leave);
             // 
@@ -387,7 +387,7 @@
             this.groupBox1.MaximumSize = new System.Drawing.Size(392, 178);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(392, 178);
-            this.groupBox1.TabIndex = 32;
+            this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tartozik";
             // 
@@ -398,7 +398,7 @@
             this.szamlaszamTxb.Location = new System.Drawing.Point(133, 117);
             this.szamlaszamTxb.Name = "szamlaszamTxb";
             this.szamlaszamTxb.Size = new System.Drawing.Size(271, 26);
-            this.szamlaszamTxb.TabIndex = 31;
+            this.szamlaszamTxb.TabIndex = 2;
             // 
             // label3
             // 
@@ -420,7 +420,7 @@
             this.partnerCbx.Location = new System.Drawing.Point(133, 59);
             this.partnerCbx.Name = "partnerCbx";
             this.partnerCbx.Size = new System.Drawing.Size(271, 28);
-            this.partnerCbx.TabIndex = 29;
+            this.partnerCbx.TabIndex = 1;
             // 
             // label2
             // 
@@ -451,7 +451,7 @@
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
             this.kilepesBtn.Size = new System.Drawing.Size(25, 25);
-            this.kilepesBtn.TabIndex = 26;
+            this.kilepesBtn.TabIndex = 20;
             this.kilepesBtn.Text = "X";
             this.kilepesBtn.UseVisualStyleBackColor = false;
             this.kilepesBtn.Click += new System.EventHandler(this.kilepesBtn_Click);

@@ -81,6 +81,7 @@
             this.lekerDatumLbl.Size = new System.Drawing.Size(54, 20);
             this.lekerDatumLbl.TabIndex = 38;
             this.lekerDatumLbl.Text = "dátum";
+            this.lekerDatumLbl.Visible = false;
             // 
             // excelExportBtn
             // 
@@ -93,6 +94,7 @@
             this.excelExportBtn.TabIndex = 39;
             this.excelExportBtn.Text = "Exportálás Excelbe";
             this.excelExportBtn.UseVisualStyleBackColor = false;
+            this.excelExportBtn.Visible = false;
             this.excelExportBtn.Click += new System.EventHandler(this.excelExportBtn_Click);
             // 
             // csvExportBtn
@@ -106,6 +108,7 @@
             this.csvExportBtn.TabIndex = 36;
             this.csvExportBtn.Text = "Exportálás CSV-be";
             this.csvExportBtn.UseVisualStyleBackColor = false;
+            this.csvExportBtn.Visible = false;
             this.csvExportBtn.Click += new System.EventHandler(this.csvExportBtn_Click);
             // 
             // label6
@@ -193,6 +196,7 @@
             this.evTxb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.evTxb.Location = new System.Drawing.Point(555, 14);
             this.evTxb.Name = "evTxb";
+            this.evTxb.ReadOnly = true;
             this.evTxb.Size = new System.Drawing.Size(100, 26);
             this.evTxb.TabIndex = 42;
             // 

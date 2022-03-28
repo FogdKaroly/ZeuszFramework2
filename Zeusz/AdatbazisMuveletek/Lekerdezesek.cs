@@ -1135,33 +1135,33 @@ namespace Zeusz.AdatbazisMuveletek
         //
         //Mutatószámok / pénzügyi helyzet
         //
-        public static double AdossagallomanyAranyaLekerdezes(string schema)
+        public static double AdossagallomanyAranyaLekerdezes(string schema, int ev)
         {
             double arany;
-            double adossagallomany = AdatbazisMuveletek.Merleg.MFI() + AdatbazisMuveletek.Merleg.MFII();
-            double sajatToke = AdatbazisMuveletek.Merleg.MD();
+            double adossagallomany = AdatbazisMuveletek.Merleg.MFI(ev) + AdatbazisMuveletek.Merleg.MFII(ev);
+            double sajatToke = AdatbazisMuveletek.Merleg.MD(ev);
 
             arany = adossagallomany / (adossagallomany + sajatToke) * 100;
 
             return arany;
         }
 
-        public static double LikviditasiMutatoLekeres(string schema)
+        public static double LikviditasiMutatoLekeres(string schema, int ev)
         {
             double arany = 0;
-            double forgoeszkoz = AdatbazisMuveletek.Merleg.MB();
-            double rlk = AdatbazisMuveletek.Merleg.MFIII();
+            double forgoeszkoz = AdatbazisMuveletek.Merleg.MB(ev);
+            double rlk = AdatbazisMuveletek.Merleg.MFIII(ev);
 
             arany = (forgoeszkoz / rlk);
 
             return arany;
         }
 
-        public static double LikviditasiGyorsrataLekerdezes(string schema)
+        public static double LikviditasiGyorsrataLekerdezes(string schema, int ev)
         {
             double arany = 0;
-            double penzeszkErtekpapKoveteles = AdatbazisMuveletek.Merleg.MBII() + AdatbazisMuveletek.Merleg.MBIII() + AdatbazisMuveletek.Merleg.MBIV();
-            double rlk = AdatbazisMuveletek.Merleg.MFIII();
+            double penzeszkErtekpapKoveteles = AdatbazisMuveletek.Merleg.MBII(ev) + AdatbazisMuveletek.Merleg.MBIII(ev) + AdatbazisMuveletek.Merleg.MBIV(ev);
+            double rlk = AdatbazisMuveletek.Merleg.MFIII(ev);
             /*
             connection = AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
@@ -1280,10 +1280,10 @@ namespace Zeusz.AdatbazisMuveletek
             return arany;
         }
 
-        public static double NettoMukodoTokeLekerdezes(string schema)
+        public static double NettoMukodoTokeLekerdezes(string schema, int ev)
         {
-            double forgoeszkozok = AdatbazisMuveletek.Merleg.MB();
-            double rlk = AdatbazisMuveletek.Merleg.MFIII();
+            double forgoeszkozok = AdatbazisMuveletek.Merleg.MB(ev);
+            double rlk = AdatbazisMuveletek.Merleg.MFIII(ev);
 
             return forgoeszkozok - rlk;
         }
@@ -1291,44 +1291,44 @@ namespace Zeusz.AdatbazisMuveletek
         //
         //Mutatószámok / vagyoni helyzet
         //
-        public static double TokeszerkezetiMutatoLekerdezes(string schema)
+        public static double TokeszerkezetiMutatoLekerdezes(string schema, int ev)
         {
             double arany = 0;
-            double sajatToke = AdatbazisMuveletek.Merleg.MD();
-            double kotelezettsegek = AdatbazisMuveletek.Merleg.MF();
+            double sajatToke = AdatbazisMuveletek.Merleg.MD(ev);
+            double kotelezettsegek = AdatbazisMuveletek.Merleg.MF(ev);
 
             arany = (sajatToke / kotelezettsegek) * 100;
 
             return arany;
         }
 
-        public static double BefektetettEszkozFedezetettsegLekerdezes(string schema)
+        public static double BefektetettEszkozFedezetettsegLekerdezes(string schema, int ev)
         {
             double arany = 0;
-            double sajatToke = AdatbazisMuveletek.Merleg.MD();
-            double befEszk = AdatbazisMuveletek.Merleg.MA();
+            double sajatToke = AdatbazisMuveletek.Merleg.MD(ev);
+            double befEszk = AdatbazisMuveletek.Merleg.MA(ev);
 
             arany = (sajatToke / befEszk) * 100;
 
             return arany;
         }
 
-        public static double VagyonszerkezetLekeres(string schema)
+        public static double VagyonszerkezetLekeres(string schema, int ev)
         {
             double arany = 0;
-            double befEszk = AdatbazisMuveletek.Merleg.MA();
-            double forgoeszk = AdatbazisMuveletek.Merleg.MB();
+            double befEszk = AdatbazisMuveletek.Merleg.MA(ev);
+            double forgoeszk = AdatbazisMuveletek.Merleg.MB(ev);
 
             arany = (befEszk / forgoeszk) * 100;
 
             return arany;
         }
 
-        public static double BefektetettEszkozokAranyaLekerdezes(string schema)
+        public static double BefektetettEszkozokAranyaLekerdezes(string schema, int ev)
         {
             double arany = 0;
-            double befEszk = AdatbazisMuveletek.Merleg.MA();
-            double osszesEszk = AdatbazisMuveletek.Merleg.MA() + AdatbazisMuveletek.Merleg.MB() + AdatbazisMuveletek.Merleg.MC();
+            double befEszk = AdatbazisMuveletek.Merleg.MA(ev);
+            double osszesEszk = AdatbazisMuveletek.Merleg.MA(ev) + AdatbazisMuveletek.Merleg.MB(ev) + AdatbazisMuveletek.Merleg.MC(ev);
 
             arany = (befEszk / osszesEszk) * 100;
 
@@ -1340,18 +1340,19 @@ namespace Zeusz.AdatbazisMuveletek
         //
         public static List<Zeusz.Lekerdezesek.KoltsegEgyenleg> BevetelKtsgArany(string schema, int ev)
         {
+            string lekertSchema =  schema.Replace(schema.Substring(schema.Length - 4, 4), ev.ToString());
             List<Zeusz.Lekerdezesek.KoltsegEgyenleg> egyenlegek = new List<Zeusz.Lekerdezesek.KoltsegEgyenleg>();
             double puffer = 0;
 
             connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            for (int i = 1; i < 12; i++)
+            for (int i = 1; i <= 12; i++)
             {
-                string bevetelLekeresT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND Tszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
-                string bevetelLekeresK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND Kszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
-                string koltsegRafordT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND (Tszamla LIKE '5%' OR Tszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
-                string koltsegRafordK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {schema}.fokonyv WHERE YEAR(teljesites) = {ev} AND (Kszamla LIKE '5%' OR Kszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string bevetelLekeresT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {lekertSchema}.fokonyv WHERE YEAR(teljesites) = {ev} AND Tszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string bevetelLekeresK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {lekertSchema}.fokonyv WHERE YEAR(teljesites) = {ev} AND Kszamla LIKE '9%' AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string koltsegRafordT = $"SELECT ISNULL(SUM(Tosszeg), 0) FROM {lekertSchema}.fokonyv WHERE YEAR(teljesites) = {ev} AND (Tszamla LIKE '5%' OR Tszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
+                string koltsegRafordK = $"SELECT ISNULL(SUM(Kosszeg), 0) FROM {lekertSchema}.fokonyv WHERE YEAR(teljesites) = {ev} AND (Kszamla LIKE '5%' OR Kszamla LIKE '8%') AND lezarva = 0 AND MONTH(teljesites) = {i}";
 
                 try
                 {

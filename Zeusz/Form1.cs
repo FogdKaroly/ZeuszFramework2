@@ -17,13 +17,13 @@ namespace Zeusz
             InitializeComponent();
 
             DesignBeallitas();
-            
+            /*
             BejelentkezesFrm bejelentkezesFrm = new BejelentkezesFrm();
             bejelentkezesFrm.ShowDialog();
 
             CegvalasztoFrm cegvalasztoFrm = new CegvalasztoFrm();
             cegvalasztoFrm.ShowDialog();
-
+            */
             megnyitasFoablakban(new KezdokepernyoFrm());
 
             this.Text = "Felhasználó: " + BejelentkezesFrm.Felhasznalo.Felhasznalonev + " | Kiválasztott cég: " + AdatbazisMuveletek.AktualisAdatbazis.KivalasztottAdatbazis;
@@ -84,6 +84,7 @@ namespace Zeusz
             beallitasokAlmenuPanel.Visible = false;
             sugoAlmenuPanel.Visible = false;
         }
+
         private void AlmenuElrejtes()
         {
             if (konyvelesAlmenuPanel.Visible == true)
@@ -103,6 +104,7 @@ namespace Zeusz
                 sugoAlmenuPanel.Visible = false;
             }
         }
+
         private void AlmenuMegjelenites(Panel almenu)
         {
             if (almenu.Visible == false)
@@ -370,7 +372,5 @@ namespace Zeusz
             megnyitandoForm.BringToFront();
             megnyitandoForm.Show();
         }
-
-        
     }
 }

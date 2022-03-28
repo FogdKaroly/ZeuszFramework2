@@ -57,8 +57,10 @@
             this.legutobbiTetelekDgv.Name = "legutobbiTetelekDgv";
             this.legutobbiTetelekDgv.ReadOnly = true;
             this.legutobbiTetelekDgv.RowTemplate.Height = 25;
+            this.legutobbiTetelekDgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.legutobbiTetelekDgv.Size = new System.Drawing.Size(834, 661);
             this.legutobbiTetelekDgv.TabIndex = 0;
+            this.legutobbiTetelekDgv.DoubleClick += new System.EventHandler(this.legutobbiTetelekDgv_DoubleClick);
             // 
             // sorszam
             // 

@@ -413,9 +413,6 @@ namespace Zeusz.AdatbazisMuveletek
                 konyvFeltoltK.Parameters.AddWithValue("@konyvelte", tetel.Konyvelte);
                 konyvFeltoltK.Parameters.AddWithValue("@nyitott_vevo", false);
                 konyvFeltoltK.ExecuteNonQuery();
-
-
-
             }
             catch (Exception ex)
             {
@@ -763,14 +760,14 @@ namespace Zeusz.AdatbazisMuveletek
             try
             {
                 SqlCommand cmd = new SqlCommand(konyvelesT, connection);
-                cmd.Parameters.AddWithValue("@teljesites", Convert.ToDateTime(DateTime.Now.ToShortDateString()));
+                cmd.Parameters.AddWithValue("@teljesites", Convert.ToDateTime((DateTime.Now.Year - 1) + "-12-31"));
                 cmd.Parameters.AddWithValue("@konyveles_datuma", DateTime.Now);
                 cmd.Parameters.AddWithValue("@konyvelte", BejelentkezesFrm.Felhasznalo.Felhasznalonev);
                 cmd.ExecuteNonQuery();
 
                 cmd.Parameters.Clear();
                 cmd.CommandText = konyvelesK;
-                cmd.Parameters.AddWithValue("@teljesites", Convert.ToDateTime(DateTime.Now.ToShortDateString()));
+                cmd.Parameters.AddWithValue("@teljesites", Convert.ToDateTime((DateTime.Now.Year - 1) + "-12-31"));
                 cmd.Parameters.AddWithValue("@konyveles_datuma", DateTime.Now);
                 cmd.Parameters.AddWithValue("@konyvelte", BejelentkezesFrm.Felhasznalo.Felhasznalonev);
                 cmd.ExecuteNonQuery();
@@ -778,6 +775,55 @@ namespace Zeusz.AdatbazisMuveletek
             catch (Exception ex)
             {
                 throw new Exception("Hiba az adótott eredmény könyvelésénél! -> " + ex.Message);
+            }
+
+            connection.Close();
+        }
+
+        public static void AfaZaras(string schema)
+        {
+            connection = AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string visszaiZaras = $"SELECT SUM(Tosszeg) FROM {schema}.afa WHERE Tszamla = 466 teljesites like '{schema.Substring(schema.Length - 4, 4)}%'";
+            string fizetendoZaras = $"SELECT SUM(Kosszeg) FROM {schema}.afa WHERE Kszamla = 467 teljesites like '{schema.Substring(schema.Length - 4, 4)}%'";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(visszaiZaras, connection);
+                double vissza = Convert.ToDouble(cmd.ExecuteScalar());
+                cmd.Parameters.Clear();
+
+                cmd.CommandText = fizetendoZaras;
+                double fizetendo = Convert.ToDouble(cmd.ExecuteScalar());
+
+                string konyveles466T = $"INSERT INTO {schema}.fokonyv(Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, teljesites, konyveles_datuma, konyvelte) VALUES(468, 466, {vissza}, 0, '466 Zaras', '{schema.Substring(schema.Length - 4, 4)}-12-31', {DateTime.Now}, 'admin'";
+
+                string konyveles466K = $"INSERT INTO {schema}.fokonyv(Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, teljesites, konyveles_datuma, konyvelte) VALUES(468, 466, 0, {vissza}, '466 Zaras', '{schema.Substring(schema.Length - 4, 4)}-12-31', {DateTime.Now}, 'admin'";
+
+                string konyveles467T = $"INSERT INTO {schema}.fokonyv(Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, teljesites, konyveles_datuma, konyvelte) VALUES(467, 468, {fizetendo}, 0, '467 Zaras', '{schema.Substring(schema.Length - 4, 4)}-12-31', {DateTime.Now}, 'admin'";
+
+                string konyveles467K = $"INSERT INTO {schema}.fokonyv(Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, teljesites, konyveles_datuma, konyvelte) VALUES(467, 468, 0, {fizetendo}, '467 Zaras', '{schema.Substring(schema.Length - 4, 4)}-12-31', {DateTime.Now}, 'admin'";
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = konyveles466T;
+                cmd.ExecuteNonQuery();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = konyveles466K;
+                cmd.ExecuteNonQuery();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = konyveles467T;
+                cmd.ExecuteNonQuery();
+
+                cmd.Parameters.Clear();
+                cmd.CommandText = konyveles467K;
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az áfa zárásánál! -> " + ex.Message);
             }
 
             connection.Close();
@@ -920,34 +966,139 @@ namespace Zeusz.AdatbazisMuveletek
 
                 if (tetel.TSzamla != "493" || tetel.KSzamla != "493")
                 {
-                    string feltoltes = $"INSERT INTO {ujEvSchema}.fokonyv(Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, teljesites, konyveles_datuma, konyvelte, lezarva) VALUES(@Tszamla, @Kszamla, @Tosszeg, @Kosszeg, @gazdasagi_esemeny, @teljesites, @konyveles_datuma, @konyvelte, @lezarva);";
+                    string feltoltes = $"INSERT INTO {ujEvSchema}.fokonyv(Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, teljesites, afa_teljesites, konyveles_datuma, konyvelte, lezarva, nyito) VALUES(@Tszamla, @Kszamla, @Tosszeg, @Kosszeg, @gazdasagi_esemeny, @teljesites, @afa_teljesites, @konyveles_datuma, @konyvelte, @lezarva, @nyito);";
                     SqlCommand cmd = new SqlCommand(feltoltes, connection);
                     cmd.Parameters.AddWithValue("@Tszamla", tetel.TSzamla);
                     cmd.Parameters.AddWithValue("@Kszamla", tetel.KSzamla);
                     cmd.Parameters.AddWithValue("@Tosszeg", tetel.TOsszeg);
                     cmd.Parameters.AddWithValue("@Kosszeg", tetel.KOsszeg);
-                    cmd.Parameters.AddWithValue("@gazdasagi_esemeny", tetel.Gazdasagi_esemeny);
-                    cmd.Parameters.AddWithValue("@teljesites", Convert.ToDateTime(DateTime.Now.ToShortDateString()));
+                    cmd.Parameters.AddWithValue("@gazdasagi_esemeny", "Nyitás");
+                    cmd.Parameters.AddWithValue("@teljesites", Convert.ToDateTime(DateTime.Now.Year + "-01-01"));
+                    cmd.Parameters.AddWithValue("@afa_teljesites", tetel.AfaTeljesites == DateTime.MinValue ? Convert.ToDateTime("1900-01-01") : tetel.AfaTeljesites);
                     cmd.Parameters.AddWithValue("@konyveles_datuma", DateTime.Now);
                     cmd.Parameters.AddWithValue("@konyvelte", BejelentkezesFrm.Felhasznalo.Felhasznalonev);
                     cmd.Parameters.AddWithValue("@lezarva", 0);
+                    cmd.Parameters.AddWithValue("@nyito", 1);
                     cmd.ExecuteNonQuery();
                 }
             }
 
-            string attoltes = $"INSERT INTO {ujEvSchema}.fokonyv SELECT * FROM {schema}.fokonyv WHERE YEAR('teljesites') = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};" +
-                $"DELETE FROM {schema}.fokonyv WHERE YEAR('teljesites') = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};" +
-                $"INSERT INTO {ujEvSchema}.afa(fokonyv_id, Tszamla, Kszamla, Tosszeg, Kosszeg, afakulcs) SELECT {schema}.fokonyv.id AS 'fokonyv_id', {schema}.afa.Tszamla, {schema}.afa.Kszamla, {schema}.fokonyv.Tosszeg, {schema}.afa.Kosszeg, {schema}.afa.afakulcs FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1} AND {schema}.afa.afakulcs IS NOT NULL;" +
-                $"DELETE FROM {schema}.afa INNER JOIN {schema}.fokonyv ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};";
+            string fokonyvAttoltes = $"INSERT INTO {ujEvSchema}.fokonyv(partnerkod, szamlaszam, Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, fizetesimod, teljesites, afa_teljesites, kelt, esedekesseg, konyveles_datuma, konyvelte, nyitott_vevo, nyitott_szallito, teljesitve, lezarva, nyito) SELECT partnerkod, szamlaszam, Tszamla, Kszamla, Tosszeg, Kosszeg, gazdasagi_esemeny, fizetesimod, teljesites, afa_teljesites, kelt, esedekesseg, konyveles_datuma, konyvelte, nyitott_vevo, nyitott_szallito, teljesitve, lezarva, nyito FROM {schema}.fokonyv WHERE YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1} AND {schema}.fokonyv.lezarva <> 1;";
+
+            string elozoFokonyvModositas = $"UPDATE {schema}.fokonyv SET Tosszeg = 0, Kosszeg = 0 WHERE YEAR(teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};";
+
+            //string afaAttoltes = $"INSERT INTO {ujEvSchema}.afa(fokonyv_id, Tszamla, Kszamla, Tosszeg, Kosszeg, afakulcs, teljesites) SELECT {schema}.fokonyv.id AS 'fokonyv_id', {schema}.afa.Tszamla, {schema}.afa.Kszamla, {schema}.fokonyv.Tosszeg, {schema}.afa.Kosszeg, {schema}.afa.afakulcs, {schema}.afa.teljesites FROM {schema}.afa FULL JOIN {schema}.fokonyv ON {schema}.fokonyv.id = {schema}.afa.fokonyv_id WHERE YEAR({schema}.fokonyv.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1} AND {schema}.afa.afakulcs IS NOT NULL;";
+                
+            string elozoAfaModositas = $"UPDATE {schema}.afa SET Tosszeg = 0, Kosszeg = 0 WHERE YEAR({schema}.afa.teljesites) = {Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1};";
 
             try
             {
-                SqlCommand cmd = new SqlCommand(attoltes, connection);
+                SqlCommand cmd = new SqlCommand(fokonyvAttoltes, connection);
                 cmd.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                throw new Exception("Hiba az újévi könyvelt adatok áttöltésénél! -> " + ex.Message);
+                throw new Exception("Hiba az főkönyv áttöltésénél! -> " + ex.Message);
+            }
+            try
+            {
+                SqlCommand cmd = new SqlCommand(elozoFokonyvModositas, connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az előző főkönyv módosításnál! -> " + ex.Message);
+            }
+            /*try
+            {
+                SqlCommand cmd = new SqlCommand(afaAttoltes, connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az áfa áttöltésénél! -> " + ex.Message);
+            }*/
+            try
+            {
+                SqlCommand cmd = new SqlCommand(elozoAfaModositas, connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az előző áfa módosításnál! -> " + ex.Message);
+            }
+
+            connection.Close();
+        }
+
+        public static void AfaRendezes(string schema)
+        {
+            string ujEvSchema = schema.Replace(schema.Substring(schema.Length - 4, 4), (Convert.ToInt32(schema.Substring(schema.Length - 4, 4)) + 1).ToString());
+
+            connection = AdatbazisMuveletek.AdatbazisKapcsolodas.Kapcsolodas();
+            connection.Open();
+
+            string vevoT = $"SELECT id, Tosszeg, Kosszeg FROM {ujEvSchema}.fokonyv WHERE {ujEvSchema}.fokonyv.nyitott_vevo = 1";
+            string szallitoT = $"SELECT id, Tosszeg, Kosszeg FROM {ujEvSchema}.fokonyv WHERE {ujEvSchema}.fokonyv.nyitott_szallito = 1";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(vevoT, connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while(reader.Read())
+                {
+                    string vevoK = $"SELECT Kosszeg FROM {ujEvSchema}.fokonyv WHERE id = {reader["id"]} + 1";
+                    SqlCommand vevoKLeker = new SqlCommand(vevoK, connection);
+                    double kovetel = Convert.ToDouble(vevoKLeker.ExecuteScalar());
+
+                    string vevoFeltolt = $"INSERT INTO {ujEvSchema}.afa(fokonyv_id, Tszamla, Kszamla, Tosszeg, Kosszeg, afakulcs, teljesites) VALUES(@fokonyv_id, @Tszamla, @Kszamla, @Tosszeg, @Kosszeg, @afakulcs, @teljesites)";
+                    SqlCommand vevoFeltoltes = new SqlCommand(vevoFeltolt, connection);
+                    vevoFeltoltes.Parameters.AddWithValue("@fokonyv_id", reader["id"]);
+                    vevoFeltoltes.Parameters.AddWithValue("@Tszamla", reader["Tszamla"]);
+                    vevoFeltoltes.Parameters.AddWithValue("@Kszamla", "467");
+                    vevoFeltoltes.Parameters.AddWithValue("@Tosszeg", reader["Tosszeg"]);
+                    vevoFeltoltes.Parameters.AddWithValue("@Kosszeg", 0);
+                    vevoFeltoltes.Parameters.AddWithValue("@afakulcs", "");
+                    vevoFeltoltes.Parameters.AddWithValue("@teljesites", reader["afa_teljesites"]);
+                    
+                    vevoFeltoltes.ExecuteNonQuery();
+                    
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az áfa adatok feltöltésénél! -> " + ex.Message);
+            }
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(szallitoT, connection);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string szallitoK = $"SELECT Kosszeg FROM {ujEvSchema}.fokonyv WHERE id = {reader["id"]} + 1";
+                    SqlCommand szallitoLeker = new SqlCommand(szallitoK, connection);
+                    double kovetel = Convert.ToDouble(szallitoLeker.ExecuteScalar());
+
+                    string szallitoFeltolt = $"INSERT INTO {ujEvSchema}.afa(fokonyv_id, Tszamla, Kszamla, Tosszeg, Kosszeg, afakulcs, teljesites) VALUES(@fokonyv_id, @Tszamla, @Kszamla, @Tosszeg, @Kosszeg, @afakulcs, @teljesites)";
+                    SqlCommand szallitoFeltoltes = new SqlCommand(szallitoFeltolt, connection);
+                    szallitoFeltoltes.Parameters.AddWithValue("@fokonyv_id", reader["id"]);
+                    szallitoFeltoltes.Parameters.AddWithValue("@Tszamla", "466");
+                    szallitoFeltoltes.Parameters.AddWithValue("@Kszamla", reader["Kszamla"]);
+                    szallitoFeltoltes.Parameters.AddWithValue("@Tosszeg", 0);
+                    szallitoFeltoltes.Parameters.AddWithValue("@Kosszeg", reader["Kosszeg"]);
+                    szallitoFeltoltes.Parameters.AddWithValue("@afakulcs", "");
+                    szallitoFeltoltes.Parameters.AddWithValue("@teljesites", reader["afa_teljesites"]);
+
+                    szallitoFeltoltes.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Hiba az áfa adatok feltöltésénél! -> " + ex.Message);
             }
 
             connection.Close();

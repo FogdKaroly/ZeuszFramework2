@@ -36,13 +36,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // kilepesBtn
             // 
             this.kilepesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.kilepesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.kilepesBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold);
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.MaximumSize = new System.Drawing.Size(25, 25);
             this.kilepesBtn.Name = "kilepesBtn";
@@ -55,7 +56,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))));
             this.label1.Location = new System.Drawing.Point(55, 17);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(150, 20);
@@ -122,12 +123,22 @@
             this.label5.TabIndex = 19;
             this.label5.Text = "Ha lezárjuk az évet, akkor nem lesz lehetőség új könyvelési tételt felvinni";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(77, 292);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(360, 20);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "A nyitott vevő és szállító tételeket zárni szükséges";
+            // 
             // ZarasFrm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(239)))), ((int)(((byte)(237)))));
             this.ClientSize = new System.Drawing.Size(834, 661);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button1);
@@ -136,7 +147,7 @@
             this.Controls.Add(this.zarasBtn);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.kilepesBtn);
-            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ZarasFrm";
             this.Text = "ZarasFrm";
@@ -155,5 +166,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
     }
 }

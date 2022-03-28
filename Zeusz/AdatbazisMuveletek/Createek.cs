@@ -86,6 +86,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"gazdasagi_esemeny VARCHAR(300) NOT NULL," +
 					"fizetesimod CHAR(12)," +
 					"teljesites DATE," +
+                    "afa_teljesites DATE," +
 					"kelt DATE," +
 					"esedekesseg DATE," +
 					"konyveles_datuma DATETIME," +
@@ -94,6 +95,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"nyitott_szallito BIT," +
 					"teljesitve DATE," +
 					"lezarva BIT," +
+                    "nyito BIT," +
 					$"CONSTRAINT FK_fokonyv_partnertorzs FOREIGN KEY(partnerkod) REFERENCES {schema}.partnertorzs(partnerkod)" +
 				");";
 
@@ -105,6 +107,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"Tosszeg FLOAT(53) NOT NULL," +
 					"Kosszeg FLOAT(53) NOT NULL," +
 					"afakulcs INT," +
+                    "teljesites, DATE" +
 					$"CONSTRAINT FK_afa_fokonyv FOREIGN KEY(fokonyv_id) REFERENCES {schema}.fokonyv(id)" +
 				");";
 
@@ -212,6 +215,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"gazdasagi_esemeny VARCHAR(300) NOT NULL," +
 					"fizetesimod CHAR(12)," +
 					"teljesites DATE," +
+                    "afa_teljesites DATE," +
 					"kelt DATE," +
 					"esedekesseg DATE," +
 					"konyveles_datuma DATETIME," +
@@ -220,6 +224,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"nyitott_szallito BIT," +
 					"teljesitve DATE," +
 					"lezarva BIT," +
+                    "nyito BIT," +
 					$"CONSTRAINT FK_fokonyv_partnertorzs FOREIGN KEY(partnerkod) REFERENCES {schema}.partnertorzs(partnerkod)" +
 				");";
 
@@ -231,6 +236,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"Tosszeg FLOAT(53) NOT NULL," +
 					"Kosszeg FLOAT(53) NOT NULL," +
 					"afakulcs INT," +
+                    "teljesites DATE" +
 					$"CONSTRAINT FK_afa_fokonyv FOREIGN KEY(fokonyv_id) REFERENCES {schema}.fokonyv(id)" +
 				");";
 
@@ -352,6 +358,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"gazdasagi_esemeny VARCHAR(300) NOT NULL," +
 					"fizetesimod CHAR(12)," +
 					"teljesites DATE," +
+                    "afa_teljesites DATE," +
 					"kelt DATE," +
 					"esedekesseg DATE," +
 					"konyveles_datuma DATETIME," +
@@ -360,6 +367,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"nyitott_szallito BIT," +
 					"teljesitve DATE," +
 					"lezarva BIT," +
+                    "nyito BIT," +
 					$"CONSTRAINT FK_fokonyv_partnertorzs FOREIGN KEY(partnerkod) REFERENCES {ujEvSchema}.partnertorzs(partnerkod)" +
 				");";
 
@@ -371,6 +379,7 @@ namespace Zeusz.AdatbazisMuveletek
 					"Tosszeg FLOAT(53) NOT NULL," +
 					"Kosszeg FLOAT(53) NOT NULL," +
 					"afakulcs INT," +
+                    "teljesites DATE," +
 					$"CONSTRAINT FK_afa_fokonyv FOREIGN KEY(fokonyv_id) REFERENCES {ujEvSchema}.fokonyv(id)" +
 				");";
 

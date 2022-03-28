@@ -25,7 +25,7 @@ namespace Zeusz
 
             connection.Open();
 
-            string query = "SELECT name FROM sys.schemas WHERE principal_id = 1 and name <> 'dbo'";
+            string query = "SELECT name FROM sys.schemas WHERE principal_id = 1 and name <> 'dbo' ORDER BY name desc";
             try
             {
                 SqlCommand cmd = new SqlCommand(query, connection);

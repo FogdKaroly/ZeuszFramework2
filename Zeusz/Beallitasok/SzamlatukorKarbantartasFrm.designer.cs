@@ -53,7 +53,7 @@
             this.kilepesBtn.Location = new System.Drawing.Point(12, 12);
             this.kilepesBtn.Name = "kilepesBtn";
             this.kilepesBtn.Size = new System.Drawing.Size(25, 25);
-            this.kilepesBtn.TabIndex = 0;
+            this.kilepesBtn.TabIndex = 9;
             this.kilepesBtn.Text = "X";
             this.kilepesBtn.UseVisualStyleBackColor = false;
             this.kilepesBtn.Click += new System.EventHandler(this.kilepesBtn_Click);
@@ -89,7 +89,7 @@
             this.szamlaKivalasztasCbx.Location = new System.Drawing.Point(209, 60);
             this.szamlaKivalasztasCbx.Name = "szamlaKivalasztasCbx";
             this.szamlaKivalasztasCbx.Size = new System.Drawing.Size(613, 28);
-            this.szamlaKivalasztasCbx.TabIndex = 6;
+            this.szamlaKivalasztasCbx.TabIndex = 1;
             this.szamlaKivalasztasCbx.SelectedIndexChanged += new System.EventHandler(this.szamlaKivalasztasCbx_SelectedIndexChanged);
             // 
             // label3
@@ -131,7 +131,7 @@
             this.konyvelhetoEChbx.Location = new System.Drawing.Point(314, 322);
             this.konyvelhetoEChbx.Name = "konyvelhetoEChbx";
             this.konyvelhetoEChbx.Size = new System.Drawing.Size(120, 24);
-            this.konyvelhetoEChbx.TabIndex = 10;
+            this.konyvelhetoEChbx.TabIndex = 5;
             this.konyvelhetoEChbx.Text = "Könyvelhető?";
             this.konyvelhetoEChbx.UseVisualStyleBackColor = false;
             // 
@@ -142,7 +142,7 @@
             this.szamlaszamTxb.Location = new System.Drawing.Point(314, 141);
             this.szamlaszamTxb.Name = "szamlaszamTxb";
             this.szamlaszamTxb.Size = new System.Drawing.Size(382, 26);
-            this.szamlaszamTxb.TabIndex = 11;
+            this.szamlaszamTxb.TabIndex = 2;
             this.szamlaszamTxb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.szamlaszamTxb_KeyPress);
             // 
             // szamlaNevTxb
@@ -152,7 +152,7 @@
             this.szamlaNevTxb.Location = new System.Drawing.Point(314, 200);
             this.szamlaNevTxb.Name = "szamlaNevTxb";
             this.szamlaNevTxb.Size = new System.Drawing.Size(382, 26);
-            this.szamlaNevTxb.TabIndex = 12;
+            this.szamlaNevTxb.TabIndex = 3;
             // 
             // rogzitesUjkentBtn
             // 
@@ -163,7 +163,7 @@
             this.rogzitesUjkentBtn.MaximumSize = new System.Drawing.Size(172, 62);
             this.rogzitesUjkentBtn.Name = "rogzitesUjkentBtn";
             this.rogzitesUjkentBtn.Size = new System.Drawing.Size(172, 62);
-            this.rogzitesUjkentBtn.TabIndex = 14;
+            this.rogzitesUjkentBtn.TabIndex = 7;
             this.rogzitesUjkentBtn.Text = "Rögzítés újként";
             this.rogzitesUjkentBtn.UseVisualStyleBackColor = false;
             this.rogzitesUjkentBtn.Click += new System.EventHandler(this.rogzitesUjkentBtn_Click);
@@ -177,7 +177,7 @@
             this.rogzitesBtn.MaximumSize = new System.Drawing.Size(172, 62);
             this.rogzitesBtn.Name = "rogzitesBtn";
             this.rogzitesBtn.Size = new System.Drawing.Size(172, 62);
-            this.rogzitesBtn.TabIndex = 15;
+            this.rogzitesBtn.TabIndex = 8;
             this.rogzitesBtn.Text = "Rögzítés";
             this.rogzitesBtn.UseVisualStyleBackColor = false;
             this.rogzitesBtn.Click += new System.EventHandler(this.rogzitesBtn_Click);
@@ -192,7 +192,7 @@
             this.helyeABeszamolobanCbx.Location = new System.Drawing.Point(314, 384);
             this.helyeABeszamolobanCbx.Name = "helyeABeszamolobanCbx";
             this.helyeABeszamolobanCbx.Size = new System.Drawing.Size(382, 28);
-            this.helyeABeszamolobanCbx.TabIndex = 17;
+            this.helyeABeszamolobanCbx.TabIndex = 6;
             // 
             // label6
             // 
@@ -211,7 +211,7 @@
             this.kapcsolodikIdeTxb.Location = new System.Drawing.Point(314, 268);
             this.kapcsolodikIdeTxb.Name = "kapcsolodikIdeTxb";
             this.kapcsolodikIdeTxb.Size = new System.Drawing.Size(382, 26);
-            this.kapcsolodikIdeTxb.TabIndex = 19;
+            this.kapcsolodikIdeTxb.TabIndex = 4;
             // 
             // SzamlatukorKarbantartasFrm
             // 

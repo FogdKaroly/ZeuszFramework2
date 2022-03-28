@@ -628,20 +628,15 @@ namespace Zeusz
         }
 
         #endregion
-
-        private static System.Windows.Forms.Panel oldalMenuPanel;
-        private static System.Windows.Forms.Panel sugoAlmenuPanel;
         private System.Windows.Forms.Button nevjegyBtn;
         private System.Windows.Forms.Button kezikonyvBtn;
         private System.Windows.Forms.Button sugoBtn;
-        private static System.Windows.Forms.Panel beallitasokAlmenuPanel;
         private System.Windows.Forms.Button cegvaltasBtn;
         private System.Windows.Forms.Button konyveltCegAdataiBtn;
         private System.Windows.Forms.Button jogosultsagKezelesBtn;
         private System.Windows.Forms.Button felhasznalokKezeleseBtn;
         private System.Windows.Forms.Button konyveloCegAdataiBtn;
         private System.Windows.Forms.Button beallitasokBtn;
-        private static System.Windows.Forms.Panel lekerdezesekAlmenuPanel;
         private System.Windows.Forms.Button vezetoiInfoBtn;
         private System.Windows.Forms.Button afaAnalitikaBtn;
         private System.Windows.Forms.Button nyitottSzallitoBtn;
@@ -649,7 +644,6 @@ namespace Zeusz
         private System.Windows.Forms.Button kartonBtn;
         private System.Windows.Forms.Button kivonatBtn;
         private System.Windows.Forms.Button lekerdezesekBtn;
-        private static System.Windows.Forms.Panel konyvelesAlmenuPanel;
         private System.Windows.Forms.Button evZarasBtn;
         private System.Windows.Forms.Button evNyitasBtn;
         private System.Windows.Forms.Button eredmenyKesziteseBtn;
@@ -657,11 +651,16 @@ namespace Zeusz
         private System.Windows.Forms.Button ujVevoKonyveleseBtn;
         private System.Windows.Forms.Button konyvelesBtn;
         private System.Windows.Forms.Panel logoPanel;
-        private static System.Windows.Forms.Panel foAblakPanel;
         private System.Windows.Forms.Button partnerKarbantartasBtn;
         private System.Windows.Forms.Button szamlatukorKarbantartasBtn;
         private System.Windows.Forms.Button ujVegyesKonyveleseBtn;
         private System.Windows.Forms.Button ujSzallitoKonyveleseBtn;
+        private static System.Windows.Forms.Panel oldalMenuPanel;
+        private static System.Windows.Forms.Panel sugoAlmenuPanel;
+        private static System.Windows.Forms.Panel beallitasokAlmenuPanel;
+        private static System.Windows.Forms.Panel lekerdezesekAlmenuPanel;
+        private static System.Windows.Forms.Panel konyvelesAlmenuPanel;
+        private static System.Windows.Forms.Panel foAblakPanel;
     }
 }
 

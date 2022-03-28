@@ -181,6 +181,7 @@
             // 
             // lekerdezesBtn
             // 
+            this.lekerdezesBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lekerdezesBtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(163)))), ((int)(((byte)(208)))), ((int)(((byte)(201)))));
             this.lekerdezesBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lekerdezesBtn.Location = new System.Drawing.Point(628, 597);
@@ -193,6 +194,7 @@
             // 
             // koltsegekChrt
             // 
+            this.koltsegekChrt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             chartArea1.Name = "ChartArea1";
             this.koltsegekChrt.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
