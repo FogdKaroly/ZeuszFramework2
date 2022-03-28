@@ -205,7 +205,7 @@ namespace Zeusz.AdatbazisMuveletek
             SqlConnection connection = AdatbazisKapcsolodas.Kapcsolodas();
             connection.Open();
 
-            string query = "SELECT * FROM felhasznalok ORDER BY felhasznalonev";
+            string query = "SELECT * FROM felhasznalok WHERE felhasznalonev <> 'admin' ORDER BY felhasznalonev";
 
             try
             {
